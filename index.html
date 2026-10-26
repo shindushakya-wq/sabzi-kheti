@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>कृषि सहायक ऐप | सब्जी खेती बाड़ी की बातें</title>
+
+  <!-- Firebase SDK for Real SMS OTP -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: #f4f6f5; color: #1f2937; padding-bottom: 85px; }
@@ -16,7 +21,7 @@
     .login-box { width: 100%; max-width: 320px; }
     .login-input { width: 100%; padding: 13px 15px; border-radius: 12px; border: 1.5px solid #d1d5db; outline: none; font-size: 15px; margin-bottom: 12px; }
     .login-btn { width: 100%; padding: 13px; background: #1b5e20; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; }
-    .skip-btn { margin-top: 15px; background: none; border: none; color: #6b7280; font-size: 13px; text-decoration: underline; cursor: pointer; }
+    .skip-btn { margin-top: 15px; background: none; border: none; color: #4b5563; font-size: 14px; text-decoration: underline; cursor: pointer; font-weight: 600; padding: 8px; }
 
     /* Top App Bar */
     .app-header { background: #1b5e20; color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
@@ -113,19 +118,26 @@
     <h2 class="welcome-title">स्वागत है Sabzi Kheti में</h2>
     <p class="welcome-subtitle">आपका दिन शुभ हो!<br>सब्जी खेती और बीजों की विश्वसनीय जानकारी।</p>
     
+    <!-- Step 1: Name & Phone -->
     <div class="login-box" id="stepInput">
       <input type="text" id="farmerName" class="login-input" placeholder="किसान का नाम">
       <input type="tel" id="farmerPhone" class="login-input" placeholder="मोबाइल नंबर (10 अंक)" maxlength="10">
-      <button class="login-btn" onclick="sendOtpStep()">आगे बढ़ें (OTP पाएं) ➔</button>
+      
+      <!-- Invisible ReCaptcha -->
+      <div id="recaptcha-container"></div>
+
+      <button class="login-btn" id="btnSendOtp" onclick="sendOtpStep()">आगे बढ़ें (OTP पाएं) ➔</button>
       <br>
-      <button class="skip-btn" onclick="skipLogin()">सीधे ऐप देखें (Skip)</button>
+      <button class="skip-btn" onclick="skipLogin()">सीधे ऐप देखें (Skip) ⏩</button>
     </div>
 
-    <!-- OTP Step Box -->
+    <!-- Step 2: OTP Verification -->
     <div class="login-box" id="stepOtp" style="display:none;">
-      <p style="font-size:13px; color:#1b5e20; margin-bottom:12px; font-weight:bold;">मोबाइल पर भेजा गया OTP स्वतः लोड हो रहा है...</p>
-      <input type="number" id="otpInput" class="login-input" placeholder="4 या 6 अंकों का OTP" autocomplete="one-time-code">
-      <button class="login-btn" onclick="verifyAndFinish()">सत्यापित करें और शुरू करें</button>
+      <p style="font-size:13px; color:#1b5e20; margin-bottom:12px; font-weight:bold;" id="otpStatusTxt">मोबाइल पर SMS भेजा गया है...</p>
+      <input type="number" id="otpInput" class="login-input" placeholder="6 अंकों का OTP" autocomplete="one-time-code">
+      <button class="login-btn" onclick="verifyOtpStep()">सत्यापित करें और शुरू करें</button>
+      <br>
+      <button class="skip-btn" onclick="skipLogin()">बिना OTP सीधे अंदर जाएं (Skip) ⏩</button>
     </div>
   </div>
 
@@ -291,6 +303,24 @@
   </div>
 
   <script>
+    // --- आपकी असली Firebase Configuration ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyDoB-CCghRUdK3DVJqGkx3",
+      authDomain: "sabzi-doctor.firebaseapp.com",
+      databaseURL: "https://sabzi-doctor-default-rtdb.firebaseio.com",
+      projectId: "सब्जी-डॉक्टर",
+      storageBucket: "sabzi-doctor.appspot.com",
+      messagingSenderId: "991132609380",
+      appId: "1:991132609380:web:3ca08fe0cfb7953785e871"
+    };
+
+    let confirmationResultGlobal = null;
+    try {
+      firebase.initializeApp(firebaseConfig);
+    } catch(e) {
+      console.log("Firebase Init", e);
+    }
+
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/export?format=csv';
 
     let currentLang = localStorage.getItem('appLang') || 'hi';
@@ -367,13 +397,26 @@
       return i18n[currentLang][key] || key;
     }
 
-    // 1. लॉगिन व ऑटो-ओटीपी फ्लो
+    // 1. लॉगिन, OTP व स्किप फ्लो
     function checkLoginStatus() {
       const savedUser = localStorage.getItem('kisanUser');
       if (!savedUser) {
         document.getElementById('screen-welcome').style.display = 'flex';
+        initRecaptcha();
       } else {
         showUserGreeting(JSON.parse(savedUser).name);
+      }
+    }
+
+    function initRecaptcha() {
+      try {
+        if (!window.recaptchaVerifier) {
+          window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible'
+          });
+        }
+      } catch (e) {
+        console.log("Recaptcha error", e);
       }
     }
 
@@ -388,14 +431,28 @@
     function sendOtpStep() {
       const name = document.getElementById('farmerName').value.trim();
       const phone = document.getElementById('farmerPhone').value.trim();
+      
       if (!name || phone.length < 10) {
         alert("कृपया अपना नाम और 10 अंकों का मोबाइल नंबर दर्ज करें।");
         return;
       }
+
       document.getElementById('stepInput').style.display = 'none';
       document.getElementById('stepOtp').style.display = 'block';
 
-      // WebOTP API: मोबाइल पर आने वाले OTP को अपने-आप पढ़ना
+      // असली SMS OTP भेजना
+      const fullPhone = '+91' + phone;
+      firebase.auth().signInWithPhoneNumber(fullPhone, window.recaptchaVerifier)
+        .then((confirmationResult) => {
+          confirmationResultGlobal = confirmationResult;
+          document.getElementById('otpStatusTxt').innerText = "मोबाइल नंबर +91-" + phone + " पर SMS भेज दिया गया है:";
+        })
+        .catch((error) => {
+          console.error("SMS Error: ", error);
+          document.getElementById('otpStatusTxt').innerText = "SMS भेजने में देरी हुई। आप नीचे 'स्किप' दबाकर सीधे अंदर जा सकते हैं।";
+        });
+
+      // WebOTP: फ़ोन के SMS से OTP स्वतः पकड़ना
       if ('OTPCredential' in window) {
         const ac = new AbortController();
         navigator.credentials.get({
@@ -404,23 +461,42 @@
         }).then(otp => {
           if (otp && otp.code) {
             document.getElementById('otpInput').value = otp.code;
-            verifyAndFinish();
+            verifyOtpStep();
           }
-        }).catch(err => console.log('WebOTP error or timeout', err));
+        }).catch(err => console.log('WebOTP error/timeout', err));
       }
     }
 
-    function verifyAndFinish() {
+    function verifyOtpStep() {
+      const code = document.getElementById('otpInput').value.trim();
       const name = document.getElementById('farmerName').value.trim() || 'किसान भाई';
       const phone = document.getElementById('farmerPhone').value.trim();
+
+      if (confirmationResultGlobal) {
+        confirmationResultGlobal.confirm(code)
+          .then(() => finishLogin(name, phone))
+          .catch(() => alert("गलत OTP दर्ज किया गया है। कृपया सही कोड डालें या नीचे स्किप करें।"));
+      } else {
+        if (code.length >= 4) {
+          finishLogin(name, phone);
+        } else {
+          alert("कृपया सही OTP दर्ज करें या नीचे 'स्किप' दबाएं।");
+        }
+      }
+    }
+
+    function finishLogin(name, phone) {
       localStorage.setItem('kisanUser', JSON.stringify({ name: name, phone: phone }));
       document.getElementById('screen-welcome').style.display = 'none';
       showUserGreeting(name);
     }
 
     function skipLogin() {
-      localStorage.setItem('kisanUser', JSON.stringify({ name: '', phone: '' }));
+      const name = document.getElementById('farmerName').value.trim() || '';
+      const phone = document.getElementById('farmerPhone').value.trim() || '';
+      localStorage.setItem('kisanUser', JSON.stringify({ name: name, phone: phone }));
       document.getElementById('screen-welcome').style.display = 'none';
+      if (name) showUserGreeting(name);
     }
 
     function contactAdvisor() {
