@@ -17,9 +17,10 @@
     .screen { display: none; padding: 14px; max-width: 480px; margin: auto; }
     .screen.active { display: block; }
 
-    /* Weather Card */
+    /* Live Weather Card */
     .weather-card { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 14px; padding: 14px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
-    .weather-card h4 { color: #1b5e20; font-size: 15px; }
+    .weather-card h4 { color: #1b5e20; font-size: 15px; display: flex; align-items: center; gap: 5px; }
+    .weather-temp { font-size: 26px; font-weight: bold; color: #1b5e20; }
 
     /* Search Box */
     .search-box { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid #d1d5db; outline: none; margin-bottom: 15px; font-size: 14px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
@@ -38,7 +39,8 @@
     .arrow { color: #9ca3af; font-weight: bold; }
 
     /* Variety Cards */
-    .variety-card { background: white; border-radius: 14px; padding: 16px; margin-bottom: 14px; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .variety-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 14px; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.04); overflow: hidden; }
+    .var-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; display: block; background: #e5e7eb; }
     .badge-season { background: #e8f5e9; color: #1b5e20; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; display: inline-block; margin-bottom: 6px; }
     .var-title { font-size: 17px; font-weight: 700; color: #111827; margin-bottom: 6px; }
     .var-detail { font-size: 13px; color: #4b5563; margin-bottom: 5px; }
@@ -72,12 +74,17 @@
 
   <!-- SCREEN 1: मुख्य स्क्रीन (Home) -->
   <div id="screen-home" class="screen active">
+    <!-- Live Weather Card -->
     <div class="weather-card">
       <div>
-        <h4>आज का मौसम</h4>
-        <p style="font-size:12px; color:#374151;">साफ़ आसमान | स्प्रे व निराई-गुड़ाई हेतु उत्तम समय</p>
+        <h4 id="weatherPlace">📍 आपके क्षेत्र का मौसम</h4>
+        <p id="weatherDesc" style="font-size:12px; color:#374151; margin-top:3px;">मौसम डेटा लोड हो रहा है...</p>
+        <p id="weatherAdvice" style="font-size:11px; color:#1b5e20; font-weight:bold; margin-top:2px;"></p>
       </div>
-      <div style="font-size:28px;">☀️</div>
+      <div style="text-align:right;">
+        <span id="weatherIcon" style="font-size:30px;">🌤️</span>
+        <div id="weatherTemp" class="weather-temp">--°C</div>
+      </div>
     </div>
 
     <input type="text" class="search-box" id="homeSearch" placeholder="🔍 बीज या फसल खोजें..." onkeyup="searchVarieties(this.value)">
@@ -158,12 +165,69 @@
   </div>
 
   <script>
-    // आपकी Google Sheet का सीधा लिंक
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/export?format=csv';
 
     let sheetRecords = [];
     const historyStack = ['screen-home'];
 
+    // 1. लाइव लोकेशन और वेदर सिस्टम
+    async function fetchLiveWeather(lat, lon, placeName = "आपके क्षेत्र का मौसम") {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        if (data && data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const code = data.current_weather.weathercode;
+          
+          let desc = "साफ़ आसमान";
+          let icon = "☀️";
+          let advice = "स्प्रे व निराई-गुड़ाई हेतु उत्तम समय";
+
+          if (code === 1 || code === 2 || code === 3) {
+            desc = "आंशिक रूप से बादल";
+            icon = "⛅";
+            advice = "स्प्रे किया जा सकता है";
+          } else if (code >= 51 && code <= 67) {
+            desc = "हल्की बारिश की संभावना";
+            icon = "🌧️";
+            advice = "⚠️ अभी स्प्रे रोकें, मौसम साफ़ होने दें";
+          } else if (code >= 80) {
+            desc = "बारिश / बौछारें";
+            icon = "⛈️";
+            advice = "⚠️ दवा स्प्रे न करें, जल निकासी देखें";
+          }
+
+          document.getElementById('weatherPlace').innerText = '📍 ' + placeName;
+          document.getElementById('weatherTemp').innerText = temp + '°C';
+          document.getElementById('weatherDesc').innerText = desc;
+          document.getElementById('weatherAdvice').innerText = advice;
+          document.getElementById('weatherIcon').innerText = icon;
+        }
+      } catch (e) {
+        document.getElementById('weatherDesc').innerText = "मौसम डेटा उपलब्ध नहीं";
+      }
+    }
+
+    function initWeather() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            fetchLiveWeather(pos.coords.latitude, pos.coords.longitude, "लाइव लोकेशन मौसम");
+          },
+          (err) => {
+            // लोकेशन अनुमति न मिलने पर डिफ़ॉल्ट राजस्थान (जयपुर) का मौसम दिखाएगा
+            fetchLiveWeather(26.9124, 75.7873, "राजस्थान मौसम");
+          },
+          { timeout: 7000 }
+        );
+      } else {
+        fetchLiveWeather(26.9124, 75.7873, "राजस्थान मौसम");
+      }
+    }
+
+    // 2. Google Sheet से डेटा लोड करना
     async function loadSheetData() {
       try {
         const response = await fetch(SHEET_URL);
@@ -181,7 +245,8 @@
               features: cols[4] || '',
               weight: cols[5] || '',
               maturity: cols[6] || '',
-              resistance: cols[7] || ''
+              resistance: cols[7] || '',
+              image: cols[8] || ''
             });
           }
         }
@@ -225,8 +290,11 @@
       } else {
         container.innerHTML = '';
         list.forEach(v => {
+          const imgTag = v.image && v.image.startsWith('http') ? `<img src="${v.image}" class="var-img" alt="${v.variety}">` : '';
+          
           container.innerHTML += `
             <div class="variety-card">
+              ${imgTag}
               <span class="badge-season">${v.segment || 'उन्नत किस्म'}</span>
               <div class="var-title">${v.variety} (${v.crop})</div>
               <div class="var-detail"><b>विशेषता:</b> ${v.features}</div>
@@ -281,6 +349,8 @@
       }
     }
 
+    // ऐप शुरू होते ही दोनों लोड होंगे
+    initWeather();
     loadSheetData();
   </script>
 </body>
