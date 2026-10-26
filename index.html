@@ -126,9 +126,12 @@
     .arrow { color: #9ca3af; font-weight: bold; }
 
     .variety-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 14px; border: 1px solid #e5e7eb; }
+    .var-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; display: block; background: #e5e7eb; }
     .badge-season { background: #e8f5e9; color: #1b5e20; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; display: inline-block; margin-bottom: 6px; }
+    .badge-company { background: #eff6ff; color: #1d4ed8; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; display: inline-block; margin-bottom: 6px; margin-left: 4px; }
     .var-title { font-size: 17px; font-weight: 700; color: #111827; margin-bottom: 6px; }
     .var-detail { font-size: 13px; color: #4b5563; margin-bottom: 5px; }
+    .var-detail b { color: #1f2937; }
 
     .btn-action { display: block; width: 100%; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 13px; font-weight: bold; border: none; cursor: pointer; }
     .btn-wa { background: #25d366; color: white; }
@@ -138,6 +141,8 @@
     .nav-tab { text-align: center; font-size: 10px; color: #6b7280; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
     .nav-tab.active { color: #1b5e20; font-weight: bold; }
     .nav-tab span:first-child { font-size: 18px; }
+
+    .loading-txt { text-align: center; padding: 30px; font-size: 14px; color: #6b7280; }
   </style>
 </head>
 <body>
@@ -149,7 +154,7 @@
       <span class="header-title" id="headerTitle">सब्जी फसल और बीज जानकारी</span>
     </div>
     <div class="header-actions">
-      <button class="lang-toggle-btn" onclick="alert('भाषा जल्द उपलब्ध होगी')">🌐 ENG</button>
+      <button class="lang-toggle-btn" onclick="alert('भाषा विकल्प जल्द सक्रिय होगा')">🌐 ENG</button>
       <span class="bell-icon" onclick="openNotify()">🔔</span>
     </div>
   </div>
@@ -160,7 +165,7 @@
     <span>तुरंत समाधान</span>
   </button>
 
-  <!-- पॉपअप: तुरंत समाधान (कैमरा व गैलरी) -->
+  <!-- पॉपअप: तुरंत समाधान -->
   <div class="modal-overlay" id="solutionModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -230,7 +235,7 @@
 
     <!-- 5 रंगीन मुख्य बटन -->
     <div class="grid-menu">
-      <div class="menu-box card-crops" onclick="openScreen('screen-crops', 'सब्जी फसलें')">
+      <div class="menu-box card-crops" onclick="showAllCropsFromSheet()">
         <div class="icon">🥬</div>
         <h3>सब्जी फसलें</h3>
       </div>
@@ -238,7 +243,7 @@
         <div class="icon">🛡️</div>
         <h3>फसल सुरक्षा</h3>
       </div>
-      <div class="menu-box card-seeds" onclick="openScreen('screen-seeds', 'सभी बीज किस्में')">
+      <div class="menu-box card-seeds" onclick="showAllVarietiesFromSheet()">
         <div class="icon">🌱</div>
         <h3>सभी बीज किस्में</h3>
       </div>
@@ -266,27 +271,18 @@
     </div>
   </div>
 
-  <!-- SCREEN 2: सब्जी फसलें -->
+  <!-- SCREEN 2: Google Sheet से सभी फसलें -->
   <div id="screen-crops" class="screen">
-    <div class="list-item" onclick="openScreen('screen-seeds', 'खीरा की किस्में')">
-      <div class="list-left"><span class="list-icon">🥒</span><span class="list-title">खीरा (Cucumber)</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-    <div class="list-item" onclick="openScreen('screen-seeds', 'टमाटर की किस्में')">
-      <div class="list-left"><span class="list-icon">🍅</span><span class="list-title">टमाटर (Tomato)</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-    <div class="list-item" onclick="openScreen('screen-seeds', 'मिर्च की किस्में')">
-      <div class="list-left"><span class="list-icon">🌶️</span><span class="list-title">मिर्च (Chilli)</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-    <div class="list-item" onclick="openScreen('screen-seeds', 'फूलगोभी की किस्में')">
-      <div class="list-left"><span class="list-icon">🥦</span><span class="list-title">फूलगोभी (Cauliflower)</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
+    <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;">सब्जी फसल चुनें:</h3>
+    <div id="cropsContainer" class="loading-txt">फसलें लोड हो रही हैं...</div>
   </div>
 
-  <!-- SCREEN 3: फसल सुरक्षा -->
+  <!-- SCREEN 3: किस्में सूची (Google Sheet डेटा) -->
+  <div id="screen-seeds" class="screen">
+    <div id="varietiesContainer" class="loading-txt">बीज किस्में लोड हो रही हैं...</div>
+  </div>
+
+  <!-- SCREEN 4: फसल सुरक्षा -->
   <div id="screen-protection" class="screen">
     <div class="list-item" onclick="openCure('पत्ती मरोड़िया रोग', 'पेगासस 25 ग्राम या कॉनफिडोर 8 मिली प्रति 15 लीटर पंप')">
       <div class="list-left"><span class="list-icon">🍃</span><span class="list-title">पत्ती लपेटक (मरोड़िया) रोग</span></div>
@@ -299,25 +295,6 @@
     <div class="list-item" onclick="openCure('फल छेदक कीट', 'कोराजन 6 मिली या फेम 5 मिली प्रति 15 लीटर पंप')">
       <div class="list-left"><span class="list-icon">🐛</span><span class="list-title">फल छेदक कीट (सुंडी)</span></div>
       <span class="arrow">&gt;</span>
-    </div>
-  </div>
-
-  <!-- SCREEN 4: सभी बीज किस्में -->
-  <div id="screen-seeds" class="screen">
-    <div class="variety-card">
-      <span class="badge-season">सागर सीड्स</span>
-      <div class="var-title">सागर सुपर-70 (खीरा)</div>
-      <div class="var-detail"><b>विशेषता:</b> गहरे हरे फल, अधिक पैदावार और वायरस से सुरक्षित।</div>
-      <div class="var-detail"><b>पकने का समय:</b> 35-40 दिन</div>
-      <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20सागर%20सुपर-70%20खीरा%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">🛒 बीज ऑर्डर करें</a>
-    </div>
-
-    <div class="variety-card">
-      <span class="badge-season">सिंजेंटा</span>
-      <div class="var-title">साहो 3251 (टमाटर)</div>
-      <div class="var-detail"><b>विशेषता:</b> ठोस फल, लंबी दूरी के परिवहन हेतु उत्तम।</div>
-      <div class="var-detail"><b>पकने का समय:</b> 65-70 दिन</div>
-      <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20साहो%203251%20टमाटर%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">🛒 बीज ऑर्डर करें</a>
     </div>
   </div>
 
@@ -351,7 +328,7 @@
     <div class="nav-tab active" onclick="openScreen('screen-home', 'सब्जी फसल और बीज जानकारी')">
       <span>🏠</span><span>होम</span>
     </div>
-    <div class="nav-tab" onclick="openScreen('screen-crops', 'सब्जी फसलें')">
+    <div class="nav-tab" onclick="showAllCropsFromSheet()">
       <span>🥬</span><span>फसलें</span>
     </div>
     <div class="nav-tab" onclick="openScreen('screen-protection', 'फसल सुरक्षा')">
@@ -364,8 +341,114 @@
 
   <script>
     const navHistory = ['screen-home'];
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/export?format=csv';
+    let sheetRecords = [];
 
-    // स्क्रीन बदलने और स्मूथ एनिमेशन का फ़ंक्शन
+    // Google Sheet से सारा लाइव डेटा लोड करना
+    async function loadSheetData() {
+      try {
+        const response = await fetch(SHEET_URL);
+        const data = await response.text();
+        const rows = data.split('\n').filter(r => r.trim() !== '');
+        
+        sheetRecords = [];
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i].split(',').map(c => c.replace(/"/g, '').trim());
+          if (cols.length >= 3) {
+            const hasCompanyCol = cols.length >= 10;
+            sheetRecords.push({
+              company: hasCompanyCol ? cols[1] : (cols[3] || 'सामान्य'),
+              crop: hasCompanyCol ? cols[2] : cols[1],
+              variety: hasCompanyCol ? cols[3] : cols[2],
+              segment: hasCompanyCol ? cols[4] : cols[3],
+              features: hasCompanyCol ? cols[5] : cols[4],
+              weight: hasCompanyCol ? cols[6] : cols[5],
+              maturity: hasCompanyCol ? cols[7] : cols[6],
+              resistance: hasCompanyCol ? cols[8] : cols[7],
+              image: hasCompanyCol ? cols[9] : cols[8]
+            });
+          }
+        }
+      } catch (err) {
+        console.log("Sheet load error", err);
+      }
+    }
+
+    // Google Sheet की सभी फसलों को दिखाना
+    function showAllCropsFromSheet() {
+      const crops = [...new Set(sheetRecords.map(r => r.crop).filter(c => c && c.trim() !== ''))];
+      const container = document.getElementById('cropsContainer');
+      container.innerHTML = '';
+
+      if (crops.length === 0) {
+        container.innerHTML = '<p class="loading-txt">फसलें लोड हो रही हैं या शीट खाली है...</p>';
+      } else {
+        const cropIcons = { 'टमाटर': '🍅', 'मिर्च': '🌶️', 'फूलगोभी': '🥦', 'पत्तागोभी': '🥬', 'बैंगन': '🍆', 'प्याज': '🧅', 'भिंडी': '🥒', 'खीरा': '🥒', 'करेला': '🥒', 'लौकी': '🥒', 'तरबूज': '🍉', 'खरबूजा': '🍈' };
+
+        crops.forEach(crop => {
+          const icon = cropIcons[crop] || '🌱';
+          container.innerHTML += `
+            <div class="list-item" onclick="filterByCrop('${crop}')">
+              <div class="list-left"><span class="list-icon">${icon}</span><span class="list-title">${crop}</span></div>
+              <span class="arrow">&gt;</span>
+            </div>
+          `;
+        });
+      }
+      openScreen('screen-crops', 'सब्जी फसलें');
+    }
+
+    function filterByCrop(cropName) {
+      const list = sheetRecords.filter(r => r.crop.toLowerCase() === cropName.toLowerCase());
+      renderVarieties(list, cropName + ' की किस्में');
+    }
+
+    function showAllVarietiesFromSheet() {
+      renderVarieties(sheetRecords, 'सभी बीज किस्में');
+    }
+
+    function renderVarieties(list, title) {
+      const container = document.getElementById('varietiesContainer');
+      container.innerHTML = '';
+
+      if (list.length === 0) {
+        container.innerHTML = '<p class="loading-txt">कोई जानकारी नहीं मिली।</p>';
+      } else {
+        list.forEach(v => {
+          const imgTag = (v.image && v.image.startsWith('http')) ? `<img src="${v.image}" class="var-img" alt="${v.variety}">` : '';
+          const compBadge = v.company ? `<span class="badge-company">${v.company}</span>` : '';
+
+          container.innerHTML += `
+            <div class="variety-card">
+              ${imgTag}
+              <span class="badge-season">${v.segment || 'हाइब्रिड'}</span>
+              ${compBadge}
+              <div class="var-title">${v.variety} (${v.crop})</div>
+              <div class="var-detail"><b>विशेषता:</b> ${v.features || 'उत्तम पैदावार'}</div>
+              <div class="var-detail"><b>वजन/साइज:</b> ${v.weight || 'मानक'}</div>
+              <div class="var-detail"><b>पकने का समय:</b> ${v.maturity || 'समय अनुसार'}</div>
+              <div class="var-detail"><b>रोग प्रतिरोध:</b> ${v.resistance || 'मध्यम'}</div>
+              <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20${encodeURIComponent(v.company)}%20की%20${encodeURIComponent(v.variety)}%20(${encodeURIComponent(v.crop)})%20का%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">🛒 बीज ऑर्डर करें</a>
+            </div>
+          `;
+        });
+      }
+      openScreen('screen-seeds', title);
+    }
+
+    function searchData(val) {
+      const q = val.trim().toLowerCase();
+      if (!q) return;
+
+      const filtered = sheetRecords.filter(r => 
+        (r.variety && r.variety.toLowerCase().includes(q)) || 
+        (r.crop && r.crop.toLowerCase().includes(q)) ||
+        (r.company && r.company.toLowerCase().includes(q))
+      );
+      renderVarieties(filtered, 'खोज: "' + val + '"');
+    }
+
+    // स्क्रीन बदलने का फ़ंक्शन
     function openScreen(screenId, title) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(screenId);
@@ -383,7 +466,6 @@
       }
     }
 
-    // वापस आने का फ़ंक्शन
     function goBack() {
       navHistory.pop();
       const prevScreen = navHistory[navHistory.length - 1] || 'screen-home';
@@ -407,7 +489,6 @@
       window.open('https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20फसल%20सलाह%20चाहिए।', '_blank');
     }
 
-    // तुरंत समाधान मोडल
     function openSolutionModal() {
       document.getElementById('solutionModal').classList.add('active');
     }
@@ -445,14 +526,11 @@
     }
 
     function openNotify() {
-      alert("🔔 सूचना: सभी नए बीज और दवाइयां अपडेट कर दी गई हैं।");
+      alert("🔔 सूचना: Google Sheet की सभी ताज़ा किस्में अपडेट कर दी गई हैं।");
     }
 
-    function searchData(val) {
-      if (val.trim().length > 1) {
-        openScreen('screen-seeds', 'खोज परिणाम: ' + val);
-      }
-    }
+    // ऐप शुरू होते ही शीट डेटा फेच करना
+    loadSheetData();
   </script>
 </body>
 </html>
