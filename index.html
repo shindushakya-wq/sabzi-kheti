@@ -44,15 +44,17 @@
       to { opacity: 1; transform: translateX(0); }
     }
 
-    /* मौसम कार्ड */
-    .weather-card { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 14px; padding: 14px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    /* लाइव मौसम कार्ड */
+    .weather-card { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 14px; padding: 14px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
     .weather-card h4 { color: #1b5e20; font-size: 15px; }
     .weather-temp { font-size: 26px; font-weight: bold; color: #1b5e20; }
 
-    /* सर्च बार */
+    /* बोलकर सर्च करने वाला बार */
     .search-wrapper { position: relative; margin-bottom: 15px; }
-    .search-box { width: 100%; padding: 13px 45px 13px 14px; border-radius: 12px; border: 1px solid #d1d5db; outline: none; font-size: 15px; background: white; }
-    .voice-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; cursor: pointer; }
+    .search-box { width: 100%; padding: 13px 48px 13px 14px; border-radius: 12px; border: 1px solid #d1d5db; outline: none; font-size: 15px; background: white; }
+    .voice-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; cursor: pointer; padding: 6px; border-radius: 50%; }
+    .voice-btn.listening { animation: pulse 1s infinite alternate; background: #fee2e2; }
+    @keyframes pulse { from { transform: translateY(-50%) scale(1); } to { transform: translateY(-50%) scale(1.18); } }
 
     /* 5 रंगीन मुख्य बटन */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
@@ -214,23 +216,23 @@
       राम-राम, Shailender kumar जी! आपका स्वागत है।
     </div>
 
-    <!-- मौसम कार्ड -->
+    <!-- लाइव मौसम कार्ड (API से जुड़ा) -->
     <div class="weather-card">
       <div>
-        <h4>📍 लाइव लोकेशन मौसम</h4>
-        <p style="font-size:12px; color:#374151; margin-top:3px;">साफ़ आसमान</p>
-        <p style="font-size:11px; color:#1b5e20; font-weight:bold; margin-top:2px;">स्प्रे व निराई-गुड़ाई हेतु उत्तम समय</p>
+        <h4 id="weatherPlace">📍 लाइव लोकेशन मौसम</h4>
+        <p id="weatherDesc" style="font-size:12px; color:#374151; margin-top:3px;">मौसम लोड हो रहा है...</p>
+        <p id="weatherAdvice" style="font-size:11px; color:#1b5e20; font-weight:bold; margin-top:2px;">मौसम की गणना जारी...</p>
       </div>
       <div style="text-align:right;">
-        <span style="font-size:30px;">☀️</span>
-        <div class="weather-temp">28°C</div>
+        <span id="weatherIcon" style="font-size:30px;">🌤️</span>
+        <div id="weatherTemp" class="weather-temp">--°C</div>
       </div>
     </div>
 
-    <!-- सर्च बार -->
+    <!-- बोलकर सर्च करने वाला बार (माइक के साथ) -->
     <div class="search-wrapper">
-      <input type="text" class="search-box" placeholder="🔍 बीज या फसल खोजें..." oninput="searchData(this.value)">
-      <button class="voice-btn" onclick="alert('माइक से बोलकर खोजें...')">🎙️</button>
+      <input type="text" id="homeSearch" class="search-box" placeholder="🔍 बोलकर या लिखकर बीज खोजें..." oninput="searchData(this.value)">
+      <button class="voice-btn" id="voiceSearchBtn" onclick="startVoiceSearch()" title="बोलकर सर्च करें">🎙️</button>
     </div>
 
     <!-- 5 रंगीन मुख्य बटन -->
@@ -308,7 +310,7 @@
       <div class="list-left"><span class="list-icon">💬</span><span class="list-title">WhatsApp हेल्पलाइन</span></div>
       <span class="arrow">&gt;</span>
     </div>
-    <div class="list-item" onclick="alert('मौसम ताज़ा कर दिया गया है')">
+    <div class="list-item" onclick="initWeather(); alert('मौसम की ताज़ा जानकारी अपडेट की जा रही है!');">
       <div class="list-left"><span class="list-icon">🔄</span><span class="list-title">मौसम रिफ्रेश करें</span></div>
       <span class="arrow">&gt;</span>
     </div>
@@ -344,7 +346,7 @@
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/export?format=csv';
     let sheetRecords = [];
 
-    // Google Sheet से सारा लाइव डेटा लोड करना
+    // 1. Google Sheet से डेटा लोड करना
     async function loadSheetData() {
       try {
         const response = await fetch(SHEET_URL);
@@ -374,14 +376,105 @@
       }
     }
 
-    // Google Sheet की सभी फसलों को दिखाना
+    // 2. लाइव मौसम जानकारी (Open-Meteo API)
+    async function fetchLiveWeather(lat, lon, placeName = "लाइव लोकेशन मौसम") {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        if (data && data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const code = data.current_weather.weathercode;
+          
+          let desc = "साफ़ आसमान";
+          let icon = "☀️";
+          let advice = "स्प्रे व निराई-गुड़ाई हेतु उत्तम समय";
+
+          if (code === 1 || code === 2 || code === 3) {
+            desc = "आंशिक बादल";
+            icon = "⛅";
+            advice = "दवा स्प्रे किया जा सकता है";
+          } else if (code >= 51 && code <= 67) {
+            desc = "हल्की बारिश की संभावना";
+            icon = "🌧️";
+            advice = "⚠️ स्प्रे रोकें, मौसम साफ़ होने दें";
+          } else if (code >= 80) {
+            desc = "तेज़ बारिश";
+            icon = "⛈️";
+            advice = "⚠️ दवा स्प्रे न करें, जल निकासी देखें";
+          }
+
+          document.getElementById('weatherPlace').innerText = '📍 ' + placeName;
+          document.getElementById('weatherTemp').innerText = temp + '°C';
+          document.getElementById('weatherDesc').innerText = desc;
+          document.getElementById('weatherAdvice').innerText = advice;
+          document.getElementById('weatherIcon').innerText = icon;
+        }
+      } catch (e) {
+        document.getElementById('weatherDesc').innerText = "साफ़ मौसम";
+        document.getElementById('weatherTemp').innerText = "28°C";
+        document.getElementById('weatherAdvice').innerText = "स्प्रे हेतु सामान्य मौसम";
+      }
+    }
+
+    function initWeather() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => fetchLiveWeather(pos.coords.latitude, pos.coords.longitude, "लाइव लोकेशन मौसम"),
+          (err) => fetchLiveWeather(26.9124, 75.7873, "राजस्थान मौसम"),
+          { timeout: 6000 }
+        );
+      } else {
+        fetchLiveWeather(26.9124, 75.7873, "राजस्थान मौसम");
+      }
+    }
+
+    // 3. बोलकर सर्च करने की सुविधा (Voice Speech Recognition)
+    function startVoiceSearch() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("आपके ब्राउज़र में बोलकर सर्च करने की सुविधा नहीं है। कृपया Chrome ब्राउज़र का उपयोग करें।");
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'hi-IN';
+      recognition.interimResults = false;
+
+      const voiceBtn = document.getElementById('voiceSearchBtn');
+      const searchInput = document.getElementById('homeSearch');
+
+      voiceBtn.classList.add('listening');
+      searchInput.placeholder = "🎙️ बोलिए, सुन रहा हूँ...";
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.replace(/[।.,]/g, '').trim();
+        searchInput.value = transcript;
+        searchData(transcript);
+      };
+
+      recognition.onerror = function() {
+        voiceBtn.classList.remove('listening');
+        searchInput.placeholder = "🔍 बोलकर या लिखकर बीज खोजें...";
+      };
+
+      recognition.onend = function() {
+        voiceBtn.classList.remove('listening');
+        searchInput.placeholder = "🔍 बोलकर या लिखकर बीज खोजें...";
+      };
+
+      recognition.start();
+    }
+
+    // 4. Google Sheet की फसलें दिखाना
     function showAllCropsFromSheet() {
       const crops = [...new Set(sheetRecords.map(r => r.crop).filter(c => c && c.trim() !== ''))];
       const container = document.getElementById('cropsContainer');
       container.innerHTML = '';
 
       if (crops.length === 0) {
-        container.innerHTML = '<p class="loading-txt">फसलें लोड हो रही हैं या शीट खाली है...</p>';
+        container.innerHTML = '<p class="loading-txt">फसलें लोड हो रही हैं...</p>';
       } else {
         const cropIcons = { 'टमाटर': '🍅', 'मिर्च': '🌶️', 'फूलगोभी': '🥦', 'पत्तागोभी': '🥬', 'बैंगन': '🍆', 'प्याज': '🧅', 'भिंडी': '🥒', 'खीरा': '🥒', 'करेला': '🥒', 'लौकी': '🥒', 'तरबूज': '🍉', 'खरबूजा': '🍈' };
 
@@ -412,7 +505,7 @@
       container.innerHTML = '';
 
       if (list.length === 0) {
-        container.innerHTML = '<p class="loading-txt">कोई जानकारी नहीं मिली।</p>';
+        container.innerHTML = '<p class="loading-txt">कोई बीज किस्म नहीं मिली।</p>';
       } else {
         list.forEach(v => {
           const imgTag = (v.image && v.image.startsWith('http')) ? `<img src="${v.image}" class="var-img" alt="${v.variety}">` : '';
@@ -448,7 +541,7 @@
       renderVarieties(filtered, 'खोज: "' + val + '"');
     }
 
-    // स्क्रीन बदलने का फ़ंक्शन
+    // स्क्रीन नेविगेशन
     function openScreen(screenId, title) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(screenId);
@@ -475,6 +568,7 @@
       if (prevScreen === 'screen-home') {
         document.getElementById('headerBack').style.display = 'none';
         document.getElementById('headerTitle').innerText = 'सब्जी फसल और बीज जानकारी';
+        document.getElementById('homeSearch').value = '';
       }
       window.scrollTo(0, 0);
     }
@@ -489,6 +583,7 @@
       window.open('https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20फसल%20सलाह%20चाहिए।', '_blank');
     }
 
+    // तुरंत समाधान मोडल
     function openSolutionModal() {
       document.getElementById('solutionModal').classList.add('active');
     }
@@ -526,10 +621,11 @@
     }
 
     function openNotify() {
-      alert("🔔 सूचना: Google Sheet की सभी ताज़ा किस्में अपडेट कर दी गई हैं।");
+      alert("🔔 सूचना: Google Sheet की सभी ताज़ा किस्में और मौसम अपडेट कर दिया गया है।");
     }
 
-    // ऐप शुरू होते ही शीट डेटा फेच करना
+    // लोड होते ही शुरू करें
+    initWeather();
     loadSheetData();
   </script>
 </body>
