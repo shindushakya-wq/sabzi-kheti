@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>कृषि सहायक ऐप | सब्जी खेती बाड़ी की बातें</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #f4f6f5; color: #1f2937; padding-bottom: 75px; }
+
+    /* Top App Bar */
+    .app-header { background: #1b5e20; color: white; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .back-btn { font-size: 22px; cursor: pointer; margin-right: 12px; }
+    .header-title { font-size: 16px; font-weight: bold; }
+
+    /* Screens */
+    .screen { display: none; padding: 14px; max-width: 480px; margin: auto; }
+    .screen.active { display: block; }
+
+    /* Weather Card */
+    .weather-card { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 14px; padding: 14px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .weather-card h4 { color: #1b5e20; font-size: 15px; }
+
+    /* Search Box */
+    .search-box { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid #d1d5db; outline: none; margin-bottom: 15px; font-size: 14px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+
+    /* Grid Menu (Home) */
+    .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+    .menu-box { background: white; padding: 18px 10px; border-radius: 14px; text-align: center; border: 1px solid #e5e7eb; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .menu-box .icon { font-size: 30px; margin-bottom: 6px; }
+    .menu-box h3 { font-size: 14px; color: #1b5e20; font-weight: bold; }
+
+    /* List Items */
+    .list-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+    .list-left { display: flex; align-items: center; gap: 12px; }
+    .list-icon { font-size: 24px; }
+    .list-title { font-size: 15px; font-weight: 600; }
+    .arrow { color: #9ca3af; font-weight: bold; }
+
+    /* Variety Cards */
+    .variety-card { background: white; border-radius: 14px; padding: 16px; margin-bottom: 14px; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .badge-season { background: #e8f5e9; color: #1b5e20; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; display: inline-block; margin-bottom: 6px; }
+    .var-title { font-size: 17px; font-weight: 700; color: #111827; margin-bottom: 6px; }
+    .var-detail { font-size: 13px; color: #4b5563; margin-bottom: 5px; }
+    .var-detail b { color: #1f2937; }
+
+    /* Action Buttons */
+    .btn-group { display: flex; gap: 8px; margin-top: 12px; }
+    .btn-action { flex: 1; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 12px; font-weight: bold; border: none; cursor: pointer; }
+    .btn-wa { background: #25d366; color: white; }
+    .btn-disease { background: #f97316; color: white; }
+
+    /* Bottom App Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
+    .nav-tab { text-align: center; font-size: 10px; color: #6b7280; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+    .nav-tab.active { color: #1b5e20; font-weight: bold; }
+    .nav-tab span:first-child { font-size: 18px; }
+
+    .loading { text-align: center; padding: 30px; font-size: 14px; color: #6b7280; }
+  </style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <div class="app-header">
+    <div style="display:flex; align-items:center;">
+      <span class="back-btn" id="headerBack" style="display:none;" onclick="goBack()">←</span>
+      <span class="header-title" id="headerTitle">सब्जी फसल और बीज जानकारी</span>
+    </div>
+    <span>🔔</span>
+  </div>
+
+  <!-- SCREEN 1: मुख्य स्क्रीन (Home) -->
+  <div id="screen-home" class="screen active">
+    <div class="weather-card">
+      <div>
+        <h4>आज का मौसम</h4>
+        <p style="font-size:12px; color:#374151;">साफ़ आसमान | स्प्रे व निराई-गुड़ाई हेतु उत्तम समय</p>
+      </div>
+      <div style="font-size:28px;">☀️</div>
+    </div>
+
+    <input type="text" class="search-box" id="homeSearch" placeholder="🔍 बीज या फसल खोजें..." onkeyup="searchVarieties(this.value)">
+
+    <div class="grid-menu">
+      <div class="menu-box" onclick="showCropsList()">
+        <div class="icon">🥬</div>
+        <h3>सब्जी फसलें</h3>
+      </div>
+      <div class="menu-box" onclick="goToScreen('screen-diseases', 'फसल सुरक्षा')">
+        <div class="icon">🛡️</div>
+        <h3>फसल सुरक्षा</h3>
+      </div>
+      <div class="menu-box" onclick="showAllSeeds()">
+        <div class="icon">🌱</div>
+        <h3>सभी बीज किस्में</h3>
+      </div>
+      <div class="menu-box" onclick="window.open('https://wa.me/916378475002', '_blank')">
+        <div class="icon">📞</div>
+        <h3>सलाहकार</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: फसल सूची -->
+  <div id="screen-crop-list" class="screen">
+    <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;">फसल चुनें:</h3>
+    <div id="cropListContainer"></div>
+  </div>
+
+  <!-- SCREEN 3: बीज किस्म सूची / विवरण (Google Sheet से लोड होगा) -->
+  <div id="screen-variety-list" class="screen">
+    <div id="sheetDataContainer" class="loading">Google Sheet से डेटा लोड हो रहा है...</div>
+  </div>
+
+  <!-- SCREEN 4: रोग सूची -->
+  <div id="screen-diseases" class="screen">
+    <div class="list-item" onclick="goToScreen('screen-cure', 'पत्ती लपेटक रोग')">
+      <div class="list-left"><span class="list-icon">🍃</span><span class="list-title">पत्ती लपेटक (मरोड़िया) रोग</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="goToScreen('screen-cure', 'अगेती झुलसा')">
+      <div class="list-left"><span class="list-icon">🍂</span><span class="list-title">अगेती व पछेती झुलसा</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="goToScreen('screen-cure', 'फल छेदक कीट')">
+      <div class="list-left"><span class="list-icon">🐛</span><span class="list-title">फल छेदक कीट</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: रोग निवारण विवरण -->
+  <div id="screen-cure" class="screen">
+    <div class="variety-card">
+      <h3 style="color:#b91c1c; font-size:17px; margin-bottom:8px;">रोग निवारण व सटीक स्प्रे</h3>
+      <div class="var-detail"><b>लक्षण:</b> पत्तियां मुड़ना और पौधे का विकास रुकना।</div>
+      <div class="var-detail" style="margin-top:6px;"><b>उपाय / दवा:</b> पेगासस (Pegasus) 25 ग्राम या कॉनफिडोर 8 मिली प्रति 15 लीटर पंप।</div>
+      <div class="btn-group">
+        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20रोग%20नियंत्रण%20की%20सलाह%20चाहिए।" target="_blank" class="btn-action btn-wa">एक्सपर्ट से पूछें 💬</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-tab active" onclick="goToScreen('screen-home', 'सब्जी फसल और बीज जानकारी')">
+      <span>🏠</span><span>होम</span>
+    </div>
+    <div class="nav-tab" onclick="showCropsList()">
+      <span>🥬</span><span>फसलें</span>
+    </div>
+    <div class="nav-tab" onclick="goToScreen('screen-diseases', 'फसल सुरक्षा')">
+      <span>🛡️</span><span>सुरक्षा</span>
+    </div>
+    <div class="nav-tab" onclick="window.open('https://wa.me/916378475002', '_blank')">
+      <span>💬</span><span>हेल्पलाइन</span>
+    </div>
+  </div>
+
+  <script>
+    // आपकी Google Sheet का सीधा लिंक
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/export?format=csv';
+
+    let sheetRecords = [];
+    const historyStack = ['screen-home'];
+
+    async function loadSheetData() {
+      try {
+        const response = await fetch(SHEET_URL);
+        const data = await response.text();
+        const rows = data.split('\n').filter(r => r.trim() !== '');
+        
+        sheetRecords = [];
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i].split(',').map(c => c.replace(/"/g, '').trim());
+          if (cols.length >= 2) {
+            sheetRecords.push({
+              crop: cols[1] || '',
+              variety: cols[2] || '',
+              segment: cols[3] || '',
+              features: cols[4] || '',
+              weight: cols[5] || '',
+              maturity: cols[6] || '',
+              resistance: cols[7] || ''
+            });
+          }
+        }
+      } catch (err) {
+        console.log("Sheet fetch fallback", err);
+      }
+    }
+
+    function showCropsList() {
+      const crops = [...new Set(sheetRecords.map(r => r.crop).filter(c => c))];
+      const container = document.getElementById('cropListContainer');
+      container.innerHTML = '';
+
+      const cropIcons = { 'टमाटर': '🍅', 'मिर्च': '🌶️', 'फूलगोभी': '🥦', 'पत्तागोभी': '🥬', 'बैंगन': '🍆', 'प्याज': '🧅', 'भिंडी': '🥒' };
+
+      crops.forEach(crop => {
+        const icon = cropIcons[crop] || '🌱';
+        container.innerHTML += `
+          <div class="list-item" onclick="filterByCrop('${crop}')">
+            <div class="list-left"><span class="list-icon">${icon}</span><span class="list-title">${crop}</span></div>
+            <span class="arrow">&gt;</span>
+          </div>
+        `;
+      });
+      goToScreen('screen-crop-list', 'फसल सूची');
+    }
+
+    function filterByCrop(cropName) {
+      const filtered = sheetRecords.filter(r => r.crop === cropName);
+      renderVarieties(filtered, cropName + ' की उन्नत किस्में');
+    }
+
+    function showAllSeeds() {
+      renderVarieties(sheetRecords, 'सभी बीज किस्में');
+    }
+
+    function renderVarieties(list, screenTitle) {
+      const container = document.getElementById('sheetDataContainer');
+      if (list.length === 0) {
+        container.innerHTML = '<p style="text-align:center;">कोई जानकारी नहीं मिली।</p>';
+      } else {
+        container.innerHTML = '';
+        list.forEach(v => {
+          container.innerHTML += `
+            <div class="variety-card">
+              <span class="badge-season">${v.segment || 'उन्नत किस्म'}</span>
+              <div class="var-title">${v.variety} (${v.crop})</div>
+              <div class="var-detail"><b>विशेषता:</b> ${v.features}</div>
+              <div class="var-detail"><b>फल का वजन/साइज:</b> ${v.weight}</div>
+              <div class="var-detail"><b>पकने का समय:</b> ${v.maturity}</div>
+              <div class="var-detail"><b>रोग से बचाव:</b> ${v.resistance}</div>
+              <div class="btn-group">
+                <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20${encodeURIComponent(v.variety)}%20(${encodeURIComponent(v.crop)})%20का%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa">🛒 बीज ऑर्डर करें</a>
+                <button class="btn-action btn-disease" onclick="goToScreen('screen-diseases', '${v.crop} के रोग')">रोग देखें</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+      goToScreen('screen-variety-list', screenTitle);
+    }
+
+    function searchVarieties(text) {
+      if (!text.trim()) return;
+      const q = text.toLowerCase();
+      const filtered = sheetRecords.filter(r => 
+        r.variety.toLowerCase().includes(q) || 
+        r.crop.toLowerCase().includes(q) || 
+        r.features.toLowerCase().includes(q)
+      );
+      renderVarieties(filtered, 'खोज परिणाम');
+    }
+
+    function goToScreen(screenId, title) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      document.getElementById('headerTitle').innerText = title;
+      
+      if (screenId !== 'screen-home') {
+        document.getElementById('headerBack').style.display = 'inline-block';
+        historyStack.push(screenId);
+      } else {
+        document.getElementById('headerBack').style.display = 'none';
+      }
+      window.scrollTo(0, 0);
+    }
+
+    function goBack() {
+      historyStack.pop();
+      const prevScreen = historyStack[historyStack.length - 1] || 'screen-home';
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(prevScreen).classList.add('active');
+      
+      if (prevScreen === 'screen-home') {
+        document.getElementById('headerBack').style.display = 'none';
+        document.getElementById('headerTitle').innerText = 'सब्जी फसल और बीज जानकारी';
+      }
+    }
+
+    loadSheetData();
+  </script>
+</body>
+</html>
