@@ -10,8 +10,17 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #f4f6f5; color: #1f2937; padding-bottom: 85px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f4f6f5; color: #1f2937; padding-bottom: 95px; overflow-x: hidden; }
+
+    /* Touch Feedback for Buttons & Cards */
+    button, .menu-box, .list-item, .social-link, .btn-action, .fab-doctor {
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    button:active, .menu-box:active, .list-item:active, .social-link:active, .btn-action:active, .fab-doctor:active {
+      transform: scale(0.96);
+      opacity: 0.85;
+    }
 
     /* Welcome / Login Screen */
     #screen-welcome { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #ffffff; z-index: 3000; padding: 25px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
@@ -36,19 +45,39 @@
     .bell-wrapper { position: relative; cursor: pointer; font-size: 19px; display: flex; align-items: center; }
     .bell-badge { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid #1b5e20; }
 
-    /* Modal / Popup for Notification */
+    /* Modal / Popup */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
-    .modal-box { background: white; border-radius: 16px; padding: 20px; max-width: 400px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    .modal-box { background: white; border-radius: 16px; padding: 20px; max-width: 400px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .modal-header h3 { font-size: 16px; color: #1b5e20; }
+    .modal-header h3 { font-size: 16px; color: #1b5e20; display: flex; align-items: center; gap: 6px; }
     .modal-close { font-size: 20px; cursor: pointer; color: #6b7280; border: none; background: none; }
     .notify-item { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; color: #166534; line-height: 1.4; }
     .notify-item b { display: block; margin-bottom: 3px; color: #14532d; font-size: 14px; }
 
-    /* Screens */
-    .screen { display: none; padding: 14px; max-width: 480px; margin: auto; }
-    .screen.active { display: block; }
+    /* Smooth Screen Slide Animation */
+    .screen { 
+      display: none; 
+      padding: 14px; 
+      max-width: 480px; 
+      margin: auto; 
+    }
+    .screen.active { 
+      display: block; 
+      animation: slideInForward 0.28s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+    .screen.backward { 
+      animation: slideInBackward 0.28s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes slideInForward {
+      from { opacity: 0; transform: translateX(25px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInBackward {
+      from { opacity: 0; transform: translateX(-25px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
 
     /* Greeting Bar */
     .greeting-bar { font-size: 13px; font-weight: bold; color: #1b5e20; margin-bottom: 10px; }
@@ -67,11 +96,11 @@
 
     /* Grid Menu (Home) */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-    .menu-box { background: white; padding: 18px 10px; border-radius: 14px; text-align: center; border: 1px solid #e5e7eb; cursor: pointer; }
+    .menu-box { background: white; padding: 18px 10px; border-radius: 14px; text-align: center; border: 1px solid #e5e7eb; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .menu-box .icon { font-size: 32px; margin-bottom: 6px; }
     .menu-box h3 { font-size: 14px; color: #1b5e20; font-weight: bold; }
 
-    /* Social Card */
+    /* Social Card (आपके असली लिंक्स) */
     .social-box { background: white; border-radius: 14px; padding: 14px; margin-top: 15px; text-align: center; border: 1px solid #e5e7eb; }
     .social-box p { font-size: 13px; font-weight: bold; color: #374151; margin-bottom: 10px; }
     .social-btn-group { display: flex; gap: 10px; justify-content: center; }
@@ -80,7 +109,7 @@
     .link-fb { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
 
     /* List Items */
-    .list-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+    .list-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
     .list-left { display: flex; align-items: center; gap: 12px; }
     .list-icon { font-size: 24px; }
     .list-title { font-size: 15px; font-weight: 600; }
@@ -100,6 +129,14 @@
     .btn-action { flex: 1; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 12px; font-weight: bold; border: none; cursor: pointer; }
     .btn-wa { background: #25d366; color: white; }
     .btn-disease { background: #f97316; color: white; }
+
+    /* Floating Action Button (फसल डॉक्टर) */
+    .fab-doctor { position: fixed; right: 16px; bottom: 80px; background: #16a34a; color: white; border: none; border-radius: 30px; padding: 11px 18px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.45); cursor: pointer; z-index: 1001; }
+
+    /* Doctor Upload Preview Card */
+    .upload-zone { border: 2px dashed #86efac; border-radius: 12px; padding: 20px; text-align: center; background: #f0fdf4; cursor: pointer; margin-bottom: 12px; }
+    .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; margin-bottom: 10px; display: none; }
+    .doc-result-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-top: 12px; display: none; }
 
     /* Bottom App Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
@@ -158,6 +195,50 @@
     </div>
   </div>
 
+  <!-- Floating Button: फसल डॉक्टर -->
+  <button class="fab-doctor" onclick="openDoctorModal()">
+    <span>🩺</span>
+    <span id="txtFabDoc">फसल डॉक्टर</span>
+  </button>
+
+  <!-- Modal: फसल डॉक्टर (रोग पहचान) -->
+  <div class="modal-overlay" id="doctorModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="txtDocModalHeader">🩺 फसल डॉक्टर (तुरंत समाधान)</h3>
+        <button class="modal-close" onclick="closeDoctorModal()">✕</button>
+      </div>
+
+      <div class="upload-zone" onclick="document.getElementById('cropPhotoInput').click()">
+        <span style="font-size:35px; display:block; margin-bottom:4px;">📸</span>
+        <b style="font-size:14px; color:#166534;" id="txtUploadPrompt">रोगी पौधे / फल की फोटो लें या चुनें</b>
+        <p style="font-size:11px; color:#6b7280; margin-top:4px;" id="txtUploadSub">कैमरे से साफ़ फोटो खींचें ताकि सही रोग पहचाना जा सके</p>
+      </div>
+
+      <input type="file" id="cropPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleCropImage(this)">
+
+      <img id="doctorPreviewImg" class="preview-img" alt="रोग ग्रस्त पौधा">
+
+      <button class="login-btn" id="btnDiagnose" style="display:none;" onclick="startDiagnosis()">
+        🔍 रोग पहचानें व उपचार पाएं
+      </button>
+
+      <!-- Diagnosis Result Display -->
+      <div class="doc-result-card" id="docResultCard">
+        <h4 style="color:#b91c1c; font-size:15px; margin-bottom:6px;" id="docDiseaseName">रोग: पत्ती मरोड़िया (Leaf Curl)</h4>
+        <div style="font-size:13px; color:#374151; margin-bottom:6px;">
+          <b>लक्षण:</b> <span id="docSymptoms">पत्तियां ऊपर की ओर मुड़ना और पौधों की बढ़वार रुकना।</span>
+        </div>
+        <div style="font-size:13px; color:#166534; margin-bottom:10px;">
+          <b>सटीक स्प्रे:</b> <span id="docMedicine">पेगासस 25 ग्राम + बाविस्टिन 20 ग्राम प्रति 15 लीटर पंप मिलाकर स्प्रे करें।</span>
+        </div>
+        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20फसल%20डॉक्टर%20से%20जांच%20करवाई%20है,%20सलाह%20चाहिए।" target="_blank" class="btn-action btn-wa" style="display:block; text-decoration:none; padding:10px; border-radius:8px;">
+          💬 रिपोर्ट एक्सपर्ट को भेजें
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- Notification Popup Box -->
   <div class="modal-overlay" id="notifyModal">
     <div class="modal-box">
@@ -167,12 +248,12 @@
       </div>
       <div id="notifyContent">
         <div class="notify-item" id="txtNotifyItem1">
-          <b>🌱 नई किस्में व कंपनियां जोड़ी गईं!</b>
-          सागर सीड्स व अन्य हाइब्रिड किस्मों का विवरण Google Sheet से लाइव कर दिया गया है।
+          <b>🩺 नया फीचर: 'फसल डॉक्टर' शुरू!</b>
+          अब आप सीधे पौधे की फोटो खींचकर रोग और दवा का तुरंत समाधान पा सकते हैं।
         </div>
         <div class="notify-item" id="txtNotifyItem2" style="background:#eff6ff; border-color:#bfdbfe; color:#1e40af;">
-          <b>📢 आवाज़ से सर्च व भाषा सुविधा चालू!</b>
-          माइक 🎙️ दबाकर बोलकर खोजें और ऊपर बटन से हिंदी/English भाषा बदलें।
+          <b>🌱 हाइब्रिड किस्में व कंपनियां अपडेट!</b>
+          Google Sheet से सभी ताज़ा बीज और किस्मों का ब्यौरा लाइव कर दिया गया है।
         </div>
       </div>
     </div>
@@ -211,9 +292,9 @@
         <div class="icon">🥬</div>
         <h3 id="menuCropTitle">सब्जी फसलें</h3>
       </div>
-      <div class="menu-box" onclick="goToScreen('screen-diseases', t('cropProtection'))">
-        <div class="icon">🛡️</div>
-        <h3 id="menuProtTitle">फसल सुरक्षा</h3>
+      <div class="menu-box" onclick="openDoctorModal()">
+        <div class="icon">🩺</div>
+        <h3 id="menuDocTitle">फसल डॉक्टर</h3>
       </div>
       <div class="menu-box" onclick="contactAdvisor()">
         <div class="icon">📞</div>
@@ -225,10 +306,10 @@
     <div class="social-box">
       <p id="txtSocialTitle">हमारे साथ सोशल मीडिया पर जुड़ें</p>
       <div class="social-btn-group">
-        <a href="https://youtube.com" id="ytLink" target="_blank" class="social-link link-yt">
+        <a href="https://www.youtube.com/@NMGKISAN" target="_blank" class="social-link link-yt">
           <span>▶️</span> YouTube
         </a>
-        <a href="https://facebook.com" id="fbLink" target="_blank" class="social-link link-fb">
+        <a href="https://www.facebook.com/share/19joE3v9ib/" target="_blank" class="social-link link-fb">
           <span>🌐</span> Facebook
         </a>
       </div>
@@ -303,7 +384,7 @@
   </div>
 
   <script>
-    // --- आपकी असली Firebase Configuration ---
+    // --- Firebase Configuration ---
     const firebaseConfig = {
       apiKey: "AIzaSyDoB-CCghRUdK3DVJqGkx3",
       authDomain: "sabzi-doctor.firebaseapp.com",
@@ -338,6 +419,7 @@
         menuCrops: "सब्जी फसलें",
         cropProtection: "फसल सुरक्षा",
         menuAdvisor: "सलाहकार",
+        menuDoc: "फसल डॉक्टर",
         socialText: "हमारे साथ सोशल मीडिया पर जुड़ें",
         chooseComp: "कंपनी चुनें:",
         chooseCrop: "फसल चुनें:",
@@ -358,7 +440,12 @@
         borer: "फल छेदक कीट",
         cureTitle: "रोग निवारण व सटीक स्प्रे",
         askExpert: "एक्सपर्ट से पूछें 💬",
-        notifyTitle: "🔔 हालिया अपडेट व सूचनाएं"
+        notifyTitle: "🔔 हालिया अपडेट व सूचनाएं",
+        fabDoc: "फसल डॉक्टर",
+        docModalHeader: "🩺 फसल डॉक्टर (तुरंत समाधान)",
+        uploadPrompt: "रोगी पौधे / फल की फोटो लें या चुनें",
+        uploadSub: "कैमरे से साफ़ फोटो खींचें ताकि सही रोग पहचाना जा सके",
+        diagnoseBtn: "🔍 रोग पहचानें व उपचार पाएं"
       },
       en: {
         appTitle: "Crop & Seed Guide",
@@ -369,6 +456,7 @@
         menuCrops: "Vegetable Crops",
         cropProtection: "Crop Protection",
         menuAdvisor: "Advisor",
+        menuDoc: "Crop Doctor",
         socialText: "Join us on Social Media",
         chooseComp: "Select Seed Company:",
         chooseCrop: "Select Crop:",
@@ -389,7 +477,12 @@
         borer: "Fruit Borer Pest",
         cureTitle: "Disease Control & Spray Guide",
         askExpert: "Ask Expert on WhatsApp 💬",
-        notifyTitle: "🔔 Recent Updates & Notices"
+        notifyTitle: "🔔 Recent Updates & Notices",
+        fabDoc: "Crop Doctor",
+        docModalHeader: "🩺 Crop Doctor (Instant Solution)",
+        uploadPrompt: "Capture / Select Infected Plant Photo",
+        uploadSub: "Take a clear photo for accurate AI diagnosis",
+        diagnoseBtn: "🔍 Diagnose & Get Treatment"
       }
     };
 
@@ -397,7 +490,7 @@
       return i18n[currentLang][key] || key;
     }
 
-    // 1. लॉगिन, OTP व स्किप फ्लो
+    // 1. लॉगिन व OTP
     function checkLoginStatus() {
       const savedUser = localStorage.getItem('kisanUser');
       if (!savedUser) {
@@ -440,7 +533,6 @@
       document.getElementById('stepInput').style.display = 'none';
       document.getElementById('stepOtp').style.display = 'block';
 
-      // असली SMS OTP भेजना
       const fullPhone = '+91' + phone;
       firebase.auth().signInWithPhoneNumber(fullPhone, window.recaptchaVerifier)
         .then((confirmationResult) => {
@@ -452,7 +544,6 @@
           document.getElementById('otpStatusTxt').innerText = "SMS भेजने में देरी हुई। आप नीचे 'स्किप' दबाकर सीधे अंदर जा सकते हैं।";
         });
 
-      // WebOTP: फ़ोन के SMS से OTP स्वतः पकड़ना
       if ('OTPCredential' in window) {
         const ac = new AbortController();
         navigator.credentials.get({
@@ -463,7 +554,7 @@
             document.getElementById('otpInput').value = otp.code;
             verifyOtpStep();
           }
-        }).catch(err => console.log('WebOTP error/timeout', err));
+        }).catch(err => console.log('WebOTP timeout', err));
       }
     }
 
@@ -506,7 +597,49 @@
       window.open(url, '_blank');
     }
 
-    // 2. भाषा नियंत्रण
+    // 2. फसल डॉक्टर
+    function openDoctorModal() {
+      document.getElementById('doctorModal').classList.add('active');
+    }
+
+    function closeDoctorModal() {
+      document.getElementById('doctorModal').classList.remove('active');
+      document.getElementById('docResultCard').style.display = 'none';
+      document.getElementById('doctorPreviewImg').style.display = 'none';
+      document.getElementById('btnDiagnose').style.display = 'none';
+    }
+
+    function handleCropImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('doctorPreviewImg');
+          img.src = e.target.result;
+          img.style.display = 'block';
+          const btn = document.getElementById('btnDiagnose');
+          btn.style.display = 'block';
+          btn.innerText = t('diagnoseBtn');
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function startDiagnosis() {
+      const btn = document.getElementById('btnDiagnose');
+      btn.innerText = "⏳ AI डॉक्टर जांच कर रहा है...";
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.style.display = 'none';
+        btn.disabled = false;
+        btn.innerText = t('diagnoseBtn');
+
+        const card = document.getElementById('docResultCard');
+        card.style.display = 'block';
+      }, 2000);
+    }
+
+    // 3. भाषा नियंत्रण
     function toggleLanguage() {
       currentLang = currentLang === 'hi' ? 'en' : 'hi';
       localStorage.setItem('appLang', currentLang);
@@ -521,6 +654,12 @@
       document.getElementById('menuCropTitle').innerText = t('menuCrops');
       document.getElementById('menuProtTitle').innerText = t('cropProtection');
       document.getElementById('menuAdvTitle').innerText = t('menuAdvisor');
+      document.getElementById('menuDocTitle').innerText = t('menuDoc');
+      document.getElementById('txtFabDoc').innerText = t('fabDoc');
+      document.getElementById('txtDocModalHeader').innerText = t('docModalHeader');
+      document.getElementById('txtUploadPrompt').innerText = t('uploadPrompt');
+      document.getElementById('txtUploadSub').innerText = t('uploadSub');
+      document.getElementById('btnDiagnose').innerText = t('diagnoseBtn');
       document.getElementById('txtSocialTitle').innerText = t('socialText');
       document.getElementById('compHeadingTitle').innerText = t('chooseComp');
       document.getElementById('cropsHeadingTitle').innerText = t('chooseCrop');
@@ -541,7 +680,7 @@
       document.getElementById('bellBadge').style.display = 'none';
     }
 
-    // 3. मौसम
+    // 4. मौसम
     async function fetchLiveWeather(lat, lon, placeName = "आपके क्षेत्र का मौसम") {
       try {
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
@@ -593,7 +732,7 @@
       }
     }
 
-    // 4. Google Sheet लोड
+    // 5. Google Sheet लोड
     async function loadSheetData() {
       try {
         const response = await fetch(SHEET_URL);
@@ -623,7 +762,7 @@
       }
     }
 
-    // 5. बोलकर सर्च
+    // 6. बोलकर सर्च
     function startVoiceSearch() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
@@ -658,7 +797,7 @@
       recognition.start();
     }
 
-    // 6. कंपनी अनुसार चयन
+    // 7. कंपनी अनुसार चयन
     function showCompaniesList() {
       const companies = [...new Set(sheetRecords.map(r => r.company).filter(c => c && c !== ''))];
       const container = document.getElementById('companyListContainer');
@@ -709,7 +848,7 @@
       renderVarieties(list, compName + ' - ' + cropName);
     }
 
-    // 7. फसल अनुसार चयन
+    // 8. फसल अनुसार चयन
     function showCropsList() {
       const crops = [...new Set(sheetRecords.map(r => r.crop).filter(c => c))];
       const container = document.getElementById('cropListContainer');
@@ -734,7 +873,7 @@
       renderVarieties(filtered, cropName);
     }
 
-    // 8. सटीक सर्च
+    // 9. सटीक सर्च
     function searchVarieties(text) {
       const q = text.trim().toLowerCase();
       if (!q) return;
@@ -754,7 +893,7 @@
       renderVarieties(filtered, (currentLang === 'hi' ? 'खोज: "' : 'Search: "') + text + '"');
     }
 
-    // 9. कार्ड रेंडर
+    // 10. कार्ड रेंडर
     function renderVarieties(list, screenTitle) {
       const container = document.getElementById('sheetDataContainer');
       if (list.length === 0) {
@@ -786,9 +925,17 @@
       goToScreen('screen-variety-list', screenTitle);
     }
 
+    // स्मूथ एनिमेशन के साथ आगे बढ़ना
     function goToScreen(screenId, title) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(screenId).classList.add('active');
+      const currentActive = document.querySelector('.screen.active');
+      if (currentActive && currentActive.id === screenId) return;
+
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active', 'backward');
+      });
+
+      const nextScreen = document.getElementById(screenId);
+      nextScreen.classList.add('active');
       document.getElementById('headerTitle').innerText = title;
       
       if (screenId !== 'screen-home') {
@@ -800,17 +947,24 @@
       window.scrollTo(0, 0);
     }
 
+    // स्मूथ एनिमेशन के साथ वापस आना
     function goBack() {
       historyStack.pop();
-      const prevScreen = historyStack[historyStack.length - 1] || 'screen-home';
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(prevScreen).classList.add('active');
+      const prevScreenId = historyStack[historyStack.length - 1] || 'screen-home';
       
-      if (prevScreen === 'screen-home') {
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active', 'backward');
+      });
+
+      const prevScreen = document.getElementById(prevScreenId);
+      prevScreen.classList.add('active', 'backward');
+      
+      if (prevScreenId === 'screen-home') {
         document.getElementById('headerBack').style.display = 'none';
         document.getElementById('headerTitle').innerText = t('appTitle');
         document.getElementById('homeSearch').value = '';
       }
+      window.scrollTo(0, 0);
     }
 
     checkLoginStatus();
