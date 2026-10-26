@@ -9,7 +9,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f4f6f5; color: #1f2937; padding-bottom: 95px; overflow-x: hidden; }
 
-    /* Touch Feedback */
+    /* बटन टच इफ़ेक्ट */
     button, .menu-box, .list-item, .social-link, .btn-action, .fab-solution {
       transition: transform 0.15s ease, opacity 0.15s ease;
       cursor: pointer;
@@ -19,7 +19,7 @@
       opacity: 0.85;
     }
 
-    /* Top App Bar */
+    /* टॉप बार */
     .app-header { background: #1b5e20; color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .back-btn { font-size: 22px; cursor: pointer; margin-right: 10px; display: none; }
     .header-title { font-size: 15px; font-weight: bold; }
@@ -27,7 +27,7 @@
     .lang-toggle-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5); color: white; padding: 4px 8px; border-radius: 14px; font-size: 11px; font-weight: bold; cursor: pointer; }
     .bell-icon { font-size: 19px; cursor: pointer; }
 
-    /* Screen Transitions (Smooth Animation) */
+    /* पेज बदलने का स्मूथ स्लाइड एनिमेशन */
     .screen { 
       display: none; 
       padding: 14px; 
@@ -36,25 +36,25 @@
     }
     .screen.active { 
       display: block; 
-      animation: slideInRight 0.25s ease-out forwards;
+      animation: pageSlide 0.28s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
 
-    @keyframes slideInRight {
+    @keyframes pageSlide {
       from { opacity: 0; transform: translateX(25px); }
       to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Weather Card */
+    /* मौसम कार्ड */
     .weather-card { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 14px; padding: 14px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
     .weather-card h4 { color: #1b5e20; font-size: 15px; }
     .weather-temp { font-size: 26px; font-weight: bold; color: #1b5e20; }
 
-    /* Search Box */
+    /* सर्च बार */
     .search-wrapper { position: relative; margin-bottom: 15px; }
     .search-box { width: 100%; padding: 13px 45px 13px 14px; border-radius: 12px; border: 1px solid #d1d5db; outline: none; font-size: 15px; background: white; }
     .voice-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; cursor: pointer; }
 
-    /* 5 Colorful Grid Buttons */
+    /* 5 रंगीन मुख्य बटन */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
     .menu-box { 
       padding: 18px 10px; 
@@ -92,17 +92,17 @@
     .card-other .icon { font-size: 24px; margin-bottom: 0; }
     .card-other h3 { color: #334155; font-size: 15px; }
 
-    /* Social Card */
+    /* सोशल मीडिया कार्ड */
     .social-box { background: white; border-radius: 14px; padding: 14px; margin-top: 15px; text-align: center; border: 1px solid #e5e7eb; }
     .social-btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
     .social-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: bold; }
     .link-yt { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
     .link-fb { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
 
-    /* Floating Button */
+    /* तैरता हुआ बटन */
     .fab-solution { position: fixed; right: 16px; bottom: 80px; background: #16a34a; color: white; border: none; border-radius: 30px; padding: 12px 18px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.45); z-index: 1001; }
 
-    /* Modals */
+    /* मोडल (पॉपअप) */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
     .modal-box { background: white; border-radius: 16px; padding: 20px; max-width: 400px; width: 100%; max-height: 85vh; overflow-y: auto; }
@@ -118,7 +118,7 @@
     .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; margin-bottom: 10px; display: none; }
     .doc-result-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-top: 12px; display: none; }
 
-    /* Lists & Cards */
+    /* सूचियां व कार्ड */
     .list-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
     .list-left { display: flex; align-items: center; gap: 12px; }
     .list-icon { font-size: 24px; }
@@ -133,7 +133,7 @@
     .btn-action { display: block; width: 100%; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 13px; font-weight: bold; border: none; cursor: pointer; }
     .btn-wa { background: #25d366; color: white; }
 
-    /* Bottom Navigation */
+    /* नीचे का नेविगेशन बार */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
     .nav-tab { text-align: center; font-size: 10px; color: #6b7280; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
     .nav-tab.active { color: #1b5e20; font-weight: bold; }
@@ -142,7 +142,7 @@
 </head>
 <body>
 
-  <!-- App Header -->
+  <!-- टॉप हेडर -->
   <div class="app-header">
     <div style="display:flex; align-items:center;">
       <span class="back-btn" id="headerBack" onclick="goBack()">←</span>
@@ -154,13 +154,13 @@
     </div>
   </div>
 
-  <!-- Floating Action Button -->
+  <!-- तैरता हुआ बटन: तुरंत समाधान -->
   <button class="fab-solution" onclick="openSolutionModal()">
     <span>⚡</span>
     <span>तुरंत समाधान</span>
   </button>
 
-  <!-- Modal: तुरंत समाधान -->
+  <!-- पॉपअप: तुरंत समाधान (कैमरा व गैलरी) -->
   <div class="modal-overlay" id="solutionModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -206,10 +206,10 @@
   <!-- SCREEN 1: मुख्य स्क्रीन (Home) -->
   <div id="screen-home" class="screen active">
     <div style="font-size:13px; font-weight:bold; color:#1b5e20; margin-bottom:10px;">
-      राम-राम, किसान जी! आपका स्वागत है।
+      राम-राम, Shailender kumar जी! आपका स्वागत है।
     </div>
 
-    <!-- Weather Card -->
+    <!-- मौसम कार्ड -->
     <div class="weather-card">
       <div>
         <h4>📍 लाइव लोकेशन मौसम</h4>
@@ -222,11 +222,237 @@
       </div>
     </div>
 
-    <!-- Search Box -->
+    <!-- सर्च बार -->
     <div class="search-wrapper">
       <input type="text" class="search-box" placeholder="🔍 बीज या फसल खोजें..." oninput="searchData(this.value)">
-      <button class="voice-btn" onclick="alert('माइक से बोलें...')">🎙️</button>
+      <button class="voice-btn" onclick="alert('माइक से बोलकर खोजें...')">🎙️</button>
     </div>
 
-    <!-- 5 COLORFUL GRID BUTTONS -->
-    <div class="grid
+    <!-- 5 रंगीन मुख्य बटन -->
+    <div class="grid-menu">
+      <div class="menu-box card-crops" onclick="openScreen('screen-crops', 'सब्जी फसलें')">
+        <div class="icon">🥬</div>
+        <h3>सब्जी फसलें</h3>
+      </div>
+      <div class="menu-box card-protection" onclick="openScreen('screen-protection', 'फसल सुरक्षा')">
+        <div class="icon">🛡️</div>
+        <h3>फसल सुरक्षा</h3>
+      </div>
+      <div class="menu-box card-seeds" onclick="openScreen('screen-seeds', 'सभी बीज किस्में')">
+        <div class="icon">🌱</div>
+        <h3>सभी बीज किस्में</h3>
+      </div>
+      <div class="menu-box card-advisor" onclick="contactAdvisor()">
+        <div class="icon">📞</div>
+        <h3>सलाहकार</h3>
+      </div>
+      <div class="menu-box card-other" onclick="openScreen('screen-other', 'Other (अन्य सेवाएं)')">
+        <div class="icon">⚙️</div>
+        <h3>Other (अन्य सेवाएं)</h3>
+      </div>
+    </div>
+
+    <!-- सोशल मीडिया कार्ड -->
+    <div class="social-box">
+      <p style="font-size:13px; font-weight:bold; color:#374151;">हमारे साथ सोशल मीडिया पर जुड़ें</p>
+      <div class="social-btn-group">
+        <a href="https://www.youtube.com/@NMGKISAN" target="_blank" class="social-link link-yt">
+          <span>▶️</span> YouTube
+        </a>
+        <a href="https://www.facebook.com/share/19joE3v9ib/" target="_blank" class="social-link link-fb">
+          <span>🌐</span> Facebook
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: सब्जी फसलें -->
+  <div id="screen-crops" class="screen">
+    <div class="list-item" onclick="openScreen('screen-seeds', 'खीरा की किस्में')">
+      <div class="list-left"><span class="list-icon">🥒</span><span class="list-title">खीरा (Cucumber)</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="openScreen('screen-seeds', 'टमाटर की किस्में')">
+      <div class="list-left"><span class="list-icon">🍅</span><span class="list-title">टमाटर (Tomato)</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="openScreen('screen-seeds', 'मिर्च की किस्में')">
+      <div class="list-left"><span class="list-icon">🌶️</span><span class="list-title">मिर्च (Chilli)</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="openScreen('screen-seeds', 'फूलगोभी की किस्में')">
+      <div class="list-left"><span class="list-icon">🥦</span><span class="list-title">फूलगोभी (Cauliflower)</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: फसल सुरक्षा -->
+  <div id="screen-protection" class="screen">
+    <div class="list-item" onclick="openCure('पत्ती मरोड़िया रोग', 'पेगासस 25 ग्राम या कॉनफिडोर 8 मिली प्रति 15 लीटर पंप')">
+      <div class="list-left"><span class="list-icon">🍃</span><span class="list-title">पत्ती लपेटक (मरोड़िया) रोग</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="openCure('झुलसा रोग (Blight)', 'रिडोमिल गोल्ड 40 ग्राम प्रति 15 लीटर पंप स्प्रे करें')">
+      <div class="list-left"><span class="list-icon">🍂</span><span class="list-title">अगेती व पछेती झुलसा</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="openCure('फल छेदक कीट', 'कोराजन 6 मिली या फेम 5 मिली प्रति 15 लीटर पंप')">
+      <div class="list-left"><span class="list-icon">🐛</span><span class="list-title">फल छेदक कीट (सुंडी)</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: सभी बीज किस्में -->
+  <div id="screen-seeds" class="screen">
+    <div class="variety-card">
+      <span class="badge-season">सागर सीड्स</span>
+      <div class="var-title">सागर सुपर-70 (खीरा)</div>
+      <div class="var-detail"><b>विशेषता:</b> गहरे हरे फल, अधिक पैदावार और वायरस से सुरक्षित।</div>
+      <div class="var-detail"><b>पकने का समय:</b> 35-40 दिन</div>
+      <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20सागर%20सुपर-70%20खीरा%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">🛒 बीज ऑर्डर करें</a>
+    </div>
+
+    <div class="variety-card">
+      <span class="badge-season">सिंजेंटा</span>
+      <div class="var-title">साहो 3251 (टमाटर)</div>
+      <div class="var-detail"><b>विशेषता:</b> ठोस फल, लंबी दूरी के परिवहन हेतु उत्तम।</div>
+      <div class="var-detail"><b>पकने का समय:</b> 65-70 दिन</div>
+      <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20साहो%203251%20टमाटर%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">🛒 बीज ऑर्डर करें</a>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: Other सेवाएं -->
+  <div id="screen-other" class="screen">
+    <div class="list-item" onclick="openSolutionModal()">
+      <div class="list-left"><span class="list-icon">⚡</span><span class="list-title">तुरंत समाधान (AI रोग जांच)</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="contactAdvisor()">
+      <div class="list-left"><span class="list-icon">💬</span><span class="list-title">WhatsApp हेल्पलाइन</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+    <div class="list-item" onclick="alert('मौसम ताज़ा कर दिया गया है')">
+      <div class="list-left"><span class="list-icon">🔄</span><span class="list-title">मौसम रिफ्रेश करें</span></div>
+      <span class="arrow">&gt;</span>
+    </div>
+  </div>
+
+  <!-- SCREEN 6: रोग निवारण विवरण -->
+  <div id="screen-cure" class="screen">
+    <div class="variety-card">
+      <h3 style="color:#b91c1c; font-size:17px; margin-bottom:8px;" id="cureName">रोग समाधान</h3>
+      <div class="var-detail" style="margin:10px 0;"><b>सटीक स्प्रे व दवा:</b> <span id="cureDose"></span></div>
+      <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20रोग%20सलाह%20चाहिए।" target="_blank" class="btn-action btn-wa">एक्सपर्ट से पूछें 💬</a>
+    </div>
+  </div>
+
+  <!-- नीचे का नेविगेशन बार -->
+  <div class="bottom-nav">
+    <div class="nav-tab active" onclick="openScreen('screen-home', 'सब्जी फसल और बीज जानकारी')">
+      <span>🏠</span><span>होम</span>
+    </div>
+    <div class="nav-tab" onclick="openScreen('screen-crops', 'सब्जी फसलें')">
+      <span>🥬</span><span>फसलें</span>
+    </div>
+    <div class="nav-tab" onclick="openScreen('screen-protection', 'फसल सुरक्षा')">
+      <span>🛡️</span><span>सुरक्षा</span>
+    </div>
+    <div class="nav-tab" onclick="contactAdvisor()">
+      <span>💬</span><span>हेल्पलाइन</span>
+    </div>
+  </div>
+
+  <script>
+    const navHistory = ['screen-home'];
+
+    // स्क्रीन बदलने और स्मूथ एनिमेशन का फ़ंक्शन
+    function openScreen(screenId, title) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active');
+        document.getElementById('headerTitle').innerText = title;
+        
+        if (screenId !== 'screen-home') {
+          document.getElementById('headerBack').style.display = 'inline-block';
+          navHistory.push(screenId);
+        } else {
+          document.getElementById('headerBack').style.display = 'none';
+        }
+        window.scrollTo(0, 0);
+      }
+    }
+
+    // वापस आने का फ़ंक्शन
+    function goBack() {
+      navHistory.pop();
+      const prevScreen = navHistory[navHistory.length - 1] || 'screen-home';
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(prevScreen).classList.add('active');
+
+      if (prevScreen === 'screen-home') {
+        document.getElementById('headerBack').style.display = 'none';
+        document.getElementById('headerTitle').innerText = 'सब्जी फसल और बीज जानकारी';
+      }
+      window.scrollTo(0, 0);
+    }
+
+    function openCure(name, dose) {
+      document.getElementById('cureName').innerText = name;
+      document.getElementById('cureDose').innerText = dose;
+      openScreen('screen-cure', name);
+    }
+
+    function contactAdvisor() {
+      window.open('https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20फसल%20सलाह%20चाहिए।', '_blank');
+    }
+
+    // तुरंत समाधान मोडल
+    function openSolutionModal() {
+      document.getElementById('solutionModal').classList.add('active');
+    }
+    function closeSolutionModal() {
+      document.getElementById('solutionModal').classList.remove('active');
+      document.getElementById('solutionPreviewImg').style.display = 'none';
+      document.getElementById('btnDiagnose').style.display = 'none';
+      document.getElementById('docResultCard').style.display = 'none';
+    }
+
+    function handleImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('solutionPreviewImg');
+          img.src = e.target.result;
+          img.style.display = 'block';
+          document.getElementById('btnDiagnose').style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function runDiagnosis() {
+      const btn = document.getElementById('btnDiagnose');
+      btn.innerText = "⏳ AI जांच कर रहा है...";
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.style.display = 'none';
+        btn.disabled = false;
+        btn.innerText = "🔍 रोग पहचानें व उपचार पाएं";
+        document.getElementById('docResultCard').style.display = 'block';
+      }, 1200);
+    }
+
+    function openNotify() {
+      alert("🔔 सूचना: सभी नए बीज और दवाइयां अपडेट कर दी गई हैं।");
+    }
+
+    function searchData(val) {
+      if (val.trim().length > 1) {
+        openScreen('screen-seeds', 'खोज परिणाम: ' + val);
+      }
+    }
+  </script>
+</body>
+</html>
