@@ -13,12 +13,12 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f4f6f5; color: #1f2937; padding-bottom: 95px; overflow-x: hidden; }
 
-    /* Touch Feedback for Buttons & Cards */
-    button, .menu-box, .list-item, .social-link, .btn-action, .fab-doctor {
+    /* Button Touch Click Feedback */
+    button, .menu-box, .list-item, .social-link, .btn-action, .fab-solution {
       transition: transform 0.15s ease, opacity 0.15s ease;
     }
-    button:active, .menu-box:active, .list-item:active, .social-link:active, .btn-action:active, .fab-doctor:active {
-      transform: scale(0.96);
+    button:active, .menu-box:active, .list-item:active, .social-link:active, .btn-action:active, .fab-solution:active {
+      transform: scale(0.95);
       opacity: 0.85;
     }
 
@@ -41,21 +41,11 @@
     /* Lang Toggle Button */
     .lang-toggle-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5); color: white; padding: 4px 8px; border-radius: 14px; font-size: 11px; font-weight: bold; cursor: pointer; }
 
-    /* Notification Bell with Red Badge */
+    /* Notification Bell */
     .bell-wrapper { position: relative; cursor: pointer; font-size: 19px; display: flex; align-items: center; }
     .bell-badge { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid #1b5e20; }
 
-    /* Modal / Popup */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
-    .modal-overlay.active { display: flex; }
-    .modal-box { background: white; border-radius: 16px; padding: 20px; max-width: 400px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .modal-header h3 { font-size: 16px; color: #1b5e20; display: flex; align-items: center; gap: 6px; }
-    .modal-close { font-size: 20px; cursor: pointer; color: #6b7280; border: none; background: none; }
-    .notify-item { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; color: #166534; line-height: 1.4; }
-    .notify-item b { display: block; margin-bottom: 3px; color: #14532d; font-size: 14px; }
-
-    /* Smooth Screen Slide Animation */
+    /* Page Slide Animations */
     .screen { 
       display: none; 
       padding: 14px; 
@@ -64,18 +54,18 @@
     }
     .screen.active { 
       display: block; 
-      animation: slideInForward 0.28s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation: pageSlideIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
     .screen.backward { 
-      animation: slideInBackward 0.28s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation: pageSlideBack 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
 
-    @keyframes slideInForward {
-      from { opacity: 0; transform: translateX(25px); }
+    @keyframes pageSlideIn {
+      from { opacity: 0; transform: translateX(30px); }
       to { opacity: 1; transform: translateX(0); }
     }
-    @keyframes slideInBackward {
-      from { opacity: 0; transform: translateX(-25px); }
+    @keyframes pageSlideBack {
+      from { opacity: 0; transform: translateX(-30px); }
       to { opacity: 1; transform: translateX(0); }
     }
 
@@ -94,19 +84,39 @@
     .voice-btn.listening { animation: pulse 1s infinite alternate; background: #fee2e2; }
     @keyframes pulse { from { transform: translateY(-50%) scale(1); } to { transform: translateY(-50%) scale(1.2); } }
 
-    /* Grid Menu (Home) */
+    /* Grid Menu: फोटो 2 के अनुसार 4 बटन */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-    .menu-box { background: white; padding: 18px 10px; border-radius: 14px; text-align: center; border: 1px solid #e5e7eb; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .menu-box .icon { font-size: 32px; margin-bottom: 6px; }
+    .menu-box { background: white; padding: 20px 10px; border-radius: 14px; text-align: center; border: 1px solid #e5e7eb; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .menu-box .icon { font-size: 34px; margin-bottom: 8px; }
     .menu-box h3 { font-size: 14px; color: #1b5e20; font-weight: bold; }
 
-    /* Social Card (आपके असली लिंक्स) */
+    /* Social Card */
     .social-box { background: white; border-radius: 14px; padding: 14px; margin-top: 15px; text-align: center; border: 1px solid #e5e7eb; }
     .social-box p { font-size: 13px; font-weight: bold; color: #374151; margin-bottom: 10px; }
     .social-btn-group { display: flex; gap: 10px; justify-content: center; }
     .social-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: bold; }
     .link-yt { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
     .link-fb { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+
+    /* Floating Action Button: तुरंत समाधान */
+    .fab-solution { position: fixed; right: 16px; bottom: 80px; background: #16a34a; color: white; border: none; border-radius: 30px; padding: 12px 18px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.45); cursor: pointer; z-index: 1001; }
+
+    /* Modals */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: white; border-radius: 16px; padding: 20px; max-width: 400px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .modal-header h3 { font-size: 16px; color: #1b5e20; }
+    .modal-close { font-size: 20px; cursor: pointer; color: #6b7280; border: none; background: none; }
+
+    /* Camera & Gallery Buttons */
+    .upload-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .upload-opt-btn { background: #f0fdf4; border: 1.5px dashed #86efac; border-radius: 12px; padding: 16px 8px; text-align: center; cursor: pointer; }
+    .upload-opt-btn span { font-size: 28px; display: block; margin-bottom: 6px; }
+    .upload-opt-btn b { font-size: 13px; color: #166534; display: block; }
+
+    .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; margin-bottom: 10px; display: none; }
+    .doc-result-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-top: 12px; display: none; }
 
     /* List Items */
     .list-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
@@ -130,15 +140,7 @@
     .btn-wa { background: #25d366; color: white; }
     .btn-disease { background: #f97316; color: white; }
 
-    /* Floating Action Button (फसल डॉक्टर) */
-    .fab-doctor { position: fixed; right: 16px; bottom: 80px; background: #16a34a; color: white; border: none; border-radius: 30px; padding: 11px 18px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.45); cursor: pointer; z-index: 1001; }
-
-    /* Doctor Upload Preview Card */
-    .upload-zone { border: 2px dashed #86efac; border-radius: 12px; padding: 20px; text-align: center; background: #f0fdf4; cursor: pointer; margin-bottom: 12px; }
-    .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; margin-bottom: 10px; display: none; }
-    .doc-result-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-top: 12px; display: none; }
-
-    /* Bottom App Nav */
+    /* Bottom Nav Bar: फोटो 2 के अनुसार */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
     .nav-tab { text-align: center; font-size: 10px; color: #6b7280; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
     .nav-tab.active { color: #1b5e20; font-weight: bold; }
@@ -160,7 +162,6 @@
       <input type="text" id="farmerName" class="login-input" placeholder="किसान का नाम">
       <input type="tel" id="farmerPhone" class="login-input" placeholder="मोबाइल नंबर (10 अंक)" maxlength="10">
       
-      <!-- Invisible ReCaptcha -->
       <div id="recaptcha-container"></div>
 
       <button class="login-btn" id="btnSendOtp" onclick="sendOtpStep()">आगे बढ़ें (OTP पाएं) ➔</button>
@@ -185,9 +186,7 @@
       <span class="header-title" id="headerTitle">सब्जी फसल और बीज जानकारी</span>
     </div>
     <div class="header-actions">
-      <!-- Language Toggle Button -->
       <button class="lang-toggle-btn" id="langBtn" onclick="toggleLanguage()">🌐 ENG</button>
-      <!-- Notification Bell -->
       <div class="bell-wrapper" onclick="toggleNotificationModal()">
         🔔
         <span class="bell-badge" id="bellBadge"></span>
@@ -195,44 +194,53 @@
     </div>
   </div>
 
-  <!-- Floating Button: फसल डॉक्टर -->
-  <button class="fab-doctor" onclick="openDoctorModal()">
-    <span>🩺</span>
-    <span id="txtFabDoc">फसल डॉक्टर</span>
+  <!-- Floating Action Button: तुरंत समाधान -->
+  <button class="fab-solution" onclick="openSolutionModal()">
+    <span>⚡</span>
+    <span id="txtFabSol">तुरंत समाधान</span>
   </button>
 
-  <!-- Modal: फसल डॉक्टर (रोग पहचान) -->
-  <div class="modal-overlay" id="doctorModal">
+  <!-- Modal: तुरंत समाधान (कैमरा या गैलरी फोटो विकल्प) -->
+  <div class="modal-overlay" id="solutionModal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3 id="txtDocModalHeader">🩺 फसल डॉक्टर (तुरंत समाधान)</h3>
-        <button class="modal-close" onclick="closeDoctorModal()">✕</button>
+        <h3 id="txtSolModalHeader">⚡ तुरंत समाधान (AI रोग जांच)</h3>
+        <button class="modal-close" onclick="closeSolutionModal()">✕</button>
       </div>
 
-      <div class="upload-zone" onclick="document.getElementById('cropPhotoInput').click()">
-        <span style="font-size:35px; display:block; margin-bottom:4px;">📸</span>
-        <b style="font-size:14px; color:#166534;" id="txtUploadPrompt">रोगी पौधे / फल की फोटो लें या चुनें</b>
-        <p style="font-size:11px; color:#6b7280; margin-top:4px;" id="txtUploadSub">कैमरे से साफ़ फोटो खींचें ताकि सही रोग पहचाना जा सके</p>
+      <div class="upload-options">
+        <!-- 1. कैमरा विकल्प -->
+        <div class="upload-opt-btn" onclick="document.getElementById('cameraPhotoInput').click()">
+          <span>📷</span>
+          <b>कैमरा से फोटो लें</b>
+        </div>
+        <!-- 2. गैलरी विकल्प -->
+        <div class="upload-opt-btn" onclick="document.getElementById('galleryPhotoInput').click()">
+          <span>🖼️</span>
+          <b>गैलरी से चुनें</b>
+        </div>
       </div>
 
-      <input type="file" id="cropPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleCropImage(this)">
+      <!-- छिपे हुए फाइल इनपुट्स -->
+      <input type="file" id="cameraPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleCropImage(this)">
+      <input type="file" id="galleryPhotoInput" accept="image/*" style="display:none;" onchange="handleCropImage(this)">
 
-      <img id="doctorPreviewImg" class="preview-img" alt="रोग ग्रस्त पौधा">
+      <img id="solutionPreviewImg" class="preview-img" alt="रोग ग्रस्त पौधा">
 
-      <button class="login-btn" id="btnDiagnose" style="display:none;" onclick="startDiagnosis()">
+      <button class="login-btn" id="btnDiagnose" style="display:none; margin-top:10px;" onclick="startDiagnosis()">
         🔍 रोग पहचानें व उपचार पाएं
       </button>
 
       <!-- Diagnosis Result Display -->
       <div class="doc-result-card" id="docResultCard">
-        <h4 style="color:#b91c1c; font-size:15px; margin-bottom:6px;" id="docDiseaseName">रोग: पत्ती मरोड़िया (Leaf Curl)</h4>
+        <h4 style="color:#b91c1c; font-size:15px; margin-bottom:6px;">रोग: पत्ती मरोड़िया (Leaf Curl)</h4>
         <div style="font-size:13px; color:#374151; margin-bottom:6px;">
-          <b>लक्षण:</b> <span id="docSymptoms">पत्तियां ऊपर की ओर मुड़ना और पौधों की बढ़वार रुकना।</span>
+          <b>लक्षण:</b> पत्तियां ऊपर की ओर मुड़ना और पौधों की बढ़वार रुकना।
         </div>
         <div style="font-size:13px; color:#166534; margin-bottom:10px;">
-          <b>सटीक स्प्रे:</b> <span id="docMedicine">पेगासस 25 ग्राम + बाविस्टिन 20 ग्राम प्रति 15 लीटर पंप मिलाकर स्प्रे करें।</span>
+          <b>सटीक स्प्रे:</b> पेगासस 25 ग्राम + बाविस्टिन 20 ग्राम प्रति 15 लीटर पंप मिलाकर स्प्रे करें।
         </div>
-        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20फसल%20डॉक्टर%20से%20जांच%20करवाई%20है,%20सलाह%20चाहिए।" target="_blank" class="btn-action btn-wa" style="display:block; text-decoration:none; padding:10px; border-radius:8px;">
+        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20तुरंत%20समाधान%20से%20जांच%20करवाई%20है,%20सलाह%20चाहिए।" target="_blank" class="btn-action btn-wa" style="display:block; text-decoration:none; padding:10px; border-radius:8px;">
           💬 रिपोर्ट एक्सपर्ट को भेजें
         </a>
       </div>
@@ -243,23 +251,19 @@
   <div class="modal-overlay" id="notifyModal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3 id="txtNotifyTitle">🔔 हालिया अपडेट व सूचनाएं</h3>
+        <h3>🔔 हालिया अपडेट व सूचनाएं</h3>
         <button class="modal-close" onclick="toggleNotificationModal()">✕</button>
       </div>
-      <div id="notifyContent">
-        <div class="notify-item" id="txtNotifyItem1">
-          <b>🩺 नया फीचर: 'फसल डॉक्टर' शुरू!</b>
-          अब आप सीधे पौधे की फोटो खींचकर रोग और दवा का तुरंत समाधान पा सकते हैं।
-        </div>
-        <div class="notify-item" id="txtNotifyItem2" style="background:#eff6ff; border-color:#bfdbfe; color:#1e40af;">
-          <b>🌱 हाइब्रिड किस्में व कंपनियां अपडेट!</b>
-          Google Sheet से सभी ताज़ा बीज और किस्मों का ब्यौरा लाइव कर दिया गया है।
+      <div>
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:10px; margin-bottom:8px; font-size:13px; color:#166534;">
+          <b>⚡ नया 'तुरंत समाधान' चालू!</b>
+          कैमरे या गैलरी से फोटो भेजें और रोग का तुरंत इलाज पाएं।
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SCREEN 1: मुख्य स्क्रीन (Home) -->
+  <!-- SCREEN 1: मुख्य स्क्रीन (Home) - फोटो 2 के अनुसार 4 बटन -->
   <div id="screen-home" class="screen active">
     <!-- User Greeting -->
     <div class="greeting-bar" id="userGreetingBar" style="display:none;"></div>
@@ -267,7 +271,7 @@
     <!-- Live Weather Card -->
     <div class="weather-card">
       <div>
-        <h4 id="weatherPlace">📍 आपके क्षेत्र का मौसम</h4>
+        <h4 id="weatherPlace">📍 लाइव लोकेशन मौसम</h4>
         <p id="weatherDesc" style="font-size:12px; color:#374151; margin-top:3px;">मौसम लोड हो रहा है...</p>
         <p id="weatherAdvice" style="font-size:11px; color:#1b5e20; font-weight:bold; margin-top:2px;"></p>
       </div>
@@ -279,23 +283,28 @@
 
     <!-- सर्च बार (माइक के साथ) -->
     <div class="search-wrapper">
-      <input type="text" class="search-box" id="homeSearch" placeholder="🔍 बोलकर या लिखकर खोजें..." oninput="searchVarieties(this.value)">
+      <input type="text" class="search-box" id="homeSearch" placeholder="🔍 बीज या फसल खोजें..." oninput="searchVarieties(this.value)">
       <button class="voice-btn" id="voiceSearchBtn" onclick="startVoiceSearch()" title="बोलकर सर्च करें">🎙️</button>
     </div>
 
+    <!-- 4 MAIN BUTTONS AS REQUESTED IN PHOTO 2 -->
     <div class="grid-menu">
-      <div class="menu-box" onclick="showCompaniesList()">
-        <div class="icon">🏢</div>
-        <h3 id="menuCompTitle">सीड कंपनियां</h3>
-      </div>
+      <!-- बटन 1: सब्जी फसलें -->
       <div class="menu-box" onclick="showCropsList()">
         <div class="icon">🥬</div>
-        <h3 id="menuCropTitle">सब्जी फसलें</h3>
+        <h3 id="menuCropsTitle">सब्जी फसलें</h3>
       </div>
-      <div class="menu-box" onclick="openDoctorModal()">
-        <div class="icon">🩺</div>
-        <h3 id="menuDocTitle">फसल डॉक्टर</h3>
+      <!-- बटन 2: फसल सुरक्षा -->
+      <div class="menu-box" onclick="goToScreen('screen-diseases', t('cropProtection'))">
+        <div class="icon">🛡️</div>
+        <h3 id="menuProtTitle">फसल सुरक्षा</h3>
       </div>
+      <!-- बटन 3: सभी बीज किस्में -->
+      <div class="menu-box" onclick="showAllVarieties()">
+        <div class="icon">🌱</div>
+        <h3 id="menuAllSeedsTitle">सभी बीज किस्में</h3>
+      </div>
+      <!-- बटन 4: सलाहकार -->
       <div class="menu-box" onclick="contactAdvisor()">
         <div class="icon">📞</div>
         <h3 id="menuAdvTitle">सलाहकार</h3>
@@ -304,7 +313,7 @@
 
     <!-- सोशल मीडिया कार्ड -->
     <div class="social-box">
-      <p id="txtSocialTitle">हमारे साथ सोशल मीडिया पर जुड़ें</p>
+      <p>हमारे साथ सोशल मीडिया पर जुड़ें</p>
       <div class="social-btn-group">
         <a href="https://www.youtube.com/@NMGKISAN" target="_blank" class="social-link link-yt">
           <span>▶️</span> YouTube
@@ -316,70 +325,58 @@
     </div>
   </div>
 
-  <!-- SCREEN 2: कंपनी सूची -->
-  <div id="screen-company-list" class="screen">
-    <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="compHeadingTitle">कंपनी चुनें:</h3>
-    <div id="companyListContainer"></div>
-  </div>
-
-  <!-- SCREEN 3: चयनित कंपनी की फसल सूची -->
-  <div id="screen-company-crops" class="screen">
-    <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="companyCropHeading">फसल चुनें:</h3>
-    <div id="companyCropsContainer"></div>
-  </div>
-
-  <!-- SCREEN 4: सब्जी फसल सूची -->
+  <!-- SCREEN 2: सब्जी फसल सूची -->
   <div id="screen-crop-list" class="screen">
-    <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="cropsHeadingTitle">फसल चुनें:</h3>
+    <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;">फसल चुनें:</h3>
     <div id="cropListContainer"></div>
   </div>
 
-  <!-- SCREEN 5: किस्में सूची -->
+  <!-- SCREEN 3: किस्में सूची -->
   <div id="screen-variety-list" class="screen">
     <div id="sheetDataContainer" class="loading">डेटा लोड हो रहा है...</div>
   </div>
 
-  <!-- SCREEN 6: रोग सूची -->
+  <!-- SCREEN 4: फसल सुरक्षा (रोग सूची) -->
   <div id="screen-diseases" class="screen">
     <div class="list-item" onclick="goToScreen('screen-cure', t('leafCurl'))">
-      <div class="list-left"><span class="list-icon">🍃</span><span class="list-title" id="dName1">पत्ती लपेटक (मरोड़िया) रोग</span></div>
+      <div class="list-left"><span class="list-icon">🍃</span><span class="list-title">पत्ती लपेटक (मरोड़िया) रोग</span></div>
       <span class="arrow">&gt;</span>
     </div>
     <div class="list-item" onclick="goToScreen('screen-cure', t('blight'))">
-      <div class="list-left"><span class="list-icon">🍂</span><span class="list-title" id="dName2">अगेती व पछेती झुलसा</span></div>
+      <div class="list-left"><span class="list-icon">🍂</span><span class="list-title">अगेती व पछेती झुलसा</span></div>
       <span class="arrow">&gt;</span>
     </div>
     <div class="list-item" onclick="goToScreen('screen-cure', t('borer'))">
-      <div class="list-left"><span class="list-icon">🐛</span><span class="list-title" id="dName3">फल छेदक कीट</span></div>
+      <div class="list-left"><span class="list-icon">🐛</span><span class="list-title">फल छेदक कीट</span></div>
       <span class="arrow">&gt;</span>
     </div>
   </div>
 
-  <!-- SCREEN 7: रोग निवारण विवरण -->
+  <!-- SCREEN 5: रोग निवारण विवरण -->
   <div id="screen-cure" class="screen">
     <div class="variety-card">
-      <h3 style="color:#b91c1c; font-size:17px; margin-bottom:8px;" id="cureHeading">रोग निवारण व सटीक स्प्रे</h3>
+      <h3 style="color:#b91c1c; font-size:17px; margin-bottom:8px;">रोग निवारण व सटीक स्प्रे</h3>
       <div class="var-detail"><b>लक्षण:</b> पत्तियां मुड़ना और पौधे का विकास रुकना।</div>
       <div class="var-detail" style="margin-top:6px;"><b>उपाय / दवा:</b> पेगासस (Pegasus) 25 ग्राम या कॉनफिडोर 8 मिली प्रति 15 लीटर पंप।</div>
       <div class="btn-group">
-        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20रोग%20नियंत्रण%20की%20सलाह%20चाहिए।" target="_blank" class="btn-action btn-wa" id="btnAskExpert">एक्सपर्ट से पूछें 💬</a>
+        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20रोग%20नियंत्रण%20की%20सलाह%20चाहिए।" target="_blank" class="btn-action btn-wa">एक्सपर्ट से पूछें 💬</a>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Nav -->
+  <!-- Bottom Nav Bar: फोटो 2 के अनुसार (होम, फसलें, सुरक्षा, हेल्पलाइन) -->
   <div class="bottom-nav">
     <div class="nav-tab active" onclick="goToScreen('screen-home', t('appTitle'))">
       <span>🏠</span><span id="navHome">होम</span>
-    </div>
-    <div class="nav-tab" onclick="showCompaniesList()">
-      <span>🏢</span><span id="navComp">कंपनियां</span>
     </div>
     <div class="nav-tab" onclick="showCropsList()">
       <span>🥬</span><span id="navCrops">फसलें</span>
     </div>
     <div class="nav-tab" onclick="goToScreen('screen-diseases', t('cropProtection'))">
       <span>🛡️</span><span id="navProt">सुरक्षा</span>
+    </div>
+    <div class="nav-tab" onclick="contactAdvisor()">
+      <span>💬</span><span id="navHelp">हेल्पलाइन</span>
     </div>
   </div>
 
@@ -408,81 +405,44 @@
     let sheetRecords = [];
     const historyStack = ['screen-home'];
 
-    // बहुभाषी शब्दकोश
     const i18n = {
       hi: {
         appTitle: "सब्जी फसल और बीज जानकारी",
         langBtnText: "🌐 ENG",
-        searchPlaceholder: "🔍 बोलकर या लिखकर खोजें...",
+        searchPlaceholder: "🔍 बीज या फसल खोजें...",
         listening: "🎙️ बोलिए, सुन रहा हूँ...",
-        menuCompanies: "सीड कंपनियां",
         menuCrops: "सब्जी फसलें",
         cropProtection: "फसल सुरक्षा",
+        menuAllSeeds: "सभी बीज किस्में",
         menuAdvisor: "सलाहकार",
-        menuDoc: "फसल डॉक्टर",
-        socialText: "हमारे साथ सोशल मीडिया पर जुड़ें",
-        chooseComp: "कंपनी चुनें:",
-        chooseCrop: "फसल चुनें:",
+        fabSol: "तुरंत समाधान",
+        solModalHeader: "⚡ तुरंत समाधान (AI रोग जांच)",
         navHome: "होम",
-        navComp: "कंपनियां",
         navCrops: "फसलें",
         navProt: "सुरक्षा",
-        feature: "विशेषता",
-        weight: "फल का वजन/साइज",
-        maturity: "पकने का समय",
-        resistance: "रोग से बचाव",
-        orderBtn: "🛒 बीज ऑर्डर करें",
-        diseaseBtn: "रोग देखें",
-        loading: "डेटा लोड हो रहा है...",
-        noData: "कोई जानकारी नहीं मिली।",
+        navHelp: "हेल्पलाइन",
         leafCurl: "पत्ती लपेटक (मरोड़िया) रोग",
         blight: "अगेती व पछेती झुलसा",
-        borer: "फल छेदक कीट",
-        cureTitle: "रोग निवारण व सटीक स्प्रे",
-        askExpert: "एक्सपर्ट से पूछें 💬",
-        notifyTitle: "🔔 हालिया अपडेट व सूचनाएं",
-        fabDoc: "फसल डॉक्टर",
-        docModalHeader: "🩺 फसल डॉक्टर (तुरंत समाधान)",
-        uploadPrompt: "रोगी पौधे / फल की फोटो लें या चुनें",
-        uploadSub: "कैमरे से साफ़ फोटो खींचें ताकि सही रोग पहचाना जा सके",
-        diagnoseBtn: "🔍 रोग पहचानें व उपचार पाएं"
+        borer: "फल छेदक कीट"
       },
       en: {
         appTitle: "Crop & Seed Guide",
         langBtnText: "🌐 हिंदी",
-        searchPlaceholder: "🔍 Search by voice or type...",
+        searchPlaceholder: "🔍 Search seed or crop...",
         listening: "🎙️ Listening, please speak...",
-        menuCompanies: "Seed Companies",
         menuCrops: "Vegetable Crops",
         cropProtection: "Crop Protection",
+        menuAllSeeds: "All Seed Varieties",
         menuAdvisor: "Advisor",
-        menuDoc: "Crop Doctor",
-        socialText: "Join us on Social Media",
-        chooseComp: "Select Seed Company:",
-        chooseCrop: "Select Crop:",
+        fabSol: "Instant Solution",
+        solModalHeader: "⚡ Instant Solution (AI Diagnosis)",
         navHome: "Home",
-        navComp: "Companies",
         navCrops: "Crops",
         navProt: "Protection",
-        feature: "Features",
-        weight: "Fruit Weight/Size",
-        maturity: "Maturity Duration",
-        resistance: "Disease Resistance",
-        orderBtn: "🛒 Order Seeds",
-        diseaseBtn: "View Disease",
-        loading: "Loading data...",
-        noData: "No data available.",
+        navHelp: "Helpline",
         leafCurl: "Leaf Curl Disease",
         blight: "Early & Late Blight",
-        borer: "Fruit Borer Pest",
-        cureTitle: "Disease Control & Spray Guide",
-        askExpert: "Ask Expert on WhatsApp 💬",
-        notifyTitle: "🔔 Recent Updates & Notices",
-        fabDoc: "Crop Doctor",
-        docModalHeader: "🩺 Crop Doctor (Instant Solution)",
-        uploadPrompt: "Capture / Select Infected Plant Photo",
-        uploadSub: "Take a clear photo for accurate AI diagnosis",
-        diagnoseBtn: "🔍 Diagnose & Get Treatment"
+        borer: "Fruit Borer Pest"
       }
     };
 
@@ -597,15 +557,15 @@
       window.open(url, '_blank');
     }
 
-    // 2. फसल डॉक्टर
-    function openDoctorModal() {
-      document.getElementById('doctorModal').classList.add('active');
+    // 2. तुरंत समाधान (कैमरा व गैलरी फोटो हैंडलिंग)
+    function openSolutionModal() {
+      document.getElementById('solutionModal').classList.add('active');
     }
 
-    function closeDoctorModal() {
-      document.getElementById('doctorModal').classList.remove('active');
+    function closeSolutionModal() {
+      document.getElementById('solutionModal').classList.remove('active');
       document.getElementById('docResultCard').style.display = 'none';
-      document.getElementById('doctorPreviewImg').style.display = 'none';
+      document.getElementById('solutionPreviewImg').style.display = 'none';
       document.getElementById('btnDiagnose').style.display = 'none';
     }
 
@@ -613,12 +573,12 @@
       if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
-          const img = document.getElementById('doctorPreviewImg');
+          const img = document.getElementById('solutionPreviewImg');
           img.src = e.target.result;
           img.style.display = 'block';
           const btn = document.getElementById('btnDiagnose');
           btn.style.display = 'block';
-          btn.innerText = t('diagnoseBtn');
+          btn.innerText = "🔍 रोग पहचानें व उपचार पाएं";
         };
         reader.readAsDataURL(input.files[0]);
       }
@@ -632,7 +592,7 @@
       setTimeout(() => {
         btn.style.display = 'none';
         btn.disabled = false;
-        btn.innerText = t('diagnoseBtn');
+        btn.innerText = "🔍 रोग पहचानें व उपचार पाएं";
 
         const card = document.getElementById('docResultCard');
         card.style.display = 'block';
@@ -650,29 +610,16 @@
       document.getElementById('langBtn').innerText = t('langBtnText');
       document.getElementById('headerTitle').innerText = t('appTitle');
       document.getElementById('homeSearch').placeholder = t('searchPlaceholder');
-      document.getElementById('menuCompTitle').innerText = t('menuCompanies');
-      document.getElementById('menuCropTitle').innerText = t('menuCrops');
+      document.getElementById('menuCropsTitle').innerText = t('menuCrops');
       document.getElementById('menuProtTitle').innerText = t('cropProtection');
+      document.getElementById('menuAllSeedsTitle').innerText = t('menuAllSeeds');
       document.getElementById('menuAdvTitle').innerText = t('menuAdvisor');
-      document.getElementById('menuDocTitle').innerText = t('menuDoc');
-      document.getElementById('txtFabDoc').innerText = t('fabDoc');
-      document.getElementById('txtDocModalHeader').innerText = t('docModalHeader');
-      document.getElementById('txtUploadPrompt').innerText = t('uploadPrompt');
-      document.getElementById('txtUploadSub').innerText = t('uploadSub');
-      document.getElementById('btnDiagnose').innerText = t('diagnoseBtn');
-      document.getElementById('txtSocialTitle').innerText = t('socialText');
-      document.getElementById('compHeadingTitle').innerText = t('chooseComp');
-      document.getElementById('cropsHeadingTitle').innerText = t('chooseCrop');
+      document.getElementById('txtFabSol').innerText = t('fabSol');
+      document.getElementById('txtSolModalHeader').innerText = t('solModalHeader');
       document.getElementById('navHome').innerText = t('navHome');
-      document.getElementById('navComp').innerText = t('navComp');
       document.getElementById('navCrops').innerText = t('navCrops');
       document.getElementById('navProt').innerText = t('navProt');
-      document.getElementById('txtNotifyTitle').innerText = t('notifyTitle');
-      document.getElementById('cureHeading').innerText = t('cureTitle');
-      document.getElementById('btnAskExpert').innerText = t('askExpert');
-      document.getElementById('dName1').innerText = t('leafCurl');
-      document.getElementById('dName2').innerText = t('blight');
-      document.getElementById('dName3').innerText = t('borer');
+      document.getElementById('navHelp').innerText = t('navHelp');
     }
 
     function toggleNotificationModal() {
@@ -681,7 +628,7 @@
     }
 
     // 4. मौसम
-    async function fetchLiveWeather(lat, lon, placeName = "आपके क्षेत्र का मौसम") {
+    async function fetchLiveWeather(lat, lon, placeName = "लाइव लोकेशन मौसम") {
       try {
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
         const res = await fetch(url);
@@ -716,7 +663,7 @@
           document.getElementById('weatherIcon').innerText = icon;
         }
       } catch (e) {
-        document.getElementById('weatherDesc').innerText = currentLang === 'hi' ? "मौसम डेटा उपलब्ध नहीं" : "Weather data unavailable";
+        document.getElementById('weatherDesc').innerText = "मौसम डेटा लोड हो रहा है...";
       }
     }
 
@@ -766,7 +713,7 @@
     function startVoiceSearch() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert(currentLang === 'hi' ? "ब्राउज़र में बोलकर सर्च करने की सुविधा नहीं है।" : "Voice search not supported in this browser.");
+        alert("बोलकर सर्च करने की सुविधा समर्थित नहीं है।");
         return;
       }
 
@@ -797,58 +744,7 @@
       recognition.start();
     }
 
-    // 7. कंपनी अनुसार चयन
-    function showCompaniesList() {
-      const companies = [...new Set(sheetRecords.map(r => r.company).filter(c => c && c !== ''))];
-      const container = document.getElementById('companyListContainer');
-      container.innerHTML = '';
-
-      if (companies.length === 0) {
-        container.innerHTML = `<p style="text-align:center; padding:20px; color:#6b7280;">${t('noData')}</p>`;
-      } else {
-        companies.forEach(comp => {
-          container.innerHTML += `
-            <div class="list-item" onclick="selectCompany('${comp}')">
-              <div class="list-left"><span class="list-icon">🏢</span><span class="list-title">${comp}</span></div>
-              <span class="arrow">&gt;</span>
-            </div>
-          `;
-        });
-      }
-      goToScreen('screen-company-list', t('menuCompanies'));
-    }
-
-    function selectCompany(compName) {
-      const compRecords = sheetRecords.filter(r => r.company.toLowerCase() === compName.toLowerCase());
-      const cropsInComp = [...new Set(compRecords.map(r => r.crop).filter(c => c))];
-      
-      const container = document.getElementById('companyCropsContainer');
-      document.getElementById('companyCropHeading').innerText = compName + (currentLang === 'hi' ? ' की फसलें:' : ' Crops:');
-      container.innerHTML = '';
-
-      const cropIcons = { 'टमाटर': '🍅', 'मिर्च': '🌶️', 'फूलगोभी': '🥦', 'पत्तागोभी': '🥬', 'बैंगन': '🍆', 'प्याज': '🧅', 'भिंडी': '🥒', 'खीरा': '🥒', 'करेला': '🥒', 'लौकी': '🥒' };
-
-      cropsInComp.forEach(crop => {
-        const icon = cropIcons[crop] || '🌱';
-        container.innerHTML += `
-          <div class="list-item" onclick="filterByCompanyAndCrop('${compName}', '${crop}')">
-            <div class="list-left"><span class="list-icon">${icon}</span><span class="list-title">${crop}</span></div>
-            <span class="arrow">&gt;</span>
-          </div>
-        `;
-      });
-      goToScreen('screen-company-crops', compName);
-    }
-
-    function filterByCompanyAndCrop(compName, cropName) {
-      const list = sheetRecords.filter(r => 
-        r.company.toLowerCase() === compName.toLowerCase() && 
-        r.crop.toLowerCase() === cropName.toLowerCase()
-      );
-      renderVarieties(list, compName + ' - ' + cropName);
-    }
-
-    // 8. फसल अनुसार चयन
+    // 7. सब्जी फसल सूची
     function showCropsList() {
       const crops = [...new Set(sheetRecords.map(r => r.crop).filter(c => c))];
       const container = document.getElementById('cropListContainer');
@@ -873,7 +769,12 @@
       renderVarieties(filtered, cropName);
     }
 
-    // 9. सटीक सर्च
+    // 8. सभी बीज किस्में
+    function showAllVarieties() {
+      renderVarieties(sheetRecords, t('menuAllSeeds'));
+    }
+
+    // 9. सर्च
     function searchVarieties(text) {
       const q = text.trim().toLowerCase();
       if (!q) return;
@@ -886,6 +787,7 @@
       } else {
         filtered = sheetRecords.filter(r => 
           r.variety.toLowerCase().includes(q) || 
+          r.crop.toLowerCase().includes(q) ||
           r.company.toLowerCase().includes(q)
         );
       }
@@ -897,7 +799,7 @@
     function renderVarieties(list, screenTitle) {
       const container = document.getElementById('sheetDataContainer');
       if (list.length === 0) {
-        container.innerHTML = `<p style="text-align:center; padding:30px; color:#6b7280;">${t('noData')}</p>`;
+        container.innerHTML = `<p style="text-align:center; padding:30px; color:#6b7280;">कोई जानकारी नहीं मिली।</p>`;
       } else {
         container.innerHTML = '';
         list.forEach(v => {
@@ -910,13 +812,13 @@
               <span class="badge-season">${v.segment || 'Hybrid'}</span>
               ${compBadge}
               <div class="var-title">${v.variety} (${v.crop})</div>
-              <div class="var-detail"><b>${t('feature')}:</b> ${v.features}</div>
-              <div class="var-detail"><b>${t('weight')}:</b> ${v.weight}</div>
-              <div class="var-detail"><b>${t('maturity')}:</b> ${v.maturity}</div>
-              <div class="var-detail"><b>${t('resistance')}:</b> ${v.resistance}</div>
+              <div class="var-detail"><b>विशेषता:</b> ${v.features}</div>
+              <div class="var-detail"><b>वजन/साइज:</b> ${v.weight}</div>
+              <div class="var-detail"><b>पकने का समय:</b> ${v.maturity}</div>
+              <div class="var-detail"><b>रोग प्रतिरोध:</b> ${v.resistance}</div>
               <div class="btn-group">
-                <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20${encodeURIComponent(v.company)}%20की%20${encodeURIComponent(v.variety)}%20(${encodeURIComponent(v.crop)})%20का%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa">${t('orderBtn')}</a>
-                <button class="btn-action btn-disease" onclick="goToScreen('screen-diseases', '${v.crop}')">${t('diseaseBtn')}</button>
+                <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20${encodeURIComponent(v.company)}%20की%20${encodeURIComponent(v.variety)}%20(${encodeURIComponent(v.crop)})%20का%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa">🛒 बीज ऑर्डर करें</a>
+                <button class="btn-action btn-disease" onclick="goToScreen('screen-diseases', '${v.crop}')">रोग देखें</button>
               </div>
             </div>
           `;
@@ -947,7 +849,7 @@
       window.scrollTo(0, 0);
     }
 
-    // स्मूथ एनिमेशन के साथ वापस आना
+    // स्मूथ एनिमेशन के साथ वापस लौटना
     function goBack() {
       historyStack.pop();
       const prevScreenId = historyStack[historyStack.length - 1] || 'screen-home';
