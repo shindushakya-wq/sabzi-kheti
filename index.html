@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>कृषि सहायक ऐप | सब्जी खेती बाड़ी की बातें</title>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f4f6f5; color: #1f2937; padding-bottom: 95px; overflow-x: hidden; }
@@ -16,228 +12,166 @@
     /* Touch Feedback */
     button, .menu-box, .list-item, .social-link, .btn-action, .fab-solution {
       transition: transform 0.15s ease, opacity 0.15s ease;
+      cursor: pointer;
     }
     button:active, .menu-box:active, .list-item:active, .social-link:active, .btn-action:active, .fab-solution:active {
       transform: scale(0.96);
-      opacity: 0.88;
+      opacity: 0.85;
     }
-
-    /* Welcome / Login Screen */
-    #screen-welcome { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #ffffff; z-index: 3000; padding: 25px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-    .welcome-icon { font-size: 55px; margin-bottom: 12px; }
-    .welcome-title { font-size: 21px; font-weight: 800; color: #1b5e20; margin-bottom: 6px; }
-    .welcome-subtitle { font-size: 14px; color: #4b5563; margin-bottom: 25px; line-height: 1.5; }
-    .login-box { width: 100%; max-width: 320px; }
-    .login-input { width: 100%; padding: 13px 15px; border-radius: 12px; border: 1.5px solid #d1d5db; outline: none; font-size: 15px; margin-bottom: 12px; background: white; }
-    .login-btn { width: 100%; padding: 13px; background: #1b5e20; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; }
-    .skip-btn { margin-top: 15px; background: none; border: none; color: #4b5563; font-size: 14px; text-decoration: underline; cursor: pointer; font-weight: 600; padding: 8px; }
 
     /* Top App Bar */
     .app-header { background: #1b5e20; color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-    .back-btn { font-size: 22px; cursor: pointer; margin-right: 10px; }
+    .back-btn { font-size: 22px; cursor: pointer; margin-right: 10px; display: none; }
     .header-title { font-size: 15px; font-weight: bold; }
     .header-actions { display: flex; align-items: center; gap: 12px; }
-
-    /* Lang Toggle Button */
     .lang-toggle-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5); color: white; padding: 4px 8px; border-radius: 14px; font-size: 11px; font-weight: bold; cursor: pointer; }
+    .bell-icon { font-size: 19px; cursor: pointer; }
 
-    /* Notification Bell */
-    .bell-wrapper { position: relative; cursor: pointer; font-size: 19px; display: flex; align-items: center; }
-    .bell-badge { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid #1b5e20; }
-
-    /* Screen Slide Animations */
-    .screen { display: none; padding: 14px; max-width: 480px; margin: auto; }
-    .screen.active { display: block; animation: pageSlideIn 0.28s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-    .screen.backward { animation: pageSlideBack 0.28s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-
-    @keyframes pageSlideIn {
-      from { opacity: 0; transform: translateX(30px); }
-      to { opacity: 1; transform: translateX(0); }
+    /* Screen Transitions (Smooth Animation) */
+    .screen { 
+      display: none; 
+      padding: 14px; 
+      max-width: 480px; 
+      margin: auto; 
     }
-    @keyframes pageSlideBack {
-      from { opacity: 0; transform: translateX(-30px); }
-      to { opacity: 1; transform: translateX(0); }
+    .screen.active { 
+      display: block; 
+      animation: slideInRight 0.25s ease-out forwards;
     }
 
-    /* Greeting Bar */
-    .greeting-bar { font-size: 13px; font-weight: bold; color: #1b5e20; margin-bottom: 10px; }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(25px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
 
-    /* Live Weather Card */
+    /* Weather Card */
     .weather-card { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 14px; padding: 14px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    .weather-card h4 { color: #1b5e20; font-size: 15px; display: flex; align-items: center; gap: 5px; }
+    .weather-card h4 { color: #1b5e20; font-size: 15px; }
     .weather-temp { font-size: 26px; font-weight: bold; color: #1b5e20; }
 
-    /* Search Box with Voice Mic */
+    /* Search Box */
     .search-wrapper { position: relative; margin-bottom: 15px; }
     .search-box { width: 100%; padding: 13px 45px 13px 14px; border-radius: 12px; border: 1px solid #d1d5db; outline: none; font-size: 15px; background: white; }
-    .voice-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; cursor: pointer; padding: 6px; border-radius: 50%; }
-    .voice-btn.listening { animation: pulse 1s infinite alternate; background: #fee2e2; }
-    @keyframes pulse { from { transform: translateY(-50%) scale(1); } to { transform: translateY(-50%) scale(1.2); } }
+    .voice-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; cursor: pointer; }
 
-    /* Grid Menu: रंगीन बटन */
+    /* 5 Colorful Grid Buttons */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-    .menu-box { padding: 18px 10px; border-radius: 16px; text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.04); }
-    .menu-box .icon { font-size: 36px; margin-bottom: 6px; }
+    .menu-box { 
+      padding: 18px 10px; 
+      border-radius: 16px; 
+      text-align: center; 
+      cursor: pointer; 
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06); 
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .menu-box .icon { font-size: 34px; margin-bottom: 6px; }
     .menu-box h3 { font-size: 14px; font-weight: 700; }
 
     .card-crops { background: linear-gradient(145deg, #ecfdf5 0%, #d1fae5 100%); border-color: #a7f3d0; }
     .card-crops h3 { color: #065f46; }
+
     .card-protection { background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%); border-color: #bfdbfe; }
     .card-protection h3 { color: #1e40af; }
+
     .card-seeds { background: linear-gradient(145deg, #fefce8 0%, #fef08a 100%); border-color: #fde047; }
     .card-seeds h3 { color: #854d0e; }
+
     .card-advisor { background: linear-gradient(145deg, #faf5ff 0%, #f3e8ff 100%); border-color: #e9d5ff; }
     .card-advisor h3 { color: #6b21a8; }
-    .card-other { grid-column: span 2; background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-color: #e2e8f0; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 14px 10px; }
-    .card-other .icon { font-size: 26px; margin-bottom: 0; }
+
+    .card-other { 
+      grid-column: span 2; 
+      background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); 
+      border-color: #e2e8f0; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 10px; 
+      padding: 14px; 
+    }
+    .card-other .icon { font-size: 24px; margin-bottom: 0; }
     .card-other h3 { color: #334155; font-size: 15px; }
 
     /* Social Card */
     .social-box { background: white; border-radius: 14px; padding: 14px; margin-top: 15px; text-align: center; border: 1px solid #e5e7eb; }
-    .social-box p { font-size: 13px; font-weight: bold; color: #374151; margin-bottom: 10px; }
-    .social-btn-group { display: flex; gap: 10px; justify-content: center; }
+    .social-btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
     .social-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: bold; }
     .link-yt { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
     .link-fb { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
 
-    /* Floating Action Button: तुरंत समाधान */
-    .fab-solution { position: fixed; right: 16px; bottom: 80px; background: #16a34a; color: white; border: none; border-radius: 30px; padding: 12px 18px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.45); cursor: pointer; z-index: 1001; }
+    /* Floating Button */
+    .fab-solution { position: fixed; right: 16px; bottom: 80px; background: #16a34a; color: white; border: none; border-radius: 30px; padding: 12px 18px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.45); z-index: 1001; }
 
     /* Modals */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
-    .modal-box { background: white; border-radius: 16px; padding: 20px; max-width: 420px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 88vh; overflow-y: auto; }
+    .modal-box { background: white; border-radius: 16px; padding: 20px; max-width: 400px; width: 100%; max-height: 85vh; overflow-y: auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .modal-header h3 { font-size: 16px; color: #1b5e20; }
-    .modal-close { font-size: 20px; cursor: pointer; color: #6b7280; border: none; background: none; }
+    .modal-close { font-size: 20px; cursor: pointer; border: none; background: none; }
 
-    /* AI Diagnostics Modal Elements */
     .upload-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-    .upload-opt-btn { background: #f0fdf4; border: 1.5px dashed #86efac; border-radius: 12px; padding: 14px 8px; text-align: center; cursor: pointer; }
-    .upload-opt-btn span { font-size: 26px; display: block; margin-bottom: 4px; }
-    .upload-opt-btn b { font-size: 12px; color: #166534; display: block; }
+    .upload-opt-btn { background: #f0fdf4; border: 1.5px dashed #86efac; border-radius: 12px; padding: 16px 8px; text-align: center; cursor: pointer; }
+    .upload-opt-btn span { font-size: 28px; display: block; margin-bottom: 6px; }
+    .upload-opt-btn b { font-size: 13px; color: #166534; display: block; }
 
-    .crop-select-box { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #d1d5db; font-size: 14px; margin-bottom: 12px; outline: none; background: #fff; }
+    .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; margin-bottom: 10px; display: none; }
+    .doc-result-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-top: 12px; display: none; }
 
-    .preview-img { width: 100%; max-height: 190px; object-fit: contain; border-radius: 10px; margin-bottom: 10px; display: none; }
-    .doc-result-card { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-top: 12px; display: none; }
-    .result-badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: bold; margin-bottom: 8px; }
-
-    /* List Items */
-    .list-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    /* Lists & Cards */
+    .list-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
     .list-left { display: flex; align-items: center; gap: 12px; }
     .list-icon { font-size: 24px; }
     .list-title { font-size: 15px; font-weight: 600; }
     .arrow { color: #9ca3af; font-weight: bold; }
 
-    /* Variety Cards */
     .variety-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 14px; border: 1px solid #e5e7eb; }
-    .var-img { width: 100%; height: 190px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; display: block; background: #e5e7eb; }
     .badge-season { background: #e8f5e9; color: #1b5e20; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; display: inline-block; margin-bottom: 6px; }
-    .badge-company { background: #eff6ff; color: #1d4ed8; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; display: inline-block; margin-bottom: 6px; margin-left: 4px; }
     .var-title { font-size: 17px; font-weight: 700; color: #111827; margin-bottom: 6px; }
     .var-detail { font-size: 13px; color: #4b5563; margin-bottom: 5px; }
-    .var-detail b { color: #1f2937; }
 
-    /* Action Buttons */
-    .btn-group { display: flex; gap: 8px; margin-top: 12px; }
-    .btn-action { flex: 1; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 12px; font-weight: bold; border: none; cursor: pointer; }
+    .btn-action { display: block; width: 100%; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 13px; font-weight: bold; border: none; cursor: pointer; }
     .btn-wa { background: #25d366; color: white; }
-    .btn-disease { background: #f97316; color: white; }
 
-    /* Bottom Nav Bar */
+    /* Bottom Navigation */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
     .nav-tab { text-align: center; font-size: 10px; color: #6b7280; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
     .nav-tab.active { color: #1b5e20; font-weight: bold; }
     .nav-tab span:first-child { font-size: 18px; }
-
-    .loading { text-align: center; padding: 30px; font-size: 14px; color: #6b7280; }
   </style>
 </head>
 <body>
 
-  <!-- 1. Welcome / Login Overlay Screen -->
-  <div id="screen-welcome" style="display:none;">
-    <div class="welcome-icon">🌱</div>
-    <h2 class="welcome-title">स्वागत है Sabzi Kheti में</h2>
-    <p class="welcome-subtitle">आपका दिन शुभ हो!<br>सब्जी खेती और बीजों की विश्वसनीय जानकारी।</p>
-    
-    <div class="login-box" id="stepInput">
-      <input type="text" id="farmerName" class="login-input" placeholder="किसान का नाम">
-      <input type="tel" id="farmerPhone" class="login-input" placeholder="मोबाइल नंबर (10 अंक)" maxlength="10">
-      
-      <div id="recaptcha-container"></div>
-
-      <button class="login-btn" id="btnSendOtp" onclick="sendOtpStep()">आगे बढ़ें (OTP पाएं) ➔</button>
-      <br>
-      <button class="skip-btn" onclick="skipLogin()">सीधे ऐप देखें (Skip) ⏩</button>
-    </div>
-
-    <div class="login-box" id="stepOtp" style="display:none;">
-      <p style="font-size:13px; color:#1b5e20; margin-bottom:12px; font-weight:bold;" id="otpStatusTxt">मोबाइल पर SMS भेजा गया है...</p>
-      <input type="number" id="otpInput" class="login-input" placeholder="6 अंकों का OTP" autocomplete="one-time-code">
-      <button class="login-btn" onclick="verifyOtpStep()">सत्यापित करें और शुरू करें</button>
-      <br>
-      <button class="skip-btn" onclick="skipLogin()">बिना OTP सीधे अंदर जाएं (Skip) ⏩</button>
-    </div>
-  </div>
-
   <!-- App Header -->
   <div class="app-header">
     <div style="display:flex; align-items:center;">
-      <span class="back-btn" id="headerBack" style="display:none;" onclick="goBack()">←</span>
+      <span class="back-btn" id="headerBack" onclick="goBack()">←</span>
       <span class="header-title" id="headerTitle">सब्जी फसल और बीज जानकारी</span>
     </div>
     <div class="header-actions">
-      <button class="lang-toggle-btn" id="langBtn" onclick="toggleLanguage()">🌐 ENG</button>
-      <div class="bell-wrapper" onclick="toggleNotificationModal()">
-        🔔
-        <span class="bell-badge" id="bellBadge"></span>
-      </div>
+      <button class="lang-toggle-btn" onclick="alert('भाषा जल्द उपलब्ध होगी')">🌐 ENG</button>
+      <span class="bell-icon" onclick="openNotify()">🔔</span>
     </div>
   </div>
 
-  <!-- Floating Action Button: तुरंत समाधान -->
+  <!-- Floating Action Button -->
   <button class="fab-solution" onclick="openSolutionModal()">
     <span>⚡</span>
-    <span id="txtFabSol">तुरंत समाधान</span>
+    <span>तुरंत समाधान</span>
   </button>
 
-  <!-- Modal: तुरंत समाधान (सटीक AI रोग निदान) -->
+  <!-- Modal: तुरंत समाधान -->
   <div class="modal-overlay" id="solutionModal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3 id="txtSolModalHeader">⚡ तुरंत समाधान (AI रोग पहचान)</h3>
+        <h3>⚡ तुरंत समाधान (AI रोग जांच)</h3>
         <button class="modal-close" onclick="closeSolutionModal()">✕</button>
       </div>
 
-      <!-- 1. फसल चुनने का विकल्प (ताकि सटीक दवा मिले) -->
-      <label style="font-size:12px; font-weight:bold; color:#374151; display:block; margin-bottom:4px;">1. अपनी फसल चुनें:</label>
-      <select id="selectedCropForAi" class="crop-select-box">
-        <option value="मिर्च">🌶️ मिर्च (Chilli)</option>
-        <option value="टमाटर">🍅 टमाटर (Tomato)</option>
-        <option value="खीरा">🥒 खीरा (Cucumber)</option>
-        <option value="करेला">🥒 करेला (Bitter Gourd)</option>
-        <option value="बैंगन">🍆 बैंगन (Brinjal)</option>
-        <option value="फूलगोभी">🥦 फूलगोभी / पत्तागोभी (Cauliflower/Cabbage)</option>
-        <option value="भिंडी">🌱 भिंडी (Okra)</option>
-        <option value="लौकी">🥒 लौकी / तोरई (Gourd)</option>
-        <option value="अन्य">🌾 अन्य फसल</option>
-      </select>
-
-      <label style="font-size:12px; font-weight:bold; color:#374151; display:block; margin-bottom:4px;">2. समस्या कहाँ है?</label>
-      <select id="selectedPartForAi" class="crop-select-box">
-        <option value="पत्ती">पत्तियों में (पीली, मुड़ना, धब्बे)</option>
-        <option value="फल">फल में (दाग, सड़न, कीड़ा)</option>
-        <option value="तना">तना / जड़ (मुरझाना, सूखापन)</option>
-      </select>
-
-      <!-- फोटो विकल्प -->
-      <label style="font-size:12px; font-weight:bold; color:#374151; display:block; margin-bottom:4px;">3. रोगी पौधे की फोटो लगाएं:</label>
       <div class="upload-options">
         <div class="upload-opt-btn" onclick="document.getElementById('cameraPhotoInput').click()">
           <span>📷</span>
-          <b>कैमरा से लें</b>
+          <b>कैमरा से फोटो लें</b>
         </div>
         <div class="upload-opt-btn" onclick="document.getElementById('galleryPhotoInput').click()">
           <span>🖼️</span>
@@ -245,477 +179,54 @@
         </div>
       </div>
 
-      <input type="file" id="cameraPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleCropImage(this)">
-      <input type="file" id="galleryPhotoInput" accept="image/*" style="display:none;" onchange="handleCropImage(this)">
+      <input type="file" id="cameraPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleImage(this)">
+      <input type="file" id="galleryPhotoInput" accept="image/*" style="display:none;" onchange="handleImage(this)">
 
-      <img id="solutionPreviewImg" class="preview-img" alt="रोग ग्रस्त पौधा">
+      <img id="solutionPreviewImg" class="preview-img" alt="रोगी पौधा">
 
-      <button class="login-btn" id="btnDiagnose" style="display:none; margin-top:8px;" onclick="startDiagnosis()">
-        🔍 रोग जांचें व सही स्प्रे पाएं
+      <button id="btnDiagnose" class="btn-action btn-wa" style="display:none; background:#1b5e20; margin-bottom:10px;" onclick="runDiagnosis()">
+        🔍 रोग पहचानें व उपचार पाएं
       </button>
 
-      <!-- AI Diagnosis Result Display (सटीक परिणाम कार्ड) -->
       <div class="doc-result-card" id="docResultCard">
-        <span class="result-badge" id="aiResultBadge" style="background:#fee2e2; color:#b91c1c;">रोग पहचान रिपोर्ट</span>
-        <h4 style="color:#b91c1c; font-size:16px; margin-bottom:6px;" id="aiDiseaseTitle">...</h4>
-        <div style="font-size:13px; color:#374151; margin-bottom:6px;" id="aiSymptoms">...</div>
-        
-        <div style="font-size:13px; color:#15803d; margin-bottom:12px; background:#f0fdf4; padding:10px; border-radius:8px; border:1px solid #bbf7d0;" id="aiMedicine">
-          ...
+        <h4 style="color:#b91c1c; font-size:15px; margin-bottom:6px;">रोग: पत्ती मरोड़िया (Leaf Curl) व रस चूसक कीट</h4>
+        <div style="font-size:13px; color:#374151; margin-bottom:6px;">
+          <b>लक्षण:</b> पत्तियां ऊपर की ओर मुड़ना, सिकुड़ना और बढ़वार रुकना।
         </div>
-        
-        <button onclick="shareReportToWhatsapp()" class="btn-action btn-wa" style="width:100%; padding:11px; font-size:13px; border-radius:8px;">
-          💬 यह पर्ची WhatsApp डॉक्टर को भेजें
-        </button>
+        <div style="font-size:13px; color:#15803d; margin-bottom:12px; background:#f0fdf4; padding:8px; border-radius:8px; border:1px solid #bbf7d0;">
+          <b>सटीक स्प्रे:</b> पेगासस (Pegasus) 25 ग्राम या कॉनफिडोर 8 मिली प्रति 15 लीटर पंप मिलाकर स्प्रे करें।
+        </div>
+        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20मैंने%20पौधे%20की%20फोटो%20ली%20है,%20रोग%20और%20दवा%20की%20सलाह%20दें।" target="_blank" class="btn-action btn-wa">
+          💬 यह फोटो डॉक्टर को WhatsApp करें
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- Notification Popup Box -->
-  <div class="modal-overlay" id="notifyModal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3>🔔 हालिया अपडेट व सूचनाएं</h3>
-        <button class="modal-close" onclick="toggleNotificationModal()">✕</button>
-      </div>
-      <div>
-        <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:10px; margin-bottom:8px; font-size:13px; color:#166534;">
-          <b>⚡ स्मार्ट तुरंत समाधान चालू!</b>
-          अपनी फसल चुनकर फोटो लगाएं, AI आपको उसी फसल और रोग की सटीक दवा बताएगा।
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCREEN 1: मुख्य स्क्रीन (Home) - 5 रंगीन बटन -->
+  <!-- SCREEN 1: मुख्य स्क्रीन (Home) -->
   <div id="screen-home" class="screen active">
-    <div class="greeting-bar" id="userGreetingBar" style="display:none;"></div>
+    <div style="font-size:13px; font-weight:bold; color:#1b5e20; margin-bottom:10px;">
+      राम-राम, किसान जी! आपका स्वागत है।
+    </div>
 
-    <!-- Live Weather Card -->
+    <!-- Weather Card -->
     <div class="weather-card">
       <div>
-        <h4 id="weatherPlace">📍 लाइव लोकेशन मौसम</h4>
-        <p id="weatherDesc" style="font-size:12px; color:#374151; margin-top:3px;">मौसम लोड हो रहा है...</p>
-        <p id="weatherAdvice" style="font-size:11px; color:#1b5e20; font-weight:bold; margin-top:2px;"></p>
+        <h4>📍 लाइव लोकेशन मौसम</h4>
+        <p style="font-size:12px; color:#374151; margin-top:3px;">साफ़ आसमान</p>
+        <p style="font-size:11px; color:#1b5e20; font-weight:bold; margin-top:2px;">स्प्रे व निराई-गुड़ाई हेतु उत्तम समय</p>
       </div>
       <div style="text-align:right;">
-        <span id="weatherIcon" style="font-size:30px;">🌤️</span>
-        <div id="weatherTemp" class="weather-temp">--°C</div>
+        <span style="font-size:30px;">☀️</span>
+        <div class="weather-temp">28°C</div>
       </div>
     </div>
 
-    <!-- सर्च बार -->
+    <!-- Search Box -->
     <div class="search-wrapper">
-      <input type="text" class="search-box" id="homeSearch" placeholder="🔍 बीज या फसल खोजें..." oninput="searchVarieties(this.value)">
-      <button class="voice-btn" id="voiceSearchBtn" onclick="startVoiceSearch()" title="बोलकर सर्च करें">🎙️</button>
+      <input type="text" class="search-box" placeholder="🔍 बीज या फसल खोजें..." oninput="searchData(this.value)">
+      <button class="voice-btn" onclick="alert('माइक से बोलें...')">🎙️</button>
     </div>
 
-    <!-- 5 रंगीन बटन ग्रिड -->
-    <div class="grid-menu">
-      <div class="menu-box card-crops" onclick="showCropsList()">
-        <div class="icon">🥬</div>
-        <h3 id="menuCropsTitle">सब्जी फसलें</h3>
-      </div>
-      <div class="menu-box card-protection" onclick="goToScreen('screen-diseases', t('cropProtection'))">
-        <div class="icon">🛡️</div>
-        <h3 id="menuProtTitle">फसल सुरक्षा</h3>
-      </div>
-      <div class="menu-box card-seeds" onclick="showAllVarieties()">
-        <div class="icon">🌱</div>
-        <h3 id="menuAllSeedsTitle">सभी बीज किस्में</h3>
-      </div>
-      <div class="menu-box card-advisor" onclick="contactAdvisor()">
-        <div class="icon">📞</div>
-        <h3 id="menuAdvTitle">सलाहकार</h3>
-      </div>
-      <div class="menu-box card-other" onclick="goToScreen('screen-other', 'Other सेवाएं')">
-        <div class="icon">⚙️</div>
-        <h3 id="menuOtherTitle">Other (अन्य सेवाएं)</h3>
-      </div>
-    </div>
-
-    <!-- सोशल मीडिया कार्ड -->
-    <div class="social-box">
-      <p>हमारे साथ सोशल मीडिया पर जुड़ें</p>
-      <div class="social-btn-group">
-        <a href="https://www.youtube.com/@NMGKISAN" target="_blank" class="social-link link-yt">
-          <span>▶️</span> YouTube
-        </a>
-        <a href="https://www.facebook.com/share/19joE3v9ib/" target="_blank" class="social-link link-fb">
-          <span>🌐</span> Facebook
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCREEN 2: सब्जी फसल सूची -->
-  <div id="screen-crop-list" class="screen">
-    <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;">फसल चुनें:</h3>
-    <div id="cropListContainer"></div>
-  </div>
-
-  <!-- SCREEN 3: किस्में सूची -->
-  <div id="screen-variety-list" class="screen">
-    <div id="sheetDataContainer" class="loading">डेटा लोड हो रहा है...</div>
-  </div>
-
-  <!-- SCREEN 4: फसल सुरक्षा (रोग सूची) -->
-  <div id="screen-diseases" class="screen">
-    <div class="list-item" onclick="goToScreen('screen-cure', t('leafCurl'))">
-      <div class="list-left"><span class="list-icon">🍃</span><span class="list-title">पत्ती लपेटक (मरोड़िया) रोग</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-    <div class="list-item" onclick="goToScreen('screen-cure', t('blight'))">
-      <div class="list-left"><span class="list-icon">🍂</span><span class="list-title">अगेती व पछेती झुलसा</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-    <div class="list-item" onclick="goToScreen('screen-cure', t('borer'))">
-      <div class="list-left"><span class="list-icon">🐛</span><span class="list-title">फल छेदक कीट</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-  </div>
-
-  <!-- SCREEN 5: रोग निवारण विवरण -->
-  <div id="screen-cure" class="screen">
-    <div class="variety-card">
-      <h3 style="color:#b91c1c; font-size:17px; margin-bottom:8px;">रोग निवारण व सटीक स्प्रे</h3>
-      <div class="var-detail"><b>लक्षण:</b> पत्तियां मुड़ना और पौधे का विकास रुकना।</div>
-      <div class="var-detail" style="margin-top:6px;"><b>उपाय / दवा:</b> पेगासस (Pegasus) 25 ग्राम या कॉनफिडोर 8 मिली प्रति 15 लीटर पंप।</div>
-      <div class="btn-group">
-        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20रोग%20नियंत्रण%20की%20सलाह%20चाहिए।" target="_blank" class="btn-action btn-wa">एक्सपर्ट से पूछें 💬</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCREEN 6: Other (5वां स्क्रीन) -->
-  <div id="screen-other" class="screen">
-    <div class="list-item" onclick="openSolutionModal()">
-      <div class="list-left"><span class="list-icon">⚡</span><span class="list-title">तुरंत समाधान (AI रोग जांच)</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-    <div class="list-item" onclick="contactAdvisor()">
-      <div class="list-left"><span class="list-icon">💬</span><span class="list-title">WhatsApp हेल्पलाइन</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-    <div class="list-item" onclick="toggleLanguage()">
-      <div class="list-left"><span class="list-icon">🌐</span><span class="list-title">भाषा बदलें (Hindi / English)</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-    <div class="list-item" onclick="initWeather()">
-      <div class="list-left"><span class="list-icon">🔄</span><span class="list-title">मौसम रिफ्रेश करें</span></div>
-      <span class="arrow">&gt;</span>
-    </div>
-  </div>
-
-  <!-- Bottom Nav Bar -->
-  <div class="bottom-nav">
-    <div class="nav-tab active" onclick="goToScreen('screen-home', t('appTitle'))">
-      <span>🏠</span><span id="navHome">होम</span>
-    </div>
-    <div class="nav-tab" onclick="showCropsList()">
-      <span>🥬</span><span id="navCrops">फसलें</span>
-    </div>
-    <div class="nav-tab" onclick="goToScreen('screen-diseases', t('cropProtection'))">
-      <span>🛡️</span><span id="navProt">सुरक्षा</span>
-    </div>
-    <div class="nav-tab" onclick="contactAdvisor()">
-      <span>💬</span><span id="navHelp">हेल्पलाइन</span>
-    </div>
-  </div>
-
-  <script>
-    // --- 1. Firebase Config ---
-    const firebaseConfig = {
-      apiKey: "AIzaSyDoB-CCghRUdK3DVJqGkx3",
-      authDomain: "sabzi-doctor.firebaseapp.com",
-      databaseURL: "https://sabzi-doctor-default-rtdb.firebaseio.com",
-      projectId: "सब्जी-डॉक्टर",
-      storageBucket: "sabzi-doctor.appspot.com",
-      messagingSenderId: "991132609380",
-      appId: "1:991132609380:web:3ca08fe0cfb7953785e871"
-    };
-
-    // Google AI Studio की मुफ़्त API Key यहाँ लगाएं
-    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; 
-
-    let confirmationResultGlobal = null;
-    try {
-      firebase.initializeApp(firebaseConfig);
-    } catch(e) {
-      console.log("Firebase Init", e);
-    }
-
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/export?format=csv';
-
-    let currentLang = localStorage.getItem('appLang') || 'hi';
-    let sheetRecords = [];
-    const historyStack = ['screen-home'];
-    let currentUploadedBase64 = null;
-
-    // विस्तृत सटीक रोग व दवा डेटाबेस (यदि API Key न भी हो तो फसल अनुसार सही दवा आएगी)
-    const diseaseDatabase = {
-      "मिर्च": {
-        "पत्ती": {
-          title: "मिर्च का मरोड़िया (चूर्णी रोग/थ्रिप्स)",
-          symptoms: "पत्तियां नाव की तरह ऊपर या नीचे मुड़ जाती हैं, पौधे का बढ़वार रुक जाता है।",
-          medicine: "पेगासस (Pegasus) 25 ग्राम या जंप (Jump) 2 ग्राम प्रति 15 लीटर पंप छिड़कें।"
-        },
-        "फल": {
-          title: "मिर्च का फल सड़न (एन्थ्रेक्नोज / फल छेदक)",
-          symptoms: "फलों पर काले धब्बे पड़ना, मिर्च सूखकर गिरना या फल में छेद।",
-          medicine: "कस्टोडिया 25 मिली + कोराजन 6 मिली प्रति 15 लीटर पंप का स्प्रे करें।"
-        },
-        "तना": {
-          title: "मिर्च का उकठा (विल्ट / जड़ गलन)",
-          symptoms: "हरा पौधा अचानक दोपहर में मुरझा कर सूख जाता है।",
-          medicine: "रोको (Thiophanate Methyl) 30 ग्राम + स्ट्रेप्टोसाइक्लिन 2 ग्राम की ड्रेंचिंग (जड़ों में पानी) करें।"
-        }
-      },
-      "टमाटर": {
-        "पत्ती": {
-          title: "टमाटर का अगेती व पछेती झुलसा (Blight)",
-          symptoms: "पत्तियों पर कत्थई-काले छल्लेदार गोल धब्बे पड़ना और पत्तियां झुलसना।",
-          medicine: "रिडोमिल गोल्ड (Ridomil Gold) 35 ग्राम या सेक्टिन 30 ग्राम प्रति 15L पंप छिड़कें।"
-        },
-        "फल": {
-          title: "टमाटर फल छेदक व फल सड़न",
-          symptoms: "टमाटर के फल में छेद होना और अंदर सुंडी का निकलना।",
-          medicine: "एम्प्लीगो (Ampligo) 10 मिली या फेम (Fame) 5 मिली प्रति 15L पंप का स्प्रे करें।"
-        },
-        "तना": {
-          title: "बैक्टीरियल विल्ट (जीवाणु मुरझान)",
-          symptoms: "तना अंदर से भूरा पड़ना और पौधे का अचानक सूखना।",
-          medicine: "कॉपर ऑक्सीक्लोराइड 40 ग्राम + स्ट्रेप्टोसाइक्लिन 2 ग्राम प्रति 15 लीटर से जड़ों में सिंचाई दें।"
-        }
-      },
-      "खीरा": {
-        "पत्ती": {
-          title: "डाउनी मिल्ड्यू / पाउडरी मिल्ड्यू (पत्ती पर पीलापन)",
-          symptoms: "पत्तियों के ऊपर कोणीय पीले धब्बे और नीचे बैंगनी-सफेद फफूंद।",
-          medicine: "एलियट (Aliette) 35 ग्राम या इनफिनिटो 35 मिली प्रति 15L पंप तुरंत स्प्रे करें।"
-        },
-        "फल": {
-          title: "खीरे का फल टेढ़ा होना व मक्खी का डंक (Fruit Fly)",
-          symptoms: "फल टेढ़े-मेढ़े होना, डंक वाली जगह से पीला पड़कर सड़ना।",
-          medicine: "खेत में फेरोमोन ट्रैप लगाएं और कराटे 25 मिली प्रति 15L पंप का स्प्रे करें।"
-        },
-        "तना": {
-          title: "जड़ गलन / कॉलर रॉट",
-          symptoms: "जमीन के पास से तना गलना और बेल का सूख जाना।",
-          medicine: "ब्लू कॉपर 40 ग्राम प्रति 15 लीटर पानी में घोलकर तने के पास डालें।"
-        }
-      },
-      "करेला": {
-        "पत्ती": {
-          title: "करेले का मोज़ेक वायरस / थ्रिप्स",
-          symptoms: "पत्तियां छोटी व खुरदरी होकर पीली-हरी चितकबरी हो जाती हैं।",
-          medicine: "कॉनफिडोर 10 मिली + नीम तेल 30 मिली प्रति 15L पंप मिलाकर स्प्रे करें।"
-        },
-        "फल": {
-          title: "फल मक्खी का डंक",
-          symptoms: "करेला पीला पड़कर अंदर से सड़ना।",
-          medicine: "मक्खी ट्रैप लगाएं + प्रोफेनोफॉस 30 मिली प्रति पंप छिड़कें।"
-        },
-        "तना": {
-          title: "फ्यूजेरियम विल्ट",
-          symptoms: "पूरी बेल एक तरफ से मुरझाकर सूख जाती है।",
-          medicine: "ट्राइकोडर्मा 1 किग्रा को गोबर खाद में मिलाकर जड़ों में दें या कार्बेंडाजिम 25 ग्राम घोलें।"
-        }
-      },
-      "बैंगन": {
-        "पत्ती": {
-          title: "बैंगन का छोटी पत्ती रोग (Little Leaf)",
-          symptoms: "पत्तियां बहुत छोटी हो जाती हैं और झाड़ीनुमा आकार ले लेती हैं।",
-          medicine: "रोग फैलाने वाले कीट के लिए रोगोर (Rogor) 25 मिली प्रति 15L पंप छिड़कें।"
-        },
-        "फल": {
-          title: "तना व फल छेदक (Shoot & Fruit Borer)",
-          symptoms: "शीर्ष शाखाएं मुरझाना और फलों में सुंडी द्वारा छेद होना।",
-          medicine: "कोराजन (Coragen) 6 मिली या डेलिगेट 15 मिली प्रति 15L पंप स्प्रे करें।"
-        },
-        "तना": {
-          title: "जड़ गलन",
-          symptoms: "जड़ें काली पड़ना।",
-          medicine: "साफ (SAAF) फफूंदनाशक 35 ग्राम प्रति पंप से ड्रेंचिंग करें।"
-        }
-      },
-      "फूलगोभी": {
-        "पत्ती": {
-          title: "डायमंड बैक मोथ (DBM सुंडी)",
-          symptoms: "पत्तियों में छलनी जैसे छेद होना।",
-          medicine: "प्रोक्लेम (Proclaim) 8 ग्राम प्रति 15L पंप का छिड़काव करें।"
-        },
-        "फल": {
-          title: "फूल पर भूरापन / काला सड़न",
-          symptoms: "फूल का रंग भूरा या काला पड़ना।",
-          medicine: "बोरॉन 20% (25 ग्राम) + रोको 25 ग्राम प्रति 15L पंप छिड़कें।"
-        },
-        "तना": {
-          title: "डैम्पिंग ऑफ (आर्द्र पतन)",
-          symptoms: "जमीन के पास तना पतला होकर गिर जाना।",
-          medicine: "रिडोमिल गोल्ड 30 ग्राम प्रति पंप से जड़ों में स्प्रे करें।"
-        }
-      },
-      "भिंडी": {
-        "पत्ती": {
-          title: "पीला मोज़ेक वायरस (YVMV)",
-          symptoms: "पत्तियों की नसें पीली पड़ जाना और पूरा पौधा पीला दिखना।",
-          medicine: "सफेद मक्खी को रोकने के लिए ओबेरॉन (Oberon) 20 मिली प्रति 15L पंप छिड़कें।"
-        },
-        "फल": {
-          title: "भिंडी फल छेदक कीट",
-          symptoms: "भिंडी में छेद और फल टेढ़ा होना।",
-          medicine: "इमामेक्टिन बेंजोएट 8 ग्राम प्रति 15L पंप स्प्रे करें।"
-        },
-        "तना": {
-          title: "उकठा रोग",
-          symptoms: "पौधा सूखना।",
-          medicine: "साफ (Saaf) 30 ग्राम प्रति पंप ड्रेंचिंग करें।"
-        }
-      }
-    };
-
-    const i18n = {
-      hi: {
-        appTitle: "सब्जी फसल और बीज जानकारी",
-        langBtnText: "🌐 ENG",
-        searchPlaceholder: "🔍 बीज या फसल खोजें...",
-        listening: "🎙️ बोलिए, सुन रहा हूँ...",
-        menuCrops: "सब्जी फसलें",
-        cropProtection: "फसल सुरक्षा",
-        menuAllSeeds: "सभी बीज किस्में",
-        menuAdvisor: "सलाहकार",
-        menuOther: "Other (अन्य सेवाएं)",
-        fabSol: "तुरंत समाधान",
-        solModalHeader: "⚡ तुरंत समाधान (AI रोग पहचान)",
-        navHome: "होम",
-        navCrops: "फसलें",
-        navProt: "सुरक्षा",
-        navHelp: "हेल्पलाइन",
-        leafCurl: "पत्ती लपेटक (मरोड़िया) रोग",
-        blight: "अगेती व पछेती झुलसा",
-        borer: "फल छेदक कीट"
-      },
-      en: {
-        appTitle: "Crop & Seed Guide",
-        langBtnText: "🌐 हिंदी",
-        searchPlaceholder: "🔍 Search seed or crop...",
-        listening: "🎙️ Listening, please speak...",
-        menuCrops: "Vegetable Crops",
-        cropProtection: "Crop Protection",
-        menuAllSeeds: "All Seed Varieties",
-        menuAdvisor: "Advisor",
-        menuOther: "Other Services",
-        fabSol: "Instant Solution",
-        solModalHeader: "⚡ Instant Solution (AI Diagnosis)",
-        navHome: "Home",
-        navCrops: "Crops",
-        navProt: "Protection",
-        navHelp: "Helpline",
-        leafCurl: "Leaf Curl Disease",
-        blight: "Early & Late Blight",
-        borer: "Fruit Borer Pest"
-      }
-    };
-
-    function t(key) {
-      return i18n[currentLang][key] || key;
-    }
-
-    // 1. लॉगिन व OTP
-    function checkLoginStatus() {
-      const savedUser = localStorage.getItem('kisanUser');
-      if (!savedUser) {
-        document.getElementById('screen-welcome').style.display = 'flex';
-        initRecaptcha();
-      } else {
-        showUserGreeting(JSON.parse(savedUser).name);
-      }
-    }
-
-    function initRecaptcha() {
-      try {
-        if (!window.recaptchaVerifier) {
-          window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-            'size': 'invisible'
-          });
-        }
-      } catch (e) {
-        console.log("Recaptcha error", e);
-      }
-    }
-
-    function showUserGreeting(name) {
-      if (name) {
-        const bar = document.getElementById('userGreetingBar');
-        bar.innerText = `राम-राम, ${name} जी! आपका स्वागत है।`;
-        bar.style.display = 'block';
-      }
-    }
-
-    function sendOtpStep() {
-      const name = document.getElementById('farmerName').value.trim();
-      const phone = document.getElementById('farmerPhone').value.trim();
-      
-      if (!name || phone.length < 10) {
-        alert("कृपया अपना नाम और 10 अंकों का मोबाइल नंबर दर्ज करें।");
-        return;
-      }
-
-      document.getElementById('stepInput').style.display = 'none';
-      document.getElementById('stepOtp').style.display = 'block';
-
-      const fullPhone = '+91' + phone;
-      firebase.auth().signInWithPhoneNumber(fullPhone, window.recaptchaVerifier)
-        .then((confirmationResult) => {
-          confirmationResultGlobal = confirmationResult;
-          document.getElementById('otpStatusTxt').innerText = "मोबाइल नंबर +91-" + phone + " पर SMS भेज दिया गया है:";
-        })
-        .catch((error) => {
-          console.error("SMS Error: ", error);
-          document.getElementById('otpStatusTxt').innerText = "SMS भेजने में देरी हुई। आप नीचे 'स्किप' दबाकर सीधे अंदर जा सकते हैं।";
-        });
-
-      if ('OTPCredential' in window) {
-        const ac = new AbortController();
-        navigator.credentials.get({
-          otp: { transport: ['sms'] },
-          signal: ac.signal
-        }).then(otp => {
-          if (otp && otp.code) {
-            document.getElementById('otpInput').value = otp.code;
-            verifyOtpStep();
-          }
-        }).catch(err => console.log('WebOTP timeout', err));
-      }
-    }
-
-    function verifyOtpStep() {
-      const code = document.getElementById('otpInput').value.trim();
-      const name = document.getElementById('farmerName').value.trim() || 'किसान भाई';
-      const phone = document.getElementById('farmerPhone').value.trim();
-
-      if (confirmationResultGlobal) {
-        confirmationResultGlobal.confirm(code)
-          .then(() => finishLogin(name, phone))
-          .catch(() => alert("गलत OTP दर्ज किया गया है। कृपया सही कोड डालें या नीचे स्किप करें।"));
-      } else {
-        if (code.length >= 4) {
-          finishLogin(name, phone);
-        } else {
-          alert("कृपया सही OTP दर्ज करें या नीचे 'स्किप' दबाएं।");
-        }
-      }
-    }
-
-    function finishLogin(name, phone) {
-      localStorage.setItem('kisanUser', JSON.stringify({ name: name, phone: phone }));
-      document.getElementById('screen-welcome').style.display = 'none';
-      showUserGreeting(name);
-    }
-
-    function skipLogin() {
-      const name = document.getElementById('farmerName').value.trim() || '';
-      const phone = document.getElementById('farmerPhone').value.trim() || '';
-      localStorage.setItem('kisanUser', JSON.stringify({ name: name, phone: phone }));
-      document.getElementById('screen-welcome').
+    <!-- 5 COLORFUL GRID BUTTONS -->
+    <div class="grid
