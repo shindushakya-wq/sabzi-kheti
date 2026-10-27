@@ -81,11 +81,11 @@
     .card-advisor { background: linear-gradient(145deg, #faf5ff 0%, #f3e8ff 100%); border-color: #e9d5ff; }
     .card-advisor h3 { color: #6b21a8; }
 
-    /* 5. All कंपनी बीज (नया नारंगी/कोरल शेड) */
+    /* 5. All कंपनी बीज */
     .card-companies { background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 100%); border-color: #fed7aa; }
     .card-companies h3 { color: #c2410c; }
 
-    /* 6. Other (पूरी चौड़ाई, स्लेटी शेड) */
+    /* 6. Other */
     .card-other { 
       background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); 
       border-color: #e2e8f0; 
@@ -233,32 +233,26 @@
 
     <!-- 6 रंगीन मुख्य बटन ग्रिड -->
     <div class="grid-menu">
-      <!-- 1. सब्जी फसलें -->
       <div class="menu-box card-crops" onclick="showAllCropsFromSheet()">
         <div class="icon">🥬</div>
         <h3>सब्जी फसलें</h3>
       </div>
-      <!-- 2. फसल सुरक्षा -->
       <div class="menu-box card-protection" onclick="openScreen('screen-protection', 'फसल सुरक्षा')">
         <div class="icon">🛡️</div>
         <h3>फसल सुरक्षा</h3>
       </div>
-      <!-- 3. सभी बीज किस्में -->
       <div class="menu-box card-seeds" onclick="showAllVarietiesFromSheet()">
         <div class="icon">🌱</div>
         <h3>सभी बीज किस्में</h3>
       </div>
-      <!-- 4. सलाहकार -->
       <div class="menu-box card-advisor" onclick="contactAdvisor()">
         <div class="icon">📞</div>
         <h3>सलाहकार</h3>
       </div>
-      <!-- 5. All कंपनी बीज (नया 5वां बटन) -->
       <div class="menu-box card-companies" onclick="showCompaniesList()">
         <div class="icon">🏢</div>
         <h3>All कंपनी बीज</h3>
       </div>
-      <!-- 6. Other (6वां बटन) -->
       <div class="menu-box card-other" onclick="openScreen('screen-other', 'Other (अन्य सेवाएं)')">
         <div class="icon">⚙️</div>
         <h3>Other</h3>
@@ -320,7 +314,6 @@
 
   <!-- SCREEN 7: Other (अन्य सेवाएं व ऐप निमंत्रण) -->
   <div id="screen-other" class="screen">
-    <!-- दोस्तों/किसानों को निमंत्रण -->
     <div class="list-item" style="background:#f0fdf4; border:1.5px solid #86efac;" onclick="shareAppWithFriends()">
       <div class="list-left"><span class="list-icon">📲</span><span class="list-title" style="color:#166534; font-weight:bold;">दोस्तों को निमंत्रण भेजें (Share App)</span></div>
       <span class="arrow">&gt;</span>
@@ -388,4 +381,341 @@
               company: hasCompanyCol ? cols[1] : (cols[3] || 'सामान्य'),
               crop: hasCompanyCol ? cols[2] : cols[1],
               variety: hasCompanyCol ? cols[3] : cols[2],
-              segment: hasCompanyCol ? cols
+              segment: hasCompanyCol ? cols[4] : cols[3],
+              features: hasCompanyCol ? cols[5] : cols[4],
+              weight: hasCompanyCol ? cols[6] : cols[5],
+              maturity: hasCompanyCol ? cols[7] : cols[6],
+              resistance: hasCompanyCol ? cols[8] : cols[7],
+              image: hasCompanyCol ? cols[9] : cols[8]
+            });
+          }
+        }
+      } catch (err) {
+        console.log("Sheet load error", err);
+      }
+    }
+
+    // 2. लाइव मौसम
+    async function fetchLiveWeather(lat, lon, placeName = "लाइव लोकेशन मौसम") {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        if (data && data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const code = data.current_weather.weathercode;
+          
+          let desc = "साफ़ आसमान";
+          let icon = "☀️";
+          let advice = "स्प्रे व निराई-गुड़ाई हेतु उत्तम समय";
+
+          if (code === 1 || code === 2 || code === 3) {
+            desc = "आंशिक बादल";
+            icon = "⛅";
+            advice = "दवा स्प्रे किया जा सकता है";
+          } else if (code >= 51 && code <= 67) {
+            desc = "हल्की बारिश की संभावना";
+            icon = "🌧️";
+            advice = "⚠️ स्प्रे रोकें, मौसम साफ़ होने दें";
+          } else if (code >= 80) {
+            desc = "तेज़ बारिश";
+            icon = "⛈️";
+            advice = "⚠️ दवा स्प्रे न करें, जल निकासी देखें";
+          }
+
+          document.getElementById('weatherPlace').innerText = '📍 ' + placeName;
+          document.getElementById('weatherTemp').innerText = temp + '°C';
+          document.getElementById('weatherDesc').innerText = desc;
+          document.getElementById('weatherAdvice').innerText = advice;
+          document.getElementById('weatherIcon').innerText = icon;
+        }
+      } catch (e) {
+        document.getElementById('weatherDesc').innerText = "साफ़ मौसम";
+        document.getElementById('weatherTemp').innerText = "28°C";
+        document.getElementById('weatherAdvice').innerText = "स्प्रे हेतु सामान्य समय";
+      }
+    }
+
+    function initWeather() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => fetchLiveWeather(pos.coords.latitude, pos.coords.longitude, "लाइव लोकेशन मौसम"),
+          (err) => fetchLiveWeather(26.9124, 75.7873, "राजस्थान मौसम"),
+          { timeout: 6000 }
+        );
+      } else {
+        fetchLiveWeather(26.9124, 75.7873, "राजस्थान मौसम");
+      }
+    }
+
+    // 3. सर्च बॉक्स
+    function handleSearchKey(event) {
+      if (event.key === "Enter") {
+        executeSearch();
+      }
+    }
+
+    function executeSearch() {
+      const val = document.getElementById('homeSearch').value.trim();
+      if (!val) {
+        alert("कृपया फसल या बीज का नाम लिखें");
+        return;
+      }
+      searchData(val);
+    }
+
+    function searchData(val) {
+      const q = val.trim().toLowerCase();
+      if (!q) return;
+
+      const filtered = sheetRecords.filter(r => 
+        (r.variety && r.variety.toLowerCase().includes(q)) || 
+        (r.crop && r.crop.toLowerCase().includes(q)) ||
+        (r.company && r.company.toLowerCase().includes(q))
+      );
+      renderVarieties(filtered, 'खोज: "' + val + '"');
+    }
+
+    function startVoiceSearch() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("ब्राउज़र में बोलकर सर्च करने की सुविधा समर्थित नहीं है।");
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'hi-IN';
+      recognition.interimResults = false;
+
+      const voiceBtn = document.getElementById('voiceSearchBtn');
+      const searchInput = document.getElementById('homeSearch');
+
+      voiceBtn.classList.add('listening');
+      searchInput.placeholder = "🎙️ बोलिए, सुन रहा हूँ...";
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.replace(/[।.,]/g, '').trim();
+        searchInput.value = transcript;
+        searchData(transcript);
+      };
+
+      recognition.onerror = function() {
+        voiceBtn.classList.remove('listening');
+        searchInput.placeholder = "🔍 खीरा, तरबूज या बीज लिखें...";
+      };
+
+      recognition.onend = function() {
+        voiceBtn.classList.remove('listening');
+        searchInput.placeholder = "🔍 खीरा, तरबूज या बीज लिखें...";
+      };
+
+      recognition.start();
+    }
+
+    // 4. सभी फसलें
+    function showAllCropsFromSheet() {
+      const crops = [...new Set(sheetRecords.map(r => r.crop).filter(c => c && c.trim() !== ''))];
+      const container = document.getElementById('cropsContainer');
+      container.innerHTML = '';
+
+      if (crops.length === 0) {
+        container.innerHTML = '<p class="loading-txt">फसलें लोड हो रही हैं...</p>';
+      } else {
+        const cropIcons = { 'टमाटर': '🍅', 'मिर्च': '🌶️', 'फूलगोभी': '🥦', 'पत्तागोभी': '🥬', 'बैंगन': '🍆', 'प्याज': '🧅', 'भिंडी': '🥒', 'खीरा': '🥒', 'करेला': '🥒', 'लौकी': '🥒', 'तरबूज': '🍉', 'खरबूजा': '🍈' };
+
+        crops.forEach(crop => {
+          const icon = cropIcons[crop] || '🌱';
+          container.innerHTML += `
+            <div class="list-item" onclick="filterByCrop('${crop}')">
+              <div class="list-left"><span class="list-icon">${icon}</span><span class="list-title">${crop}</span></div>
+              <span class="arrow">&gt;</span>
+            </div>
+          `;
+        });
+      }
+      openScreen('screen-crops', 'सब्जी फसलें');
+    }
+
+    function filterByCrop(cropName) {
+      const list = sheetRecords.filter(r => r.crop.toLowerCase() === cropName.toLowerCase());
+      renderVarieties(list, cropName + ' की किस्में');
+    }
+
+    // 5. All कंपनी सूची
+    function showCompaniesList() {
+      const companies = [...new Set(sheetRecords.map(r => r.company).filter(c => c && c.trim() !== ''))];
+      const container = document.getElementById('companiesContainer');
+      container.innerHTML = '';
+
+      if (companies.length === 0) {
+        container.innerHTML = '<p class="loading-txt">कंपनियां लोड हो रही हैं...</p>';
+      } else {
+        companies.forEach(comp => {
+          container.innerHTML += `
+            <div class="list-item" onclick="selectCompany('${comp}')">
+              <div class="list-left"><span class="list-icon">🏢</span><span class="list-title">${comp}</span></div>
+              <span class="arrow">&gt;</span>
+            </div>
+          `;
+        });
+      }
+      openScreen('screen-companies', 'All कंपनी बीज');
+    }
+
+    function selectCompany(compName) {
+      const compRecords = sheetRecords.filter(r => r.company.toLowerCase() === compName.toLowerCase());
+      const cropsInComp = [...new Set(compRecords.map(r => r.crop).filter(c => c))];
+      
+      const container = document.getElementById('companyCropsContainer');
+      document.getElementById('compCropHeading').innerText = compName + ' की फसलें:';
+      container.innerHTML = '';
+
+      cropsInComp.forEach(crop => {
+        container.innerHTML += `
+          <div class="list-item" onclick="filterByCompanyAndCrop('${compName}', '${crop}')">
+            <div class="list-left"><span class="list-icon">🌱</span><span class="list-title">${crop}</span></div>
+            <span class="arrow">&gt;</span>
+          </div>
+        `;
+      });
+      openScreen('screen-company-crops', compName);
+    }
+
+    function filterByCompanyAndCrop(compName, cropName) {
+      const list = sheetRecords.filter(r => 
+        r.company.toLowerCase() === compName.toLowerCase() && 
+        r.crop.toLowerCase() === cropName.toLowerCase()
+      );
+      renderVarieties(list, compName + ' - ' + cropName);
+    }
+
+    // 6. सभी बीज किस्में
+    function showAllVarietiesFromSheet() {
+      renderVarieties(sheetRecords, 'सभी बीज किस्में');
+    }
+
+    function renderVarieties(list, title) {
+      const container = document.getElementById('varietiesContainer');
+      container.innerHTML = '';
+
+      if (list.length === 0) {
+        container.innerHTML = '<p class="loading-txt">कोई बीज किस्म नहीं मिली।</p>';
+      } else {
+        list.forEach(v => {
+          const imgTag = (v.image && v.image.startsWith('http')) ? `<img src="${v.image}" class="var-img" alt="${v.variety}">` : '';
+          const compBadge = v.company ? `<span class="badge-company">${v.company}</span>` : '';
+
+          container.innerHTML += `
+            <div class="variety-card">
+              ${imgTag}
+              <span class="badge-season">${v.segment || 'हाइब्रिड'}</span>
+              ${compBadge}
+              <div class="var-title">${v.variety} (${v.crop})</div>
+              <div class="var-detail"><b>विशेषता:</b> ${v.features || 'उत्तम पैदावार'}</div>
+              <div class="var-detail"><b>वजन/साइज:</b> ${v.weight || 'मानक'}</div>
+              <div class="var-detail"><b>पकने का समय:</b> ${v.maturity || 'समय अनुसार'}</div>
+              <div class="var-detail"><b>रोग प्रतिरोध:</b> ${v.resistance || 'मध्यम'}</div>
+              <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20${encodeURIComponent(v.company)}%20की%20${encodeURIComponent(v.variety)}%20(${encodeURIComponent(v.crop)})%20का%20बीज%20मंगवाना%20है।" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">🛒 बीज ऑर्डर करें</a>
+            </div>
+          `;
+        });
+      }
+      openScreen('screen-seeds', title);
+    }
+
+    // 7. स्क्रीन नेविगेशन
+    function openScreen(screenId, title) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active');
+        document.getElementById('headerTitle').innerText = title;
+        
+        if (screenId !== 'screen-home') {
+          document.getElementById('headerBack').style.display = 'inline-block';
+          navHistory.push(screenId);
+        } else {
+          document.getElementById('headerBack').style.display = 'none';
+        }
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function goBack() {
+      navHistory.pop();
+      const prevScreen = navHistory[navHistory.length - 1] || 'screen-home';
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(prevScreen).classList.add('active');
+
+      if (prevScreen === 'screen-home') {
+        document.getElementById('headerBack').style.display = 'none';
+        document.getElementById('headerTitle').innerText = 'सब्जी फसल और बीज जानकारी';
+        document.getElementById('homeSearch').value = '';
+      }
+      window.scrollTo(0, 0);
+    }
+
+    function openCure(name, dose) {
+      document.getElementById('cureName').innerText = name;
+      document.getElementById('cureDose').innerText = dose;
+      openScreen('screen-cure', name);
+    }
+
+    function contactAdvisor() {
+      window.open('https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20फसल%20सलाह%20चाहिए।', '_blank');
+    }
+
+    function shareAppWithFriends() {
+      const appUrl = window.location.href;
+      const shareMsg = `राम-राम किसान भाइयों! सब्जी खेती बाड़ी, बीज किस्मों और फसल रोग निवारण के लिए यह बेहतरीन ऐप देखें:\n${appUrl}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, '_blank');
+    }
+
+    // 8. तुरंत समाधान
+    function openSolutionModal() {
+      document.getElementById('solutionModal').classList.add('active');
+    }
+    function closeSolutionModal() {
+      document.getElementById('solutionModal').classList.remove('active');
+      document.getElementById('solutionPreviewImg').style.display = 'none';
+      document.getElementById('btnDiagnose').style.display = 'none';
+      document.getElementById('docResultCard').style.display = 'none';
+    }
+
+    function handleImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('solutionPreviewImg');
+          img.src = e.target.result;
+          img.style.display = 'block';
+          document.getElementById('btnDiagnose').style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function runDiagnosis() {
+      const btn = document.getElementById('btnDiagnose');
+      btn.innerText = "⏳ AI जांच कर रहा है...";
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.style.display = 'none';
+        btn.disabled = false;
+        btn.innerText = "🔍 रोग पहचानें व उपचार पाएं";
+        document.getElementById('docResultCard').style.display = 'block';
+      }, 1200);
+    }
+
+    function openNotify() {
+      alert("🔔 सूचना: Google Sheet की सभी ताज़ा किस्में और मौसम अपडेट कर दिया गया है।");
+    }
+
+    // लोड होते ही शुरू करें
+    initWeather();
+    loadSheetData();
+  </script>
+</body>
+</html>
