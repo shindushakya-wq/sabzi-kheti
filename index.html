@@ -69,7 +69,7 @@
     .story-name { font-size: 11px; font-weight: 600; color: #374151; margin-top: 5px; max-width: 65px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* मौसम कार्ड */
-    .weather-card { border-radius: 14px; padding: 14px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #bbf7d0; cursor: pointer; transition: background 0.3s ease, border-color 0.3s ease; }
+    .weather-card { border-radius: 14px; padding: 14px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1.5px solid #bbf7d0; cursor: pointer; transition: background 0.3s ease, border-color 0.3s ease; }
     .weather-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 6px; margin-bottom: 8px; }
     .weather-card h4 { font-size: 14px; font-weight: 700; }
     .weather-datetime { font-size: 11px; font-weight: 600; }
@@ -377,7 +377,7 @@
     <!-- गोल स्टोरी बार -->
     <div class="stories-wrapper" id="storiesBarContainer"></div>
 
-    <!-- मौसम कार्ड (रात/दिन ऑटो-डिटेक्ट) -->
+    <!-- मौसम कार्ड (रात और दिन ऑटो-डिटेक्ट) -->
     <div class="weather-card" onclick="showWeatherDetailScreen()">
       <div class="weather-header-row">
         <h4 id="weatherPlace">📍 राजस्थान</h4>
@@ -725,7 +725,7 @@
     const VIDEOS_SHEET_URL = `${BASE_GV}Videos`;
     const MANDI_SHEET_URL = `${BASE_GV}Mandi`;
 
-    // Users टैब में डेटा भेजने का Apps Script लिंक (यदि तैयार हो तो डालें)
+    // Users टैब में डेटा भेजने का Apps Script लिंक (यदि तैयार हो तो यहाँ डालें)
     const USERS_SCRIPT_URL = '';
 
     let currentImgElement = null;
@@ -986,34 +986,41 @@
       updateProfileUI();
     }
 
-    // रात और दिन का ऑटो-डिटेक्शन तथा दिनांक-समय
+    // ==========================================
+    // रात और दिन का ऑटो-डिटेक्शन तथा दिनांक, समय व शहर
+    // ==========================================
     function updateDateAndCity() {
       const now = new Date();
       const hours = now.getHours();
       const minutes = now.getMinutes().toString().padStart(2, '0');
-      const days = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
-      const months = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+      
+      const daysHi = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+      const monthsHi = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
 
       const ampm = hours >= 12 ? 'PM' : 'AM';
       const displayHours = hours % 12 || 12;
       const timeStr = `${displayHours}:${minutes} ${ampm}`;
-      const fullDateTimeStr = `📅 ${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} • ${timeStr}`;
 
-      const el = document.getElementById('weatherDateTime');
-      if (el) el.innerText = fullDateTimeStr;
+      // दिनांक और समय
+      const fullDateTimeStr = `📅 ${daysHi[now.getDay()]}, ${now.getDate()} ${monthsHi[now.getMonth()]} • ⏰ ${timeStr}`;
+
+      const timeEl = document.getElementById('weatherDateTime');
+      if (timeEl) timeEl.innerText = fullDateTimeStr;
 
       const detailDateEl = document.getElementById('detailDate');
-      if (detailDateEl) detailDateEl.innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} • ${timeStr}`;
+      if (detailDateEl) detailDateEl.innerText = fullDateTimeStr;
 
-      const userState = localStorage.getItem('farmer_state');
-      if (userState && userState.trim() !== '') {
-        const placeEl = document.getElementById('weatherPlace');
-        const detailCityEl = document.getElementById('detailCity');
-        if (placeEl) placeEl.innerText = `📍 ${userState}`;
-        if (detailCityEl) detailCityEl.innerText = `📍 ${userState}`;
-      }
+      // शहर का नाम (प्रोफ़ाइल से या डिफ़ॉल्ट)
+      const savedState = localStorage.getItem('farmer_state');
+      const cityName = (savedState && savedState.trim() !== '') ? savedState : 'राजस्थान';
+      
+      const placeEl = document.getElementById('weatherPlace');
+      if (placeEl) placeEl.innerText = `📍 ${cityName}`;
 
-      // रात का समय (शाम 6:00 बजे से सुबह 6:00 बजे तक)
+      const detailCityEl = document.getElementById('detailCity');
+      if (detailCityEl) detailCityEl.innerText = `📍 ${cityName}`;
+
+      // रात और दिन का निर्धारण (शाम 6:00 बजे से सुबह 6:00 बजे तक = रात)
       const isNight = (hours >= 18 || hours < 6);
 
       const weatherCard = document.querySelector('.weather-card');
@@ -1028,45 +1035,61 @@
       const detailAdvice = document.getElementById('detailWeatherAdvice');
 
       if (isNight) {
-        // 🌙 रात का मौसम
+        // 🌙 रात का मौसम (Night Mode)
         if (weatherIcon) weatherIcon.innerText = '🌙';
-        if (weatherTemp) weatherTemp.innerText = '21°C';
-        if (weatherDesc) { weatherDesc.innerText = 'साफ़ व शांत रात'; weatherDesc.style.color = '#e2e8f0'; }
-        if (weatherAdvice) { weatherAdvice.innerText = 'रात का समय: स्प्रे बंद रखें • ड्रिप से सिंचाई या विश्राम'; weatherAdvice.style.color = '#86efac'; }
-
-        if (detailIcon) detailIcon.innerText = '🌙';
-        if (detailTemp) detailTemp.innerText = '21°C';
-        if (detailDesc) detailDesc.innerText = 'तारों भरी साफ़ व शांत रात';
-        if (detailAdvice) detailAdvice.innerText = 'रात के समय कीटनाशक स्प्रे बंद रखें। सुबह या शाम के समय ही स्प्रे करना लाभदायक होता है।';
+        if (weatherTemp) {
+          weatherTemp.innerText = '21°C';
+          weatherTemp.style.color = '#38bdf8';
+        }
+        if (weatherDesc) {
+          weatherDesc.innerText = 'साफ़ व शांत रात';
+          weatherDesc.style.color = '#e2e8f0';
+        }
+        if (weatherAdvice) {
+          weatherAdvice.innerText = 'रात का समय: कीटनाशक स्प्रे बंद रखें • विश्राम का समय';
+          weatherAdvice.style.color = '#4ade80';
+        }
 
         if (weatherCard) {
-          weatherCard.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+          weatherCard.style.setProperty('background', 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', 'important');
           weatherCard.style.borderColor = '#334155';
-          weatherCard.style.color = '#f8fafc';
         }
-        const placeEl = document.getElementById('weatherPlace');
-        if (placeEl) placeEl.style.color = '#4ade80';
-        if (el) el.style.color = '#94a3b8';
+        if (placeEl) placeEl.style.color = '#38bdf8';
+        if (timeEl) timeEl.style.color = '#94a3b8';
+
+        // डिटेल स्क्रीन
+        if (detailIcon) detailIcon.innerText = '🌙';
+        if (detailTemp) { detailTemp.innerText = '21°C'; detailTemp.style.color = '#0284c7'; }
+        if (detailDesc) detailDesc.innerText = 'तारों भरी शांत रात';
+        if (detailAdvice) detailAdvice.innerText = 'रात के समय कीटनाशक स्प्रे न करें। सुबह या शाम के समय ही स्प्रे करना सबसे अधिक असरदार रहता है।';
+
       } else {
-        // ☀️ दिन का मौसम
+        // ☀️ दिन का मौसम (Day Mode)
         if (weatherIcon) weatherIcon.innerText = '☀️';
-        if (weatherTemp) weatherTemp.innerText = '28°C';
-        if (weatherDesc) { weatherDesc.innerText = 'साफ़ आसमान'; weatherDesc.style.color = '#374151'; }
-        if (weatherAdvice) { weatherAdvice.innerText = 'स्प्रे व निराई-गुड़ाई हेतु उत्तम समय'; weatherAdvice.style.color = '#1b5e20'; }
+        if (weatherTemp) {
+          weatherTemp.innerText = '28°C';
+          weatherTemp.style.color = '#1b5e20';
+        }
+        if (weatherDesc) {
+          weatherDesc.innerText = 'साफ़ आसमान';
+          weatherDesc.style.color = '#374151';
+        }
+        if (weatherAdvice) {
+          weatherAdvice.innerText = 'स्प्रे व निराई-गुड़ाई हेतु उत्तम समय';
+          weatherAdvice.style.color = '#1b5e20';
+        }
+
+        if (weatherCard) {
+          weatherCard.style.setProperty('background', 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)', 'important');
+          weatherCard.style.borderColor = '#bbf7d0';
+        }
+        if (placeEl) placeEl.style.color = '#1b5e20';
+        if (timeEl) timeEl.style.color = '#166534';
 
         if (detailIcon) detailIcon.innerText = '☀️';
-        if (detailTemp) detailTemp.innerText = '28°C';
+        if (detailTemp) { detailTemp.innerText = '28°C'; detailTemp.style.color = '#1b5e20'; }
         if (detailDesc) detailDesc.innerText = 'साफ़ और खिली हुई धूप';
-        if (detailAdvice) detailAdvice.innerText = 'आगामी 3 दिन मौसम पूरी तरह शुष्क रहेगा। सब्जियों में निराई-गुड़ाई, सिंचाई तथा कीटनाशक व टॉनिक का स्प्रे आसानी से कर सकते हैं।';
-
-        if (weatherCard) {
-          weatherCard.style.background = 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)';
-          weatherCard.style.borderColor = '#bbf7d0';
-          weatherCard.style.color = '#1f2937';
-        }
-        const placeEl = document.getElementById('weatherPlace');
-        if (placeEl) placeEl.style.color = '#1b5e20';
-        if (el) el.style.color = '#166534';
+        if (detailAdvice) detailAdvice.innerText = 'आगामी मौसम शुष्क रहेगा। फसलों में निराई-गुड़ाई, सिंचाई तथा स्प्रे आसानी से कर सकते हैं।';
       }
     }
 
@@ -1619,16 +1642,16 @@
       }
     }
 
-    // ऐप शुरू होने पर सब लोड होना
+    // ऐप शुरू होते ही सब कुछ लाइव लोड होगा
     window.onload = function() {
       checkLoginStatus();
       applyLanguage();
       updateDateAndCity();
 
-      // प्रति मिनट समय व रात/दिन अपडेट करना
+      // हर 1 मिनट में समय और मौसम अपडेट होता रहेगा
       setInterval(updateDateAndCity, 60000);
 
-      // सभी Google Sheets लोड करना
+      // Google Sheet से सारा डेटा फेच करना
       loadOnlineSheet();
       loadOnlineSchedule();
       loadOnlineProtection();
