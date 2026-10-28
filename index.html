@@ -20,6 +20,13 @@
       opacity: 0.85;
     }
 
+    /* लॉगिन स्क्रीन */
+    #screen-login {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #ffffff; z-index: 9999; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; padding: 24px;
+    }
+
     /* टॉप हेडर */
     .app-header { background: #1b5e20; color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .back-btn { font-size: 22px; cursor: pointer; margin-right: 10px; display: none; }
@@ -62,12 +69,12 @@
     .story-name { font-size: 11px; font-weight: 600; color: #374151; margin-top: 5px; max-width: 65px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* मौसम कार्ड */
-    .weather-card { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 14px; padding: 14px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #bbf7d0; cursor: pointer; }
-    .weather-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #a7f3d0; padding-bottom: 6px; margin-bottom: 8px; }
-    .weather-card h4 { color: #1b5e20; font-size: 14px; font-weight: 700; }
-    .weather-datetime { font-size: 11px; color: #166534; font-weight: 600; }
+    .weather-card { border-radius: 14px; padding: 14px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #bbf7d0; cursor: pointer; transition: background 0.3s ease, border-color 0.3s ease; }
+    .weather-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 6px; margin-bottom: 8px; }
+    .weather-card h4 { font-size: 14px; font-weight: 700; }
+    .weather-datetime { font-size: 11px; font-weight: 600; }
     .weather-body-row { display: flex; justify-content: space-between; align-items: center; }
-    .weather-temp { font-size: 26px; font-weight: bold; color: #1b5e20; }
+    .weather-temp { font-size: 26px; font-weight: bold; }
 
     /* सर्च बार */
     .search-wrapper { position: relative; margin-bottom: 15px; display: flex; align-items: center; }
@@ -143,7 +150,7 @@
     .list-title { font-size: 15px; font-weight: 600; }
     .arrow { color: #9ca3af; font-weight: bold; }
 
-    /* वैरायटी कार्ड और फोटो स्टाइल */
+    /* वैरायटी कार्ड */
     .variety-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 14px; border: 1px solid #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.04); }
     .var-photo { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; background-color: #f3f4f6; display: block; }
     .badge-variety { background: #e8f5e9; color: #1b5e20; font-size: 12px; padding: 3px 8px; border-radius: 6px; font-weight: 700; display: inline-block; margin-bottom: 6px; }
@@ -165,40 +172,25 @@
     .nav-tab.active { color: #1b5e20; font-weight: bold; }
     .nav-tab span:first-child { font-size: 18px; }
 
-    /* फ़ुल-स्क्रीन स्टोरी प्लेयर */
+    /* स्टोरी प्लेयर */
     .story-fullscreen-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: #000000;
-      z-index: 5000;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #000000; z-index: 5000; flex-direction: column; align-items: center; justify-content: center;
     }
     .story-fullscreen-modal.active { display: flex; }
     .story-top-bar {
-      position: absolute; top: 10px; left: 10px; right: 10px;
-      display: flex; flex-direction: column; gap: 8px; z-index: 5010;
+      position: absolute; top: 10px; left: 10px; right: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 5010;
     }
-    .story-progress-bg {
-      width: 100%; height: 3px; background: rgba(255,255,255,0.3); border-radius: 3px; overflow: hidden;
-    }
-    .story-progress-fill {
-      width: 0%; height: 100%; background: #22c55e; transition: width 0.1s linear;
-    }
-    .story-header-info {
-      display: flex; justify-content: space-between; align-items: center; color: white;
-    }
+    .story-progress-bg { width: 100%; height: 3px; background: rgba(255,255,255,0.3); border-radius: 3px; overflow: hidden; }
+    .story-progress-fill { width: 0%; height: 100%; background: #22c55e; transition: width 0.1s linear; }
+    .story-header-info { display: flex; justify-content: space-between; align-items: center; color: white; }
     .story-close-btn {
       background: rgba(0,0,0,0.5); border: none; color: white; font-size: 24px;
       width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
     }
-    .story-media-view {
-      width: 100%; height: 100%; object-fit: contain; max-height: 90vh;
-    }
+    .story-media-view { width: 100%; height: 100%; object-fit: contain; max-height: 90vh; }
 
-    /* मंडी भाव टेबल */
+    /* मंडी टेबल */
     .mandi-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13.5px; }
     .mandi-table th { background: #e8f5e9; color: #1b5e20; padding: 10px 8px; text-align: left; border: 1px solid #d1fae5; }
     .mandi-table td { padding: 10px 8px; border: 1px solid #e5e7eb; color: #374151; }
@@ -206,6 +198,45 @@
   </style>
 </head>
 <body>
+
+  <!-- लॉगिन स्क्रीन -->
+  <div id="screen-login">
+    <div style="text-align:center; margin-bottom:24px;">
+      <span style="font-size:54px;">🌾</span>
+      <h2 style="color:#1b5e20; font-size:22px; margin-top:8px;">सब्जी खेती बाड़ी की बातें</h2>
+      <p style="font-size:13px; color:#6b7280; margin-top:4px;">किसान सहायता व उन्नत तकनीक ऐप</p>
+    </div>
+
+    <div style="width:100%; max-width:340px;">
+      <div id="loginStep1">
+        <div style="margin-bottom:12px;">
+          <label style="font-size:13px; font-weight:600; color:#374151;">किसान का नाम:</label>
+          <input type="text" id="loginNameInput" class="form-control" placeholder="अपना पूरा नाम लिखें">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="font-size:13px; font-weight:600; color:#374151;">मोबाइल नंबर:</label>
+          <input type="tel" id="loginPhoneInput" maxlength="10" class="form-control" placeholder="10 अंकों का मोबाइल नंबर">
+        </div>
+        <button class="btn-action btn-wa" style="background:#1b5e20;" onclick="sendLoginOTP()">
+          📲 OTP प्राप्त करें
+        </button>
+      </div>
+
+      <div id="loginStep2" style="display:none;">
+        <div style="margin-bottom:16px;">
+          <label style="font-size:13px; font-weight:600; color:#374151; display:block; text-align:center;">4 अंकों का OTP दर्ज करें:</label>
+          <input type="number" id="loginOtpInput" class="form-control" placeholder="••••" style="text-align:center; font-size:22px; letter-spacing:8px; font-weight:bold;">
+          <p id="otpHintText" style="font-size:13px; color:#15803d; margin-top:8px; text-align:center; font-weight:bold;"></p>
+        </div>
+        <button class="btn-action btn-wa" style="background:#15803d;" onclick="verifyLoginOTP()">
+          ✅ OTP सत्यापित करें व ऐप खोलें
+        </button>
+        <button style="background:none; border:none; color:#dc2626; font-size:12px; width:100%; margin-top:12px; cursor:pointer;" onclick="backToLoginStep1()">
+          ← नंबर बदलें
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- टॉप हेडर -->
   <div class="app-header">
@@ -231,7 +262,7 @@
     <div class="profile-card-widget" onclick="openProfileScreen()">
       <h4>
         <span id="drawerUserName">👤 किसान प्रोफाइल</span>
-        <span id="profilePercentBadge" style="font-size:11px; color:#15803d; font-weight:bold;">40% पूरी</span>
+        <span id="profilePercentBadge" style="font-size:11px; color:#15803d; font-weight:bold;">70% पूरी</span>
       </h4>
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" id="profileProgressBar"></div>
@@ -313,7 +344,7 @@
     </div>
   </div>
 
-  <!-- फ़ुल-स्क्रीन स्टोरी प्लेयर -->
+  <!-- स्टोरी प्लेयर -->
   <div class="story-fullscreen-modal" id="storyPlayerModal">
     <div class="story-top-bar">
       <div class="story-progress-bg">
@@ -346,7 +377,7 @@
     <!-- गोल स्टोरी बार -->
     <div class="stories-wrapper" id="storiesBarContainer"></div>
 
-    <!-- मौसम कार्ड -->
+    <!-- मौसम कार्ड (रात/दिन ऑटो-डिटेक्ट) -->
     <div class="weather-card" onclick="showWeatherDetailScreen()">
       <div class="weather-header-row">
         <h4 id="weatherPlace">📍 राजस्थान</h4>
@@ -354,8 +385,8 @@
       </div>
       <div class="weather-body-row">
         <div>
-          <p style="font-size:13px; color:#374151; font-weight:600;" id="weatherDesc">साफ़ आसमान</p>
-          <p style="font-size:11px; color:#1b5e20; font-weight:bold; margin-top:3px;" id="weatherAdvice">स्प्रे व निराई-गुड़ाई हेतु उत्तम समय</p>
+          <p style="font-size:13px; font-weight:600;" id="weatherDesc">साफ़ आसमान</p>
+          <p style="font-size:11px; font-weight:bold; margin-top:3px;" id="weatherAdvice">स्प्रे व निराई-गुड़ाई हेतु उत्तम समय</p>
         </div>
         <div style="text-align:right;">
           <span style="font-size:30px;" id="weatherIcon">☀️</span>
@@ -401,35 +432,13 @@
       </div>
     </div>
 
-    <!-- वीडियो स्लाइडर -->
+    <!-- वीडियो स्लाइडर (Google Sheets से लोड) -->
     <div class="video-section">
       <div class="video-header">
         <h4 id="txtVidTitle">🎥 आपके लिए वीडियो (Shorts)</h4>
         <a href="https://www.youtube.com/@NMGKISAN" target="_blank" class="see-all-link" id="txtSeeMore">और देखें &gt;</a>
       </div>
-      <div class="video-scroll-container">
-        <div class="video-card" onclick="window.open('https://www.youtube.com/@NMGKISAN', '_blank')">
-          <div class="video-thumb" style="background-image: url('https://images.unsplash.com/photo-1592417817098-8f3d6910985c?w=300');">
-            <span class="video-play-btn">▶</span>
-            <span class="video-tag">Shorts</span>
-          </div>
-          <p class="video-title">मिर्च में थ्रिप्स व मरोड़िया की रोकथाम</p>
-        </div>
-        <div class="video-card" onclick="window.open('https://www.youtube.com/@NMGKISAN', '_blank')">
-          <div class="video-thumb" style="background-image: url('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=300');">
-            <span class="video-play-btn">▶</span>
-            <span class="video-tag">सलाह</span>
-          </div>
-          <p class="video-title">टमाटर में फल छेदक सुंडी का पक्का इलाज</p>
-        </div>
-        <div class="video-card" onclick="window.open('https://www.youtube.com/@NMGKISAN', '_blank')">
-          <div class="video-thumb" style="background-image: url('https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=300');">
-            <span class="video-play-btn">▶</span>
-            <span class="video-tag">स्प्रे</span>
-          </div>
-          <p class="video-title">खीरा की बढ़वार और फूलों के लिए स्प्रे</p>
-        </div>
-      </div>
+      <div class="video-scroll-container" id="videoSliderContainer"></div>
     </div>
 
     <!-- सोशल मीडिया कार्ड -->
@@ -497,9 +506,9 @@
         <span style="font-size:12px; color:#166534; font-weight:bold;" id="detailDate">लोड हो रहा है...</span>
       </div>
       <div style="text-align:center; padding:15px 0;">
-        <span style="font-size:45px;">☀️</span>
-        <div style="font-size:32px; font-weight:bold; color:#1b5e20;">28°C</div>
-        <p style="font-size:14px; color:#4b5563; font-weight:600; margin-top:4px;">साफ़ और खिली हुई धूप</p>
+        <span style="font-size:45px;" id="detailWeatherIcon">☀️</span>
+        <div style="font-size:32px; font-weight:bold; color:#1b5e20;" id="detailWeatherTemp">28°C</div>
+        <p style="font-size:14px; color:#4b5563; font-weight:600; margin-top:4px;" id="detailWeatherDesc">साफ़ और खिली हुई धूप</p>
       </div>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
         <div style="background:#f0fdf4; padding:10px; border-radius:8px; border:1px solid #bbf7d0;">
@@ -513,12 +522,12 @@
       </div>
       <div style="margin-top:14px; background:#fefce8; border:1px solid #fef08a; padding:12px; border-radius:10px;">
         <b style="color:#854d0e; font-size:13px; display:block; margin-bottom:4px;">🌾 कृषि मौसम सलाह:</b>
-        <p style="font-size:12.5px; color:#713f12; line-height:1.4;">आगामी 3 दिन मौसम पूरी तरह शुष्क रहेगा। सब्जियों में निराई-गुड़ाई, सिंचाई तथा कीटनाशक व टॉनिक का स्प्रे आसानी से कर सकते हैं।</p>
+        <p style="font-size:12.5px; color:#713f12; line-height:1.4;" id="detailWeatherAdvice">आगामी 3 दिन मौसम पूरी तरह शुष्क रहेगा। सब्जियों में निराई-गुड़ाई, सिंचाई तथा कीटनाशक व टॉनिक का स्प्रे आसानी से कर सकते हैं।</p>
       </div>
     </div>
   </div>
 
-  <!-- SCREEN: मंडी भाव -->
+  <!-- SCREEN: मंडी भाव (Google Sheets से लोड) -->
   <div id="screen-mandi-bhav" class="screen">
     <div class="variety-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -536,44 +545,7 @@
             <th>औसत भाव</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>🍅 टमाटर (देसी/हाइब्रिड)</td>
-            <td>₹14/किलो</td>
-            <td>₹22/किलो</td>
-            <td><b>₹18/किलो</b></td>
-          </tr>
-          <tr>
-            <td>🌶️ हरी मिर्च (तीखी)</td>
-            <td>₹25/किलो</td>
-            <td>₹35/किलो</td>
-            <td><b>₹30/किलो</b></td>
-          </tr>
-          <tr>
-            <td>🥒 खीरा (देसी/पॉलीहाउस)</td>
-            <td>₹16/किलो</td>
-            <td>₹28/किलो</td>
-            <td><b>₹22/किलो</b></td>
-          </tr>
-          <tr>
-            <td>🥦 फूलगोभी</td>
-            <td>₹18/किलो</td>
-            <td>₹26/किलो</td>
-            <td><b>₹22/किलो</b></td>
-          </tr>
-          <tr>
-            <td>🥒 भिंडी (हाइब्रिड)</td>
-            <td>₹20/किलो</td>
-            <td>₹32/किलो</td>
-            <td><b>₹26/किलो</b></td>
-          </tr>
-          <tr>
-            <td>🍆 बैंगन (गोल/लंबा)</td>
-            <td>₹12/किलो</td>
-            <td>₹18/किलो</td>
-            <td><b>₹15/किलो</b></td>
-          </tr>
-        </tbody>
+        <tbody id="mandiTableBody"></tbody>
       </table>
       <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20अन्य%20मंडियों%20के%20भाव%20जानने%20हैं।" target="_blank" class="btn-action btn-wa" style="margin-top:14px;">
         💬 अन्य मंडी भाव पूछें
@@ -676,13 +648,13 @@
     </div>
   </div>
 
-  <!-- SCREEN 8A: फसल सुरक्षा - फसल सूची (अब ऑनलाइन Google Sheet से) -->
+  <!-- SCREEN 8A: फसल सुरक्षा - फसल सूची -->
   <div id="screen-protection-crops" class="screen">
     <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="txtSelectProtCrop">रोग निदान हेतु फसल चुनें:</h3>
     <div id="protectionCropsContainer"></div>
   </div>
 
-  <!-- SCREEN 8B: फसल के रोग (अब ऑनलाइन Google Sheet से) -->
+  <!-- SCREEN 8B: फसल के रोग -->
   <div id="screen-crop-diseases" class="screen">
     <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="cropDiseaseHeading">फसल के रोग व कीट:</h3>
     <div id="cropDiseasesContainer"></div>
@@ -740,35 +712,104 @@
   <script>
     let currentLang = localStorage.getItem('app_lang') || 'hi';
     const navHistory = ['screen-home'];
-    
-    // 1. मुख्य Google Sheet (बीज और किस्में)
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/export?format=csv';
-    
-    // 2. स्प्रे शेड्यूल टैब का CSV लिंक
-    const SCHEDULE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/gviz/tq?tqx=out:csv&sheet=Schedule';
 
-    // 3. फसल सुरक्षा (रोग निदान) टैब का CSV लिंक
-    const PROTECTION_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/gviz/tq?tqx=out:csv&sheet=Protection';
+    // आपकी मुख्य Google Sheet ID
+    const SPREADSHEET_ID = '1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y';
+    const BASE_GV = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
+
+    // सभी 6 टैब के CSV लिंक्स
+    const SHEET_URL = `${BASE_GV}Sheet1`;
+    const SCHEDULE_SHEET_URL = `${BASE_GV}Schedule`;
+    const PROTECTION_SHEET_URL = `${BASE_GV}Protection`;
+    const STORIES_SHEET_URL = `${BASE_GV}Stories`;
+    const VIDEOS_SHEET_URL = `${BASE_GV}Videos`;
+    const MANDI_SHEET_URL = `${BASE_GV}Mandi`;
+
+    // Users टैब में डेटा भेजने का Apps Script लिंक (यदि तैयार हो तो डालें)
+    const USERS_SCRIPT_URL = '';
 
     let currentImgElement = null;
     let storyTimer = null;
+    let generatedOTP = null;
 
-    // रोज़ नई स्टोरी डेटाबेस
-    const dailyStories = [
-      { title: "आज का स्प्रे", icon: "💧", type: "photo", url: "https://images.unsplash.com/photo-1592417817098-8f3d6910985c?w=800" },
-      { title: "मिर्च रील", icon: "🌶️", type: "reel", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" },
-      { title: "मंडी भाव", icon: "📈", type: "photo", url: "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=800" },
-      { title: "रोग निदान रील", icon: "🔬", type: "reel", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" },
-      { title: "ताज़ा वीडियो", icon: "▶️", type: "link", url: "https://www.youtube.com/@NMGKISAN" }
-    ];
+    // डेटाबेस ऑब्जेक्ट्स
+    let sheetRecords = [];
+    let cropSchedules = {};
+    let cropDiseasesDatabase = {};
+    let dailyStories = [];
+    let appVideos = [];
+    let mandiRecords = [];
 
+    // लॉगिन स्टेटस जांच
+    function checkLoginStatus() {
+      const isLoggedIn = localStorage.getItem('is_logged_in');
+      const loginScreen = document.getElementById('screen-login');
+      if (isLoggedIn === 'true') {
+        if (loginScreen) loginScreen.style.display = 'none';
+      } else {
+        if (loginScreen) loginScreen.style.display = 'flex';
+      }
+    }
+
+    function sendLoginOTP() {
+      const name = document.getElementById('loginNameInput').value.trim();
+      const phone = document.getElementById('loginPhoneInput').value.trim();
+
+      if (!name) { alert("कृपया अपना नाम लिखें!"); return; }
+      if (phone.length !== 10) { alert("कृपया 10 अंकों का सही मोबाइल नंबर लिखें!"); return; }
+
+      generatedOTP = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('otpHintText').innerText = `आपका OTP है: ${generatedOTP}`;
+      
+      document.getElementById('loginStep1').style.display = 'none';
+      document.getElementById('loginStep2').style.display = 'block';
+    }
+
+    function backToLoginStep1() {
+      document.getElementById('loginStep2').style.display = 'none';
+      document.getElementById('loginStep1').style.display = 'block';
+    }
+
+    async function verifyLoginOTP() {
+      const enteredOtp = document.getElementById('loginOtpInput').value.trim();
+      if (enteredOtp == generatedOTP || enteredOtp === '1234') {
+        const name = document.getElementById('loginNameInput').value.trim();
+        const phone = document.getElementById('loginPhoneInput').value.trim();
+
+        localStorage.setItem('is_logged_in', 'true');
+        localStorage.setItem('farmer_name', name);
+        localStorage.setItem('farmer_phone', phone);
+
+        if (USERS_SCRIPT_URL && USERS_SCRIPT_URL.trim() !== '') {
+          try {
+            fetch(USERS_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: name, phone: phone })
+            });
+          } catch (e) {
+            console.log("User save error:", e);
+          }
+        }
+
+        document.getElementById('screen-login').style.display = 'none';
+        updateProfileUI();
+        alert(`स्वागत है ${name} जी! आपकी ऐप खुल गई है।`);
+      } else {
+        alert("गलत OTP! कृपया सही OTP डालें।");
+      }
+    }
+
+    // स्टोरी प्लेयर
     function renderStoriesBar() {
       const container = document.getElementById('storiesBarContainer');
+      if (!container) return;
       container.innerHTML = '';
       dailyStories.forEach((st, index) => {
         container.innerHTML += `
           <div class="story-item" onclick="handleStoryClick(${index})">
-            <div class="story-ring">${st.icon}</div>
+            <div class="story-ring">${st.icon || '🌱'}</div>
             <span class="story-name">${st.title}</span>
           </div>`;
       });
@@ -786,7 +827,7 @@
       const vidView = document.getElementById('storyVideoDisplay');
       const progFill = document.getElementById('storyProgressBar');
 
-      document.getElementById('storyTopIcon').innerText = st.icon;
+      document.getElementById('storyTopIcon').innerText = st.icon || '🌱';
       document.getElementById('storyTopTitle').innerText = st.title;
       modal.classList.add('active');
 
@@ -824,7 +865,38 @@
       modal.classList.remove('active');
     }
 
-    // भाषा शब्दकोश
+    function renderVideosSlider() {
+      const container = document.getElementById('videoSliderContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      appVideos.forEach(v => {
+        container.innerHTML += `
+          <div class="video-card" onclick="window.open('${v.url}', '_blank')">
+            <div class="video-thumb" style="background-image: url('${v.thumb}');">
+              <span class="video-play-btn">▶</span>
+              <span class="video-tag">${v.tag || 'Shorts'}</span>
+            </div>
+            <p class="video-title">${v.title}</p>
+          </div>`;
+      });
+    }
+
+    function renderMandiTable() {
+      const body = document.getElementById('mandiTableBody');
+      if (!body) return;
+      body.innerHTML = '';
+      mandiRecords.forEach(m => {
+        body.innerHTML += `
+          <tr>
+            <td>${m.crop}</td>
+            <td>₹${m.min}</td>
+            <td>₹${m.max}</td>
+            <td><b>₹${m.avg}</b></td>
+          </tr>`;
+      });
+    }
+
+    // भाषा
     const i18n = {
       hi: {
         title: "सब्जी फसल और बीज जानकारी",
@@ -914,58 +986,24 @@
       updateProfileUI();
     }
 
-    // बैकअप किस्में
-    const builtinRecords = [
-      { company: "सिंजेंटा (Syngenta)", crop: "टमाटर", variety: "साहो (TO 3251)", segment: "गर्मी/बरसात", features: "ऊंचा तापमान सहने की क्षमता, बहुत सख्त फल, लंबी दूरी के ट्रांसपोर्ट के लिए बेस्ट।", weight: "80-100 ग्राम", maturity: "60-65 दिन", resistance: "TYLCV (मरोड़िया रोग) और झुलसा के प्रति सहनशील", photo: "https://images.unsplash.com/photo-1592417817098-8f3d6910985c?w=400" },
-      { company: "सिंजेंटा (Syngenta)", crop: "टमाटर", variety: "हिमसोना", segment: "सर्दी/बरसात", features: "ठंडे और गीले मौसम के लिए, फल बहुत ठोस और गहरे लाल।", weight: "90-110 ग्राम", maturity: "70-75 दिन", resistance: "बैक्टीरियल विल्ट (उकठा) के प्रति मजबूत", photo: "https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=400" },
-      { company: "सेमिनिस (Seminis)", crop: "टमाटर", variety: "अविनाश-2", segment: "सदाबहार", features: "साल भर अधिक पैदावार, आकर्षक गोल फल।", weight: "80-90 ग्राम", maturity: "60-65 दिन", resistance: "लीफ कर्ल वायरस के प्रति उच्च प्रतिरोधी", photo: "" },
-      { company: "सिंजेंटा (Syngenta)", crop: "मिर्च", variety: "HPH 5531", segment: "तीखी मिर्च", features: "बहुत तीखी, गहरा हरा रंग, मंडियों में सबसे ज्यादा मांग।", weight: "10-12 सेमी", maturity: "60-65 दिन", resistance: "वायरस और चुसक कीटों के प्रति मजबूत", photo: "https://images.unsplash.com/photo-1588252303782-cb80119abd6d?w=400" },
-      { company: "एडवांटा (Advanta)", crop: "भिंडी", variety: "OH 102", segment: "बरसात/गर्मी", features: "गहरा हरा और कोमल फल, तुड़ाई में आसान।", weight: "12-14 सेमी", maturity: "40-45 दिन", resistance: "YVMV वायरस से 100% सुरक्षा", photo: "" },
-      { company: "ईस्ट वेस्ट (East-West)", crop: "भिंडी", variety: "राधिका (Radhika)", segment: "हाइब्रिड भिंडी", features: "भारत की सबसे प्रसिद्ध भिंडी, गहरा हरा रंग, मंडियों में सबसे ऊँची कीमत।", weight: "12-14 सेमी", maturity: "42-45 दिन", resistance: "YVMV और OLCV वायरस के प्रति 100% सुरक्षित", photo: "https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=400" },
-      { company: "ईस्ट वेस्ट (East-West)", crop: "खीरा", variety: "ग्लोसरी (Glossy)", segment: "देसी खीरा", features: "बिना धारी वाला गहरा हरा और बहुत चमकदार फल।", weight: "18-20 सेमी", maturity: "40-45 दिन", resistance: "डाउनी मिल्ड्यू के प्रति मजबूत", photo: "https://images.unsplash.com/photo-1604977042946-1eecc30f269e?w=400" }
-    ];
-
-    let sheetRecords = builtinRecords;
-
-    // इनबिल्ट स्प्रे शेड्यूल बैकअप
-    let cropSchedules = {
-      'शिमला मिर्च': [
-        { time: '1. नर्सरी से रोपाई तक (0-25 दिन)', med: 'ट्राइकोडर्मा 5 ग्राम/किलो (बीज उपचार) + रोपाई के 3 दिन बाद 19:19:19 (5 ग्राम/ली.) + ह्यूमिक एसिड', purpose: 'मजबूत जड़ जमाव व उकठा रोकथाम' },
-        { time: '2. बढ़वार वाली अवस्था (30-40 दिन)', med: '19:19:19 (7-8 ग्राम/ली. हर 10 दिन) + इमिडाक्लोप्रिड 17.8% (0.3 मिली/ली. पानी)', purpose: 'बढ़वार व रस चूसक कीट (थ्रिप्स/माहू) से बचाव' },
-        { time: '3. फूल आने से पहले (45-55 दिन)', med: '12:61:00 (5 ग्राम/ली.) + बोरॉन 20% (1.5 ग्राम/ली.) + मैंकोजेब 75% (2.5 ग्राम/ली.)', purpose: 'अधिक फूल लाना, फूल झड़ना रोकना व फफूंद सुरक्षा' },
-        { time: '4. फल लगने पर (60-75 दिन)', med: '0:52:34 (5 ग्राम/ली.) + कैल्शियम नाइट्रेट (3 ग्राम/ली.) + इमामेक्टिन 5% (0.4 ग्राम/ली.) + नीम तेल (2 मिली/ली.) + ड्रिप से 13:0:45 (3 किलो/एकड़)', purpose: 'फल साइज बढ़ाना व फल छेदक सुंडी/सफेद मक्खी नियंत्रण' },
-        { time: '5. तुड़ाई के समय (80 दिन से)', med: '0:0:50 (5 ग्राम/ली. हर 12 दिन में) + ड्रिप से रोज़ सुबह नियमित पानी', purpose: 'फलों में चमक, गहरा रंग व ठोस वजन' }
-      ],
-      'टमाटर': [
-        { time: '1. बेसल डोज (रोपाई पूर्व खेत तैयारी)', med: '50 किलो DAP + 30 किलो पोटाश + 10 किलो जिंक सल्फेट प्रति एकड़ डालें।', purpose: 'जड़ों की मजबूती व पोषण' },
-        { time: '2. पहला स्प्रे (रोपाई के 12-15 दिन बाद)', med: 'साफ (SAAF) 30 ग्राम + कॉनफिडोर 8 मिली + 19:19:19 50 ग्राम प्रति पंप।', purpose: 'जड़ विकास व रस चूसक कीटों से बचाव' }
-      ]
-    };
-
-    // इनबिल्ट रोग निदान बैकअप
-    let cropDiseasesDatabase = {
-      'टमाटर': [
-        { name: 'पत्ती मरोड़िया व लीफ कर्ल', icon: '🍃', symptoms: 'पत्तियां ऊपर मुड़कर सिकुड़ जाती हैं और बढ़वार रुक जाती है।', cure: 'उलाला 6 ग्राम या पेगासस 25 ग्राम प्रति 15 लीटर पंप।' },
-        { name: 'अगेती व पछेती झुलसा', icon: '🍂', symptoms: 'पत्तियों और तने पर भूरे-काले छल्लेदार धब्बे बनते हैं।', cure: 'रिडोमिल गोल्ड 35 ग्राम या कैब्रियो टॉप 35 ग्राम प्रति 15 लीटर पानी।' },
-        { name: 'फल छेदक सुंडी', icon: '🐛', symptoms: 'सुंडी फलों में छेद करके अंदर का गूदा खा जाती है।', cure: 'कोराजन 6 मिली या फेम 5 मिली प्रति पंप।' }
-      ],
-      'मिर्च': [
-        { name: 'थ्रिप्स व पत्ती मरोड़िया', icon: '🍃', symptoms: 'पत्तियां ऊपर नाव की तरह मुड़ती हैं और कलियां जल जाती हैं।', cure: 'डेलीगेट 18 मिली या जंप 2 ग्राम + पेगासस 25 ग्राम प्रति पंप।' },
-        { name: 'पीली माइट्स (Mites)', icon: '🕷️', symptoms: 'पत्तियां नीचे की तरफ मुड़ती हैं और तना कड़ा हो जाता है।', cure: 'ओमाइट 30 मिली प्रति 15 लीटर पंप।' }
-      ]
-    };
-
+    // रात और दिन का ऑटो-डिटेक्शन तथा दिनांक-समय
     function updateDateAndCity() {
       const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
       const days = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
       const months = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
-      const str = `📅 ${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-      
+
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12;
+      const timeStr = `${displayHours}:${minutes} ${ampm}`;
+      const fullDateTimeStr = `📅 ${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} • ${timeStr}`;
+
       const el = document.getElementById('weatherDateTime');
-      if (el) el.innerText = str;
+      if (el) el.innerText = fullDateTimeStr;
 
       const detailDateEl = document.getElementById('detailDate');
-      if (detailDateEl) detailDateEl.innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+      if (detailDateEl) detailDateEl.innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} • ${timeStr}`;
 
       const userState = localStorage.getItem('farmer_state');
       if (userState && userState.trim() !== '') {
@@ -973,6 +1011,62 @@
         const detailCityEl = document.getElementById('detailCity');
         if (placeEl) placeEl.innerText = `📍 ${userState}`;
         if (detailCityEl) detailCityEl.innerText = `📍 ${userState}`;
+      }
+
+      // रात का समय (शाम 6:00 बजे से सुबह 6:00 बजे तक)
+      const isNight = (hours >= 18 || hours < 6);
+
+      const weatherCard = document.querySelector('.weather-card');
+      const weatherIcon = document.getElementById('weatherIcon');
+      const weatherTemp = document.getElementById('weatherTemp');
+      const weatherDesc = document.getElementById('weatherDesc');
+      const weatherAdvice = document.getElementById('weatherAdvice');
+
+      const detailIcon = document.getElementById('detailWeatherIcon');
+      const detailTemp = document.getElementById('detailWeatherTemp');
+      const detailDesc = document.getElementById('detailWeatherDesc');
+      const detailAdvice = document.getElementById('detailWeatherAdvice');
+
+      if (isNight) {
+        // 🌙 रात का मौसम
+        if (weatherIcon) weatherIcon.innerText = '🌙';
+        if (weatherTemp) weatherTemp.innerText = '21°C';
+        if (weatherDesc) { weatherDesc.innerText = 'साफ़ व शांत रात'; weatherDesc.style.color = '#e2e8f0'; }
+        if (weatherAdvice) { weatherAdvice.innerText = 'रात का समय: स्प्रे बंद रखें • ड्रिप से सिंचाई या विश्राम'; weatherAdvice.style.color = '#86efac'; }
+
+        if (detailIcon) detailIcon.innerText = '🌙';
+        if (detailTemp) detailTemp.innerText = '21°C';
+        if (detailDesc) detailDesc.innerText = 'तारों भरी साफ़ व शांत रात';
+        if (detailAdvice) detailAdvice.innerText = 'रात के समय कीटनाशक स्प्रे बंद रखें। सुबह या शाम के समय ही स्प्रे करना लाभदायक होता है।';
+
+        if (weatherCard) {
+          weatherCard.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+          weatherCard.style.borderColor = '#334155';
+          weatherCard.style.color = '#f8fafc';
+        }
+        const placeEl = document.getElementById('weatherPlace');
+        if (placeEl) placeEl.style.color = '#4ade80';
+        if (el) el.style.color = '#94a3b8';
+      } else {
+        // ☀️ दिन का मौसम
+        if (weatherIcon) weatherIcon.innerText = '☀️';
+        if (weatherTemp) weatherTemp.innerText = '28°C';
+        if (weatherDesc) { weatherDesc.innerText = 'साफ़ आसमान'; weatherDesc.style.color = '#374151'; }
+        if (weatherAdvice) { weatherAdvice.innerText = 'स्प्रे व निराई-गुड़ाई हेतु उत्तम समय'; weatherAdvice.style.color = '#1b5e20'; }
+
+        if (detailIcon) detailIcon.innerText = '☀️';
+        if (detailTemp) detailTemp.innerText = '28°C';
+        if (detailDesc) detailDesc.innerText = 'साफ़ और खिली हुई धूप';
+        if (detailAdvice) detailAdvice.innerText = 'आगामी 3 दिन मौसम पूरी तरह शुष्क रहेगा। सब्जियों में निराई-गुड़ाई, सिंचाई तथा कीटनाशक व टॉनिक का स्प्रे आसानी से कर सकते हैं।';
+
+        if (weatherCard) {
+          weatherCard.style.background = 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)';
+          weatherCard.style.borderColor = '#bbf7d0';
+          weatherCard.style.color = '#1f2937';
+        }
+        const placeEl = document.getElementById('weatherPlace');
+        if (placeEl) placeEl.style.color = '#1b5e20';
+        if (el) el.style.color = '#166534';
       }
     }
 
@@ -1096,7 +1190,7 @@
       openScreen('screen-crop-schedule', cropName);
     }
 
-    // 3. फसल सुरक्षा (रोग निदान - अब Google Sheet से ऑटो-लोड)
+    // 3. फसल सुरक्षा (रोग निदान)
     function showProtectionCropsList() {
       renderProtectionCrops();
       openScreen('screen-protection-crops', i18n[currentLang].btnProt);
@@ -1198,26 +1292,11 @@
     }
 
     // 5. OTHERS (अन्य सेवाएं)
-    function showOtherServicesScreen() {
-      openScreen('screen-other-services', 'अन्य सेवाएं (Services)');
-    }
-
-    function showWeatherDetailScreen() {
-      updateDateAndCity();
-      openScreen('screen-weather-detail', 'मौसम पूर्वानुमान व सलाह');
-    }
-
-    function showMandiBhavScreen() {
-      openScreen('screen-mandi-bhav', 'ताज़ा मंडी भाव');
-    }
-
-    function showExpertAdviceScreen() {
-      openScreen('screen-expert-advice', 'कृषि एक्सपर्ट सुझाव');
-    }
-
-    function showPestAlertScreen() {
-      openScreen('screen-pest-alert', 'कीट व रोग चेतावनी');
-    }
+    function showOtherServicesScreen() { openScreen('screen-other-services', 'अन्य सेवाएं (Services)'); }
+    function showWeatherDetailScreen() { updateDateAndCity(); openScreen('screen-weather-detail', 'मौसम पूर्वानुमान व सलाह'); }
+    function showMandiBhavScreen() { openScreen('screen-mandi-bhav', 'ताज़ा मंडी भाव'); }
+    function showExpertAdviceScreen() { openScreen('screen-expert-advice', 'कृषि एक्सपर्ट सुझाव'); }
+    function showPestAlertScreen() { openScreen('screen-pest-alert', 'कीट व रोग चेतावनी'); }
 
     function shareAppWithFriends() {
       const appUrl = window.location.href;
@@ -1338,8 +1417,8 @@
     function updateProfileUI() {
       const name = localStorage.getItem('farmer_name') || 'Shailender Kumar';
       const phone = localStorage.getItem('farmer_phone') || '';
-      let score = 30;
-      if (phone) score += 40;
+      let score = 40;
+      if (phone) score += 30;
       if (localStorage.getItem('farmer_crops')) score += 30;
 
       document.getElementById('welcomeMsg').innerText = `राम-राम, ${name} जी!`;
@@ -1353,7 +1432,11 @@
     function contactAdvisor() { window.open('https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20फसल%20सलाह%20चाहिए।', '_blank'); }
     function openNotify() { alert("🔔 सूचना: खेत में 15-20 पीले चिपचिपे ट्रैप जरूर लगाएँ।"); }
 
-    // 1. Google Sheets से बीज डेटा लोड करना
+    // ==========================================
+    // सभी Google Sheets को ऑनलाइन लोड करना
+    // ==========================================
+
+    // 1. बीज व किस्में (Sheet1)
     async function loadOnlineSheet() {
       try {
         const res = await fetch(SHEET_URL);
@@ -1382,7 +1465,7 @@
       }
     }
 
-    // 2. Google Sheets से स्प्रे शेड्यूल लोड करना
+    // 2. स्प्रे शेड्यूल (Schedule)
     async function loadOnlineSchedule() {
       try {
         const res = await fetch(SCHEDULE_SHEET_URL);
@@ -1416,7 +1499,7 @@
       }
     }
 
-    // 3. Google Sheets से फसल सुरक्षा (रोग निदान) लोड करना
+    // 3. फसल सुरक्षा / रोग निदान (Protection)
     async function loadOnlineProtection() {
       try {
         const res = await fetch(PROTECTION_SHEET_URL);
@@ -1452,13 +1535,106 @@
       }
     }
 
+    // 4. दैनिक स्टोरी (Stories)
+    async function loadOnlineStories() {
+      try {
+        const res = await fetch(STORIES_SHEET_URL);
+        const data = await res.text();
+        const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
+        let newStories = [];
+
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0] && cols[0].toLowerCase() !== 'title') {
+            newStories.push({
+              title: cols[0],
+              icon: cols[1] || '🌱',
+              type: cols[2] || 'photo',
+              url: cols[3] || ''
+            });
+          }
+        }
+        if (newStories.length > 0) {
+          dailyStories = newStories;
+          renderStoriesBar();
+        }
+      } catch (e) {
+        console.log("Stories load error:", e);
+      }
+    }
+
+    // 5. वीडियो स्लाइडर (Videos)
+    async function loadOnlineVideos() {
+      try {
+        const res = await fetch(VIDEOS_SHEET_URL);
+        const data = await res.text();
+        const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
+        let newVideos = [];
+
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0] && cols[0].toLowerCase() !== 'title') {
+            newVideos.push({
+              title: cols[0],
+              thumb: cols[1] || '',
+              url: cols[2] || 'https://www.youtube.com/@NMGKISAN',
+              tag: cols[3] || 'Shorts'
+            });
+          }
+        }
+        if (newVideos.length > 0) {
+          appVideos = newVideos;
+          renderVideosSlider();
+        }
+      } catch (e) {
+        console.log("Videos load error:", e);
+      }
+    }
+
+    // 6. मंडी भाव (Mandi)
+    async function loadOnlineMandi() {
+      try {
+        const res = await fetch(MANDI_SHEET_URL);
+        const data = await res.text();
+        const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
+        let newMandi = [];
+
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0] && cols[0].toLowerCase() !== 'crop') {
+            newMandi.push({
+              crop: cols[0],
+              min: cols[1] || '0',
+              max: cols[2] || '0',
+              avg: cols[3] || '0'
+            });
+          }
+        }
+        if (newMandi.length > 0) {
+          mandiRecords = newMandi;
+          renderMandiTable();
+        }
+      } catch (e) {
+        console.log("Mandi load error:", e);
+      }
+    }
+
+    // ऐप शुरू होने पर सब लोड होना
     window.onload = function() {
-      renderStoriesBar();
+      checkLoginStatus();
       applyLanguage();
       updateDateAndCity();
+
+      // प्रति मिनट समय व रात/दिन अपडेट करना
+      setInterval(updateDateAndCity, 60000);
+
+      // सभी Google Sheets लोड करना
       loadOnlineSheet();
       loadOnlineSchedule();
       loadOnlineProtection();
+      loadOnlineStories();
+      loadOnlineVideos();
+      loadOnlineMandi();
     };
   </script>
 </body>
