@@ -31,10 +31,69 @@
     .app-header { background: #1b5e20; color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .back-btn { font-size: 22px; cursor: pointer; margin-right: 10px; display: none; }
     .header-title { font-size: 15px; font-weight: bold; }
-    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .header-actions { display: flex; align-items: center; gap: 14px; }
     .lang-toggle-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.6); color: white; padding: 5px 10px; border-radius: 14px; font-size: 11px; font-weight: bold; cursor: pointer; }
-    .bell-icon { font-size: 20px; cursor: pointer; }
     .menu-bars-icon { font-size: 22px; cursor: pointer; font-weight: bold; }
+
+    /* घंटी नोटिफिकेशन स्टाइल (लाल बिंदु के साथ) */
+    .bell-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .bell-icon { font-size: 21px; }
+    .bell-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 9px;
+      height: 9px;
+      background-color: #ef4444; /* लाल रंग */
+      border-radius: 50%;
+      border: 1.5px solid #1b5e20;
+      animation: pulse-red 1.5s infinite;
+    }
+    @keyframes pulse-red {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { transform: scale(1.15); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    /* लाल रंग का किसान सूचना मोडल */
+    .notify-modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      max-width: 360px;
+      width: 90%;
+      border-top: 6px solid #dc2626; /* लाल पट्टी */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+    .notify-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .notify-title {
+      color: #dc2626;
+      font-size: 16px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .notify-content {
+      background: #fef2f2;
+      border: 1px solid #fee2e2;
+      border-radius: 10px;
+      padding: 12px;
+      color: #7f1d1d;
+      font-size: 13.5px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
 
     /* साइड मेन्यू ड्रॉअर */
     .drawer-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2100; backdrop-filter: blur(2px); }
@@ -68,13 +127,23 @@
     .story-ring { width: 62px; height: 62px; border-radius: 50%; padding: 2.5px; background: linear-gradient(45deg, #16a34a, #f59e0b, #ef4444); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-size: 26px; background-color: #f0fdf4; cursor: pointer; }
     .story-name { font-size: 11px; font-weight: 600; color: #374151; margin-top: 5px; max-width: 65px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* मौसम कार्ड */
-    .weather-card { border-radius: 14px; padding: 14px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1.5px solid #bbf7d0; cursor: pointer; transition: background 0.3s ease, border-color 0.3s ease; }
-    .weather-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 6px; margin-bottom: 8px; }
-    .weather-card h4 { font-size: 14px; font-weight: 700; }
-    .weather-datetime { font-size: 11px; font-weight: 600; }
+    /* मौसम कार्ड (डिफ़ॉल्ट रूप से नाइट मोड तैयार) */
+    .weather-card {
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      border: 1.5px solid #334155;
+      cursor: pointer;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f8fafc;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .weather-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 6px; margin-bottom: 8px; }
+    .weather-card h4 { font-size: 14px; font-weight: 700; color: #38bdf8; }
+    .weather-datetime { font-size: 11px; font-weight: 600; color: #94a3b8; }
     .weather-body-row { display: flex; justify-content: space-between; align-items: center; }
-    .weather-temp { font-size: 26px; font-weight: bold; }
+    .weather-temp { font-size: 26px; font-weight: bold; color: #38bdf8; }
 
     /* सर्च बार */
     .search-wrapper { position: relative; margin-bottom: 15px; display: flex; align-items: center; }
@@ -246,12 +315,38 @@
     </div>
     <div class="header-actions">
       <button class="lang-toggle-btn" id="langBtn" onclick="toggleLanguage()">🌐 English</button>
-      <span class="bell-icon" onclick="openNotify()">🔔</span>
+      
+      <!-- घंटी नोटिफिकेशन (लाल बिंदु के साथ) -->
+      <div class="bell-container" onclick="openNotify()" title="किसान ज़रूरी सूचना">
+        <span class="bell-icon">🔔</span>
+        <span class="bell-badge" id="bellBadge"></span>
+      </div>
+
       <span class="menu-bars-icon" onclick="openDrawer()">☰</span>
     </div>
   </div>
 
-  <!-- साइड मेन्यू -->
+  <!-- किसान सूचना मोडल (लाल रंग में) -->
+  <div class="modal-overlay" id="notifyModal">
+    <div class="notify-modal-box">
+      <div class="notify-header">
+        <div class="notify-title">
+          <span>🚨</span>
+          <span>किसान ज़रूरी सूचना</span>
+        </div>
+        <button class="modal-close" onclick="closeNotify()">✕</button>
+      </div>
+      <div class="notify-content" id="notifyMessageText">
+        <b>⚠️ मौसम व कीट अलर्ट:</b><br>
+        मौसम में बदलाव और उमस के कारण फसलों में थ्रिप्स व रस चूसक कीटों का प्रकोप बढ़ सकता है। खेत में तुरंत 20 पीले व नीले चिपचिपे कार्ड (Sticky Traps) लगाएं और नियमित निगरानी रखें।
+      </div>
+      <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20सूचना%20के%20बारे%20में%20जानकारी%20चाहिए।" target="_blank" class="btn-action btn-wa">
+        💬 डॉक्टर से तुरंत सलाह लें
+      </a>
+    </div>
+  </div>
+
+  <!-- साइड मेन्यू ड्रॉअर -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
   <div class="drawer-content" id="drawerContent">
     <div class="drawer-header">
@@ -377,7 +472,7 @@
     <!-- गोल स्टोरी बार -->
     <div class="stories-wrapper" id="storiesBarContainer"></div>
 
-    <!-- मौसम कार्ड (रात और दिन ऑटो-डिटेक्ट) -->
+    <!-- मौसम कार्ड (शुरुआत से ही नाइट-रेडी) -->
     <div class="weather-card" onclick="showWeatherDetailScreen()">
       <div class="weather-header-row">
         <h4 id="weatherPlace">📍 राजस्थान</h4>
@@ -385,12 +480,12 @@
       </div>
       <div class="weather-body-row">
         <div>
-          <p style="font-size:13px; font-weight:600;" id="weatherDesc">साफ़ आसमान</p>
-          <p style="font-size:11px; font-weight:bold; margin-top:3px;" id="weatherAdvice">स्प्रे व निराई-गुड़ाई हेतु उत्तम समय</p>
+          <p style="font-size:13px; font-weight:600; color:#e2e8f0;" id="weatherDesc">साफ़ व शांत रात</p>
+          <p style="font-size:11px; font-weight:bold; margin-top:3px; color:#4ade80;" id="weatherAdvice">रात का समय: स्प्रे बंद रखें • विश्राम का समय</p>
         </div>
         <div style="text-align:right;">
-          <span style="font-size:30px;" id="weatherIcon">☀️</span>
-          <div class="weather-temp" id="weatherTemp">28°C</div>
+          <span style="font-size:30px;" id="weatherIcon">🌙</span>
+          <div class="weather-temp" id="weatherTemp">21°C</div>
         </div>
       </div>
     </div>
@@ -725,7 +820,7 @@
     const VIDEOS_SHEET_URL = `${BASE_GV}Videos`;
     const MANDI_SHEET_URL = `${BASE_GV}Mandi`;
 
-    // Users टैब में डेटा भेजने का Apps Script लिंक (यदि तैयार हो तो यहाँ डालें)
+    // Users टैब में डेटा भेजने का Apps Script लिंक (यदि बनाया हो)
     const USERS_SCRIPT_URL = '';
 
     let currentImgElement = null;
@@ -739,6 +834,19 @@
     let dailyStories = [];
     let appVideos = [];
     let mandiRecords = [];
+
+    // घंटी नोटिफिकेशन खोलना/बंद करना
+    function openNotify() {
+      const modal = document.getElementById('notifyModal');
+      if (modal) modal.classList.add('active');
+      const badge = document.getElementById('bellBadge');
+      if (badge) badge.style.display = 'none';
+    }
+
+    function closeNotify() {
+      const modal = document.getElementById('notifyModal');
+      if (modal) modal.classList.remove('active');
+    }
 
     // लॉगिन स्टेटस जांच
     function checkLoginStatus() {
@@ -987,7 +1095,7 @@
     }
 
     // ==========================================
-    // रात और दिन का ऑटो-डिटेक्शन तथा दिनांक, समय व शहर
+    // रात और दिन का 100% सटीक ऑटो-डिटेक्शन तथा समय व शहर
     // ==========================================
     function updateDateAndCity() {
       const now = new Date();
@@ -1453,7 +1561,6 @@
     function openDrawer() { document.getElementById('drawerOverlay').classList.add('active'); document.getElementById('drawerContent').classList.add('active'); }
     function closeDrawer() { document.getElementById('drawerOverlay').classList.remove('active'); document.getElementById('drawerContent').classList.remove('active'); }
     function contactAdvisor() { window.open('https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20फसल%20सलाह%20चाहिए।', '_blank'); }
-    function openNotify() { alert("🔔 सूचना: खेत में 15-20 पीले चिपचिपे ट्रैप जरूर लगाएँ।"); }
 
     // ==========================================
     // सभी Google Sheets को ऑनलाइन लोड करना
@@ -1642,23 +1749,27 @@
       }
     }
 
-    // ऐप शुरू होते ही सब कुछ लाइव लोड होगा
-    window.onload = function() {
+    // ==========================================
+    // तुरंत और बिना रुके एक्जीक्यूशन
+    // ==========================================
+    // 1. पेज खुलते ही बिना 1 सेकंड की देरी के समय और मौसम सेट
+    updateDateAndCity();
+    setInterval(updateDateAndCity, 1000); // लाइव घड़ी
+
+    // 2. DOM तैयार होते ही बाकी फीचर्स चालू
+    window.addEventListener('DOMContentLoaded', () => {
       checkLoginStatus();
       applyLanguage();
       updateDateAndCity();
 
-      // हर 1 मिनट में समय और मौसम अपडेट होता रहेगा
-      setInterval(updateDateAndCity, 60000);
-
-      // Google Sheet से सारा डेटा फेच करना
-      loadOnlineSheet();
-      loadOnlineSchedule();
-      loadOnlineProtection();
-      loadOnlineStories();
-      loadOnlineVideos();
-      loadOnlineMandi();
-    };
+      // Google Sheets लोड
+      try { loadOnlineSheet(); } catch(e){}
+      try { loadOnlineSchedule(); } catch(e){}
+      try { loadOnlineProtection(); } catch(e){}
+      try { loadOnlineStories(); } catch(e){}
+      try { loadOnlineVideos(); } catch(e){}
+      try { loadOnlineMandi(); } catch(e){}
+    });
   </script>
 </body>
 </html>
