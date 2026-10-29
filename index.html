@@ -1,4 +1,471 @@
-<!DOCTYPE html>
+<!<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>कृषि सहायक ऐप | सब्जी खेती बाड़ी की बातें</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap');
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background-color: #f4f6f5;
+            color: #1f2937;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="flex justify-center min-h-screen">
+
+    <!-- Mobile Screen Wrapper -->
+    <div class="w-full max-w-md bg-white min-h-screen flex flex-col shadow-xl relative pb-20">
+
+        <!-- Top Header Bar -->
+        <header class="bg-[#1b5e20] text-white p-3.5 sticky top-0 z-40 flex items-center justify-between shadow-md">
+            <div>
+                <h1 class="text-base font-bold tracking-wide leading-tight">Vegetable Crops & Seeds Info</h1>
+                <p class="text-[10px] text-green-200">No 1 किसान एग्री समाधान</p>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="text-[11px] bg-green-800 border border-green-600 px-2 py-0.5 rounded text-green-100 font-medium">हिंदी</span>
+                <i data-lucide="bell" class="w-5 h-5 text-amber-300"></i>
+                <div id="userBadge" class="hidden text-xs bg-green-900 px-2.5 py-1 rounded-full flex items-center space-x-1 border border-green-700">
+                    <i data-lucide="user-check" class="w-3.5 h-3.5 text-green-300"></i>
+                    <span id="badgeUserName" class="text-[11px] font-medium text-white truncate max-w-[80px]">किसान</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dynamic View Area -->
+        <main class="flex-1 p-4 overflow-y-auto">
+
+            <!-- ================= SCREEN 1: KISAN LOGIN ================= -->
+            <div id="loginSection" class="hidden flex flex-col items-center justify-center pt-6">
+                <div class="w-20 h-20 bg-green-100 text-[#1b5e20] rounded-full flex items-center justify-center mb-4 shadow-inner">
+                    <i data-lucide="user-plus" class="w-10 h-10"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-1 text-center">किसान लॉगिन</h2>
+                <p class="text-gray-500 text-xs mb-6 text-center px-4 leading-relaxed">
+                    सब्जी फसलों की उन्नत किस्में, स्प्रे शेड्यूल और सटीक रोग निदान की जानकारी पाने के लिए लॉगिन करें।
+                </p>
+
+                <div class="w-full space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-200 shadow-sm">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">किसान का नाम</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="w-5 h-5 absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" id="inputName" placeholder="अपना नाम दर्ज करें" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 text-sm bg-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">मोबाइल नंबर (WhatsApp)</label>
+                        <div class="relative">
+                            <i data-lucide="phone" class="w-5 h-5 absolute left-3 top-3 text-gray-400"></i>
+                            <input type="tel" id="inputPhone" maxlength="10" placeholder="10 अंकों का मोबाइल नंबर" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 text-sm bg-white">
+                        </div>
+                    </div>
+
+                    <button onclick="handleLogin()" id="loginBtn" class="w-full bg-[#1b5e20] hover:bg-green-800 active:bg-green-900 text-white font-bold py-3 rounded-xl transition duration-150 flex items-center justify-center space-x-2 shadow-md">
+                        <span>लॉगिन करें</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                    <p id="loginError" class="text-xs text-red-600 text-center font-medium hidden"></p>
+                </div>
+            </div>
+
+            <!-- ================= SCREEN 2: MAIN DASHBOARD ================= -->
+            <div id="homeSection" class="hidden space-y-4">
+
+                <!-- Weather Status Card -->
+                <div class="bg-gradient-to-r from-green-50 to-emerald-100 border border-green-200 rounded-2xl p-3 flex items-center justify-between shadow-sm">
+                    <div>
+                        <span class="text-xs font-bold text-green-900">साफ़ आसमान (लाइव धूप)</span>
+                        <p class="text-[11px] text-green-700">स्प्रे व निराई-गुड़ाई हेतु उत्तम समय</p>
+                    </div>
+                    <div class="flex items-center space-x-1.5 bg-white/80 px-2.5 py-1 rounded-xl border border-green-200 shadow-xs">
+                        <i data-lucide="sun" class="w-5 h-5 text-amber-500"></i>
+                        <span class="text-base font-bold text-gray-800">31°C</span>
+                    </div>
+                </div>
+
+                <!-- Instant Advice / WhatsApp Card -->
+                <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20फसल%20और%20बीज%20के%20बारे%20में%20जानकारी%20चाहिए।" target="_blank" class="block bg-gradient-to-r from-[#1b5e20] to-emerald-700 text-white rounded-2xl p-3.5 shadow-md active:scale-[0.99] transition">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-white text-[#1b5e20] rounded-full flex items-center justify-center flex-shrink-0 shadow">
+                                <i data-lucide="message-circle" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold leading-tight">कृषि परामर्श एवं सहायता</h4>
+                                <p class="text-[11px] text-green-200">बीमारी का फोटो भेजें या बीज ऑर्डर करें</p>
+                            </div>
+                        </div>
+                        <span class="bg-white/20 text-xs px-2.5 py-1 rounded-lg font-bold border border-white/30">WhatsApp</span>
+                    </div>
+                </a>
+
+                <!-- 6 Major Services Grid with Uploaded Photos -->
+                <div>
+                    <div class="grid grid-cols-2 gap-3">
+
+                        <!-- 1. Vegetable Varieties -->
+                        <button onclick="loadSheetData('Sheet1', 'Vegetable Varieties (सब्जी किस्में)')" class="p-3 bg-[#e8f5e9] rounded-2xl border border-green-200 shadow-sm flex flex-col items-center text-center hover:border-green-500 active:scale-95 transition">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden mb-2 bg-white flex items-center justify-center shadow-inner">
+                                <img src="beej.jpg.jpg" alt="Vegetable Varieties" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1592417817098-8f3d6eb22509?w=150'">
+                            </div>
+                            <span class="text-xs font-bold text-green-950">Vegetable Varieties</span>
+                            <span class="text-[10px] text-green-700">उन्नत किस्में</span>
+                        </button>
+
+                        <!-- 2. Crop Protection -->
+                        <button onclick="loadSheetData('Protection', 'Crop Protection (रोग एवं कीट निदान)')" class="p-3 bg-[#e3f2fd] rounded-2xl border border-blue-200 shadow-sm flex flex-col items-center text-center hover:border-blue-500 active:scale-95 transition">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden mb-2 bg-white flex items-center justify-center shadow-inner">
+                                <img src="rog.jpg.jpg" alt="Crop Protection" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=150'">
+                            </div>
+                            <span class="text-xs font-bold text-blue-950">Crop Protection</span>
+                            <span class="text-[10px] text-blue-700">रोग एवं कीट निदान</span>
+                        </button>
+
+                        <!-- 3. Spray Schedule -->
+                        <button onclick="loadSheetData('Schedule', 'Spray Schedule (स्प्रे शेड्यूल)')" class="p-3 bg-[#fffde7] rounded-2xl border border-amber-200 shadow-sm flex flex-col items-center text-center hover:border-amber-500 active:scale-95 transition">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden mb-2 bg-white flex items-center justify-center shadow-inner">
+                                <img src="Spray Schedule.jpg" alt="Spray Schedule" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?w=150'">
+                            </div>
+                            <span class="text-xs font-bold text-amber-950">Spray Schedule</span>
+                            <span class="text-[10px] text-amber-700">स्प्रे शेड्यूल</span>
+                        </button>
+
+                        <!-- 4. Advisor -->
+                        <a href="https://wa.me/916378475002?text=नमस्ते%20जी,%20सलाहकार%20परामर्श%20हेतु%20संपर्क।" target="_blank" class="p-3 bg-[#fce4ec] rounded-2xl border border-pink-200 shadow-sm flex flex-col items-center text-center hover:border-pink-500 active:scale-95 transition block">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden mb-2 bg-white flex items-center justify-center shadow-inner">
+                                <img src="advisor.jpg.jpg" alt="Advisor" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'">
+                            </div>
+                            <span class="text-xs font-bold text-pink-950">Advisor</span>
+                            <span class="text-[10px] text-pink-700">विशेषज्ञ सलाह</span>
+                        </a>
+
+                        <!-- 5. All Seed Brands -->
+                        <button onclick="loadSheetData('Sheet1', 'All Seed Brands (बीज कंपनियाँ)')" class="p-3 bg-[#fff3e0] rounded-2xl border border-orange-200 shadow-sm flex flex-col items-center text-center hover:border-orange-500 active:scale-95 transition">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden mb-2 bg-white flex items-center justify-center shadow-inner">
+                                <img src="brands.jpg.jpg" alt="All Seed Brands" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150'">
+                            </div>
+                            <span class="text-xs font-bold text-orange-950">All Seed Brands</span>
+                            <span class="text-[10px] text-orange-700">टॉप कंपनियाँ</span>
+                        </button>
+
+                        <!-- 6. Other Services -->
+                        <button onclick="loadSheetData('Mandi', 'Other Services / मंडी भाव')" class="p-3 bg-[#e0f7fa] rounded-2xl border border-cyan-200 shadow-sm flex flex-col items-center text-center hover:border-cyan-500 active:scale-95 transition">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden mb-2 bg-white flex items-center justify-center shadow-inner">
+                                <img src="services.jpg.jpg" alt="Other Services" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=150'">
+                            </div>
+                            <span class="text-xs font-bold text-cyan-950">Other Services</span>
+                            <span class="text-[10px] text-cyan-700">मंडी भाव & अन्य</span>
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- Video Recommendation Box -->
+                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-3 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="play-circle" class="w-5 h-5 text-red-600"></i>
+                        <span class="text-xs font-semibold text-gray-700">No 1 किसान - वीडियो सलाह</span>
+                    </div>
+                    <span class="text-[11px] bg-emerald-600 text-white font-bold px-2 py-0.5 rounded-lg">Instant Cure</span>
+                </div>
+
+            </div>
+
+            <!-- ================= SCREEN 3: DETAILS & DATA DISPLAY ================= -->
+            <div id="detailsSection" class="hidden space-y-3">
+
+                <!-- Back Navigation -->
+                <div class="flex items-center justify-between pb-2 border-b">
+                    <div class="flex items-center space-x-2">
+                        <button onclick="showHome()" class="p-1 rounded-full hover:bg-gray-200 active:bg-gray-300 transition">
+                            <i data-lucide="arrow-left" class="w-5 h-5 text-gray-700"></i>
+                        </button>
+                        <h3 id="detailsTitle" class="font-bold text-gray-800 text-sm">विवरण</h3>
+                    </div>
+                </div>
+
+                <!-- Live Search Box -->
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+                    <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Search Cucumber, Tomato, Seed..." class="w-full pl-9 pr-3 py-2 bg-gray-50 rounded-xl border border-gray-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-600">
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="flex flex-col items-center justify-center py-12 space-y-2">
+                    <div class="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-xs text-gray-500 font-medium">Google Sheet से डेटा लोड हो रहा है...</span>
+                </div>
+
+                <!-- Data Cards Container -->
+                <div id="dataList" class="space-y-3"></div>
+
+            </div>
+
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="fixed bottom-0 w-full max-w-md bg-white border-t border-gray-200 flex justify-around py-2.5 z-40 shadow-lg">
+            <button onclick="showHome()" class="flex flex-col items-center text-green-700 focus:outline-none">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span class="text-[10px] mt-1 font-semibold">Home</span>
+            </button>
+            <button onclick="loadSheetData('Sheet1', 'Vegetable Varieties')" class="flex flex-col items-center text-gray-500 hover:text-green-700 focus:outline-none">
+                <i data-lucide="sprout" class="w-5 h-5"></i>
+                <span class="text-[10px] mt-1 font-semibold">Crops</span>
+            </button>
+            <button onclick="loadSheetData('Schedule', 'Spray Schedule')" class="flex flex-col items-center text-gray-500 hover:text-green-700 focus:outline-none">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+                <span class="text-[10px] mt-1 font-semibold">Schedule</span>
+            </button>
+            <button onclick="loadSheetData('Protection', 'Crop Protection')" class="flex flex-col items-center text-gray-500 hover:text-green-700 focus:outline-none">
+                <i data-lucide="shield" class="w-5 h-5"></i>
+                <span class="text-[10px] mt-1 font-semibold">Protection</span>
+            </button>
+            <button onclick="logout()" class="flex flex-col items-center text-gray-500 hover:text-red-500 focus:outline-none">
+                <i data-lucide="log-out" class="w-5 h-5"></i>
+                <span class="text-[10px] mt-1 font-semibold">Logout</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        const SPREADSHEET_ID = "1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y";
+        const USERS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxxkMrJ7fEyiXd6o99TwI_77X3Q6i8gq0Ya6GY-OVZi5HTnMIKQxJXykJ_aGc69AYj5cQ/exec";
+
+        let currentLoadedRows = [];
+        let currentHeaders = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            checkUserSession();
+        });
+
+        // 1. Session Check (किसान पहले से लॉगिन है या नहीं)
+        function checkUserSession() {
+            const userName = localStorage.getItem('kisan_name');
+            const userPhone = localStorage.getItem('kisan_phone');
+
+            if (userName && userPhone) {
+                displayDashboard(userName);
+            } else {
+                showLogin();
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('detailsSection').classList.add('hidden');
+            document.getElementById('userBadge').classList.add('hidden');
+            lucide.createIcons();
+        }
+
+        function showHome() {
+            const userName = localStorage.getItem('kisan_name') || 'किसान साथी';
+            displayDashboard(userName);
+        }
+
+        function displayDashboard(name) {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('detailsSection').classList.add('hidden');
+            document.getElementById('homeSection').classList.remove('hidden');
+
+            document.getElementById('badgeUserName').textContent = name;
+            document.getElementById('userBadge').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // 2. किसान लॉगिन और Google Sheet 'Users' टैब में डेटा भेजना
+        async function handleLogin() {
+            const name = document.getElementById('inputName').value.trim();
+            const phone = document.getElementById('inputPhone').value.trim();
+            const errorElem = document.getElementById('loginError');
+            const loginBtn = document.getElementById('loginBtn');
+
+            errorElem.classList.add('hidden');
+
+            if (!name) {
+                errorElem.textContent = "कृपया अपना पूरा नाम लिखें।";
+                errorElem.classList.remove('hidden');
+                return;
+            }
+            if (phone.length !== 10 || isNaN(phone)) {
+                errorElem.textContent = "कृपया 10 अंकों का सही मोबाइल नंबर दर्ज करें।";
+                errorElem.classList.remove('hidden');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = `<span>डेटा सेव हो रहा है...</span>`;
+
+            localStorage.setItem('kisan_name', name);
+            localStorage.setItem('kisan_phone', phone);
+
+            try {
+                await fetch(USERS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, phone: phone })
+                });
+            } catch (err) {
+                console.log("Background Sheet Log:", err);
+            }
+
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = `<span>लॉगिन करें</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+            displayDashboard(name);
+        }
+
+        // 3. Google Sheet से डेटा लोड करना (Read Data)
+        async function loadSheetData(sheetName, title) {
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('detailsSection').classList.remove('hidden');
+            document.getElementById('detailsTitle').textContent = title;
+            document.getElementById('searchInput').value = '';
+
+            const listContainer = document.getElementById('dataList');
+            const spinner = document.getElementById('loadingSpinner');
+
+            listContainer.innerHTML = '';
+            spinner.classList.remove('hidden');
+
+            const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+
+            try {
+                const response = await fetch(csvUrl);
+                const csvText = await response.text();
+                spinner.classList.add('hidden');
+                processSheetData(csvText);
+            } catch (error) {
+                spinner.classList.add('hidden');
+                listContainer.innerHTML = `
+                    <div class="p-4 bg-red-50 text-red-600 rounded-2xl text-center text-xs border border-red-200">
+                        डेटा लोड नहीं हो पाया। कृपया अपनी Google Sheet में शेयरिंग "Anyone with link - Viewer" सेट रखें।
+                    </div>
+                `;
+            }
+        }
+
+        // 4. CSV डेटा को प्रोसेस करना
+        function processSheetData(csvText) {
+            const lines = csvText.trim().split('\n');
+            if (lines.length <= 1) {
+                document.getElementById('dataList').innerHTML = `
+                    <div class="p-5 text-center text-xs text-gray-500 bg-gray-50 rounded-2xl border">
+                        वर्तमान में कोई डेटा उपलब्ध नहीं है।
+                    </div>
+                `;
+                return;
+            }
+
+            const cleanRow = (row) => row.split(',').map(item => item.replace(/^"|"$/g, '').trim());
+            currentHeaders = cleanRow(lines[0]);
+            currentLoadedRows = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim()) {
+                    currentLoadedRows.push(cleanRow(lines[i]));
+                }
+            }
+
+            renderFilteredCards(currentLoadedRows);
+        }
+
+        // 5. कार्ड्स को स्क्रीन पर तैयार करना
+        function renderFilteredCards(rows) {
+            const listContainer = document.getElementById('dataList');
+
+            if (rows.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="p-4 text-center text-xs text-gray-500 bg-gray-50 rounded-xl border">
+                        कोई जानकारी नहीं मिली।
+                    </div>
+                `;
+                return;
+            }
+
+            let cardsHtml = '';
+            rows.forEach(cols => {
+                cardsHtml += `
+                    <div class="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm space-y-2 hover:border-green-400 transition">
+                        <div class="flex items-center space-x-2 border-b pb-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-green-700 flex-shrink-0"></i>
+                            <h4 class="font-bold text-gray-800 text-sm">${cols[0] || 'जानकारी'}</h4>
+                        </div>
+                        <div class="space-y-1 pt-1">
+                `;
+
+                for (let j = 1; j < cols.length; j++) {
+                    if (cols[j]) {
+                        cardsHtml += `
+                            <p class="text-xs text-gray-600">
+                                <span class="font-semibold text-gray-500">${currentHeaders[j] || 'विवरण'}:</span> 
+                                <span class="text-gray-800 font-medium">${cols[j]}</span>
+                            </p>
+                        `;
+                    }
+                }
+
+                cardsHtml += `</div></div>`;
+            });
+
+            listContainer.innerHTML = cardsHtml;
+            lucide.createIcons();
+        }
+
+        // 6. लाइव सर्च फ़िल्टर
+        function filterCards() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!query) {
+                renderFilteredCards(currentLoadedRows);
+                return;
+            }
+
+            const filtered = currentLoadedRows.filter(row => {
+                return row.some(cell => cell.toLowerCase().includes(query));
+            });
+
+            renderFilteredCards(filtered);
+        }
+
+        // 7. लॉगआउट फ़ंक्शन
+        function logout() {
+            if (confirm("क्या आप लॉगआउट करना चाहते हैं?")) {
+                localStorage.removeItem('kisan_name');
+                localStorage.removeItem('kisan_phone');
+                document.getElementById('inputName').value = '';
+                document.getElementById('inputPhone').value = '';
+                showLogin();
+            }
+        }
+    </script>
+</body>
+</html>
+ html>
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
