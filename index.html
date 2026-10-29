@@ -35,23 +35,12 @@
     .lang-toggle-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.6); color: white; padding: 5px 10px; border-radius: 14px; font-size: 11px; font-weight: bold; cursor: pointer; }
     .menu-bars-icon { font-size: 22px; cursor: pointer; font-weight: bold; }
 
-    /* घंटी नोटिफिकेशन स्टाइल (लाल बिंदु के साथ) */
-    .bell-container {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      cursor: pointer;
-    }
+    /* घंटी नोटिफिकेशन */
+    .bell-container { position: relative; display: inline-flex; align-items: center; cursor: pointer; }
     .bell-icon { font-size: 21px; }
     .bell-badge {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 9px;
-      height: 9px;
-      background-color: #ef4444;
-      border-radius: 50%;
-      border: 1.5px solid #1b5e20;
+      position: absolute; top: -2px; right: -2px; width: 9px; height: 9px;
+      background-color: #ef4444; border-radius: 50%; border: 1.5px solid #1b5e20;
       animation: pulse-red 1.5s infinite;
     }
     @keyframes pulse-red {
@@ -60,39 +49,16 @@
       100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     }
 
-    /* लाल रंग का किसान सूचना मोडल */
+    /* किसान सूचना मोडल */
     .notify-modal-box {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 20px;
-      max-width: 360px;
-      width: 90%;
-      border-top: 6px solid #dc2626;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      background: #ffffff; border-radius: 16px; padding: 20px; max-width: 360px;
+      width: 90%; border-top: 6px solid #dc2626; box-shadow: 0 10px 25px rgba(0,0,0,0.25);
     }
-    .notify-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .notify-title {
-      color: #dc2626;
-      font-size: 16px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .notify-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .notify-title { color: #dc2626; font-size: 16px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
     .notify-content {
-      background: #fef2f2;
-      border: 1px solid #fee2e2;
-      border-radius: 10px;
-      padding: 12px;
-      color: #7f1d1d;
-      font-size: 13.5px;
-      line-height: 1.5;
-      margin-bottom: 14px;
+      background: #fef2f2; border: 1px solid #fee2e2; border-radius: 10px;
+      padding: 12px; color: #7f1d1d; font-size: 13.5px; line-height: 1.5; margin-bottom: 14px;
     }
 
     /* साइड मेन्यू ड्रॉअर */
@@ -129,14 +95,9 @@
 
     /* मौसम कार्ड */
     .weather-card {
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      border: 1.5px solid #334155;
-      cursor: pointer;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: #f8fafc;
+      border-radius: 14px; padding: 14px; margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1.5px solid #334155; cursor: pointer;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #f8fafc;
       transition: background 0.3s ease, border-color 0.3s ease;
     }
     .weather-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 6px; margin-bottom: 8px; }
@@ -153,11 +114,13 @@
     .voice-btn.listening { animation: pulse 1s infinite alternate; background: #fee2e2; }
     @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.2); } }
 
-    /* 6 मुख्य बटन ग्रिड */
+    /* 6 मुख्य बटन ग्रिड एवं इमेज स्टाइल */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-    .menu-box { padding: 18px 10px; border-radius: 16px; text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.04); }
-    .menu-box .icon { font-size: 34px; margin-bottom: 6px; }
+    .menu-box { padding: 16px 10px; border-radius: 16px; text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.04); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .menu-box-img { width: 56px; height: 56px; object-fit: contain; margin-bottom: 8px; display: block; border-radius: 10px; }
+    .menu-box-icon { font-size: 34px; margin-bottom: 6px; display: none; }
     .menu-box h3 { font-size: 14px; font-weight: 700; }
+    
     .card-crops { background: linear-gradient(145deg, #ecfdf5 0%, #d1fae5 100%); border-color: #a7f3d0; }
     .card-crops h3 { color: #065f46; }
     .card-protection { background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%); border-color: #bfdbfe; }
@@ -280,28 +243,31 @@
       <div id="loginStep1">
         <div style="margin-bottom:12px;">
           <label style="font-size:13px; font-weight:600; color:#374151;">किसान का नाम:</label>
-          <input type="text" id="loginNameInput" class="form-control" placeholder="अपना पूरा नाम लिखें">
+          <input type="text" id="loginNameInput" class="form-control" placeholder="अपना पूरा नाम लिखें" value="किसान साथी">
         </div>
         <div style="margin-bottom:16px;">
           <label style="font-size:13px; font-weight:600; color:#374151;">मोबाइल नंबर:</label>
-          <input type="tel" id="loginPhoneInput" maxlength="10" class="form-control" placeholder="10 अंकों का मोबाइल नंबर">
+          <input type="tel" id="loginPhoneInput" maxlength="10" class="form-control" placeholder="10 अंकों का मोबाइल नंबर" value="9950000744">
         </div>
-        <button class="btn-action btn-wa" style="background:#1b5e20;" onclick="sendLoginOTP()">
-          📲 OTP प्राप्त करें
+        <button class="btn-action btn-wa" style="background:#1b5e20; font-size:15px; padding:12px; margin-bottom:8px;" onclick="directLoginOrOTP()">
+          🚀 सीधे ऐप में प्रवेश करें (ऐप खोलें)
+        </button>
+        <button class="btn-action" style="background:#f0fdf4; color:#15803d; border:1px solid #86efac; font-size:13px; padding:9px;" onclick="sendLoginOTP()">
+          📲 OTP देखें व सत्यापित करें
         </button>
       </div>
 
       <div id="loginStep2" style="display:none;">
         <div style="margin-bottom:16px;">
-          <label style="font-size:13px; font-weight:600; color:#374151; display:block; text-align:center;">4 अंकों का OTP दर्ज करें:</label>
-          <input type="number" id="loginOtpInput" class="form-control" placeholder="••••" style="text-align:center; font-size:22px; letter-spacing:8px; font-weight:bold;">
-          <p id="otpHintText" style="font-size:13px; color:#15803d; margin-top:8px; text-align:center; font-weight:bold;"></p>
+          <label style="font-size:13px; font-weight:600; color:#374151; display:block; text-align:center;">4 अंकों का OTP:</label>
+          <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="4" id="loginOtpInput" class="form-control" placeholder="••••" style="text-align:center; font-size:22px; letter-spacing:8px; font-weight:bold;">
+          <p id="otpHintText" style="font-size:14px; color:#15803d; margin-top:8px; text-align:center; font-weight:bold;"></p>
         </div>
         <button class="btn-action btn-wa" style="background:#15803d;" onclick="verifyLoginOTP()">
           ✅ OTP सत्यापित करें व ऐप खोलें
         </button>
         <button style="background:none; border:none; color:#dc2626; font-size:12px; width:100%; margin-top:12px; cursor:pointer;" onclick="backToLoginStep1()">
-          ← नंबर बदलें
+          ← नाम या नंबर बदलें
         </button>
       </div>
     </div>
@@ -472,7 +438,7 @@
     <!-- गोल स्टोरी बार -->
     <div class="stories-wrapper" id="storiesBarContainer"></div>
 
-    <!-- मौसम कार्ड (शुरुआत से ही लाइव व नाइट-रेडी) -->
+    <!-- मौसम कार्ड -->
     <div class="weather-card" onclick="showWeatherDetailScreen()">
       <div class="weather-header-row">
         <h4 id="weatherPlace">📍 राजस्थान</h4>
@@ -499,30 +465,36 @@
       </div>
     </div>
 
-    <!-- 6 मुख्य बटन ग्रिड -->
+    <!-- 6 मुख्य बटन ग्रिड (आपकी अपलोड की हुई फ़ोटो + स्मार्ट लोडर) -->
     <div class="grid-menu">
       <div class="menu-box card-crops" onclick="showAllCropsScreen()">
-        <div class="icon">🥬</div>
+        <img src="beej.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'beej.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/beej.jpg.jpg', '🥬')">
+        <div class="menu-box-icon">🥬</div>
         <h3 id="btnCrops">सब्जी फसल किस्म</h3>
       </div>
       <div class="menu-box card-protection" onclick="showProtectionCropsList()">
-        <div class="icon">🛡️</div>
+        <img src="rog.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'rog.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/rog.jpg.jpg', '🛡️')">
+        <div class="menu-box-icon">🛡️</div>
         <h3 id="btnProt">फसल सुरक्षा</h3>
       </div>
       <div class="menu-box card-schedule" onclick="showScheduleCropsList()">
-        <div class="icon">🗓️</div>
+        <img src="Spray Schedule.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'spray-schedule.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/Spray%20Schedule.jpg', '🗓️')">
+        <div class="menu-box-icon">🗓️</div>
         <h3 id="btnSched">स्प्रे शेड्यूल</h3>
       </div>
       <div class="menu-box card-advisor" onclick="contactAdvisor()">
-        <div class="icon">📞</div>
+        <img src="advisor.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'advisor.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/advisor.jpg.jpg', '📞')">
+        <div class="menu-box-icon">📞</div>
         <h3 id="btnAdv">सलाहकार</h3>
       </div>
       <div class="menu-box card-companies" onclick="showCompaniesList()">
-        <div class="icon">🏢</div>
+        <img src="brands.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'brands.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/brands.jpg.jpg', '🏢')">
+        <div class="menu-box-icon">🏢</div>
         <h3 id="btnComp">All कंपनी बीज</h3>
       </div>
       <div class="menu-box card-other" onclick="showOtherServicesScreen()">
-        <div class="icon">⚙️</div>
+        <img src="services.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'services.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/services.jpg.jpg', '⚙️')">
+        <div class="menu-box-icon">⚙️</div>
         <h3 id="btnOther">Other (अन्य सेवाएं)</h3>
       </div>
     </div>
@@ -820,14 +792,13 @@
     const VIDEOS_SHEET_URL = `${BASE_GV}Videos`;
     const MANDI_SHEET_URL = `${BASE_GV}Mandi`;
 
-    // Users टैब में डेटा भेजने का Apps Script लिंक (यदि बनाया हो)
+    // यहाँ अपना Apps Script वेब ऐप URL डालें (यदि किसान का डेटा Google Sheet में रिकॉर्ड करना हो)
     const USERS_SCRIPT_URL = '';
 
     let currentImgElement = null;
     let storyTimer = null;
     let generatedOTP = null;
 
-    // डेटाबेस ऑब्जेक्ट्स
     let sheetRecords = [];
     let cropSchedules = {};
     let cropDiseasesDatabase = {};
@@ -835,7 +806,6 @@
     let appVideos = [];
     let mandiRecords = [];
 
-    // ग्लोबल लाइव वेदर डेटा
     let liveWeatherData = {
       temp: null,
       windSpeed: null,
@@ -843,7 +813,21 @@
       isDay: null
     };
 
-    // घंटी नोटिफिकेशन खोलना/बंद करना
+    // स्मार्ट इमेज एरर हैंडलर
+    function handleCardImgError(img, fallbackLocal, rawGitUrl, fallbackIcon) {
+      if (!img.dataset.step) {
+        img.dataset.step = "1";
+        img.src = fallbackLocal;
+      } else if (img.dataset.step === "1") {
+        img.dataset.step = "2";
+        img.src = rawGitUrl;
+      } else {
+        img.style.display = "none";
+        const iconDiv = img.parentElement.querySelector('.menu-box-icon');
+        if (iconDiv) iconDiv.style.display = "block";
+      }
+    }
+
     function openNotify() {
       const modal = document.getElementById('notifyModal');
       if (modal) modal.classList.add('active');
@@ -856,7 +840,6 @@
       if (modal) modal.classList.remove('active');
     }
 
-    // लॉगिन स्टेटस जांच
     function checkLoginStatus() {
       const isLoggedIn = localStorage.getItem('is_logged_in');
       const loginScreen = document.getElementById('screen-login');
@@ -867,30 +850,79 @@
       }
     }
 
-    function sendLoginOTP() {
-      const name = document.getElementById('loginNameInput').value.trim();
-      const phone = document.getElementById('loginPhoneInput').value.trim();
+    // 1-क्लिक सीधा प्रवेश (तुरंत ऐप खोलने के लिए)
+    function directLoginOrOTP() {
+      const nameInput = document.getElementById('loginNameInput');
+      const phoneInput = document.getElementById('loginPhoneInput');
+      const name = (nameInput && nameInput.value.trim() !== '') ? nameInput.value.trim() : 'किसान भाई';
+      const rawPhone = (phoneInput && phoneInput.value.trim() !== '') ? phoneInput.value.trim() : '';
+      const phone = rawPhone.replace(/[^0-9]/g, '');
 
       if (!name) { alert("कृपया अपना नाम लिखें!"); return; }
-      if (phone.length !== 10) { alert("कृपया 10 अंकों का सही मोबाइल नंबर लिखें!"); return; }
+      if (phone.length < 10) { alert("कृपया 10 अंकों का सही मोबाइल नंबर लिखें!"); return; }
+
+      localStorage.setItem('is_logged_in', 'true');
+      localStorage.setItem('farmer_name', name);
+      localStorage.setItem('farmer_phone', phone);
+
+      // Google Sheet Users टैब में डेटा भेजना
+      if (USERS_SCRIPT_URL && USERS_SCRIPT_URL.trim() !== '') {
+        try {
+          fetch(USERS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, phone: phone })
+          });
+        } catch (e) {
+          console.log("User save error:", e);
+        }
+      }
+
+      const loginScreen = document.getElementById('screen-login');
+      if (loginScreen) loginScreen.style.display = 'none';
+      updateProfileUI();
+      alert(`स्वागत है ${name} जी! आपकी ऐप खुल गई है।`);
+    }
+
+    function sendLoginOTP() {
+      const nameInput = document.getElementById('loginNameInput');
+      const phoneInput = document.getElementById('loginPhoneInput');
+      const name = (nameInput && nameInput.value.trim() !== '') ? nameInput.value.trim() : '';
+      const rawPhone = (phoneInput && phoneInput.value.trim() !== '') ? phoneInput.value.trim() : '';
+      const phone = rawPhone.replace(/[^0-9]/g, '');
+
+      if (!name) { alert("कृपया अपना नाम लिखें!"); return; }
+      if (phone.length < 10) { alert("कृपया 10 अंकों का सही मोबाइल नंबर लिखें!"); return; }
 
       generatedOTP = Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('otpHintText').innerText = `आपका OTP है: ${generatedOTP}`;
+      const hint = document.getElementById('otpHintText');
+      if (hint) hint.innerText = `आपका OTP है: ${generatedOTP}`;
       
-      document.getElementById('loginStep1').style.display = 'none';
-      document.getElementById('loginStep2').style.display = 'block';
+      const otpInput = document.getElementById('loginOtpInput');
+      if (otpInput) otpInput.value = generatedOTP;
+
+      const s1 = document.getElementById('loginStep1');
+      const s2 = document.getElementById('loginStep2');
+      if (s1) s1.style.display = 'none';
+      if (s2) s2.style.display = 'block';
     }
 
     function backToLoginStep1() {
-      document.getElementById('loginStep2').style.display = 'none';
-      document.getElementById('loginStep1').style.display = 'block';
+      const s1 = document.getElementById('loginStep1');
+      const s2 = document.getElementById('loginStep2');
+      if (s2) s2.style.display = 'none';
+      if (s1) s1.style.display = 'block';
     }
 
     async function verifyLoginOTP() {
       const enteredOtp = document.getElementById('loginOtpInput').value.trim();
       if (enteredOtp == generatedOTP || enteredOtp === '1234') {
-        const name = document.getElementById('loginNameInput').value.trim();
-        const phone = document.getElementById('loginPhoneInput').value.trim();
+        const nameInput = document.getElementById('loginNameInput');
+        const phoneInput = document.getElementById('loginPhoneInput');
+        const name = (nameInput && nameInput.value.trim() !== '') ? nameInput.value.trim() : 'किसान भाई';
+        const rawPhone = (phoneInput && phoneInput.value.trim() !== '') ? phoneInput.value.trim() : '';
+        const phone = rawPhone.replace(/[^0-9]/g, '');
 
         localStorage.setItem('is_logged_in', 'true');
         localStorage.setItem('farmer_name', name);
@@ -909,11 +941,12 @@
           }
         }
 
-        document.getElementById('screen-login').style.display = 'none';
+        const loginScreen = document.getElementById('screen-login');
+        if (loginScreen) loginScreen.style.display = 'none';
         updateProfileUI();
         alert(`स्वागत है ${name} जी! आपकी ऐप खुल गई है।`);
       } else {
-        alert("गलत OTP! कृपया सही OTP डालें।");
+        alert("गलत OTP! कृपया सही OTP डालें या 1234 दर्ज करें।");
       }
     }
 
@@ -1012,7 +1045,6 @@
       });
     }
 
-    // भाषा
     const i18n = {
       hi: {
         title: "सब्जी फसल और बीज जानकारी",
@@ -1102,9 +1134,6 @@
       updateProfileUI();
     }
 
-    // ==========================================
-    // असली लाइव मौसम सैटेलाइट से लाना (Open-Meteo Free API)
-    // ==========================================
     async function fetchLiveSatelliteWeather(lat = 26.9124, lon = 75.7873) {
       try {
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m&timezone=auto`;
@@ -1120,7 +1149,6 @@
             liveWeatherData.humidity = data.hourly.relativehumidity_2m[0] || 45;
           }
           
-          // स्क्रीन पर लाइव डेटा अपडेट करना
           updateDateAndCity();
         }
       } catch (err) {
@@ -1128,7 +1156,6 @@
       }
     }
 
-    // किसान की लोकेशन से मौसम डिटेक्ट करना
     function detectFarmerLocationWeather() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -1136,7 +1163,6 @@
             fetchLiveSatelliteWeather(pos.coords.latitude, pos.coords.longitude);
           },
           () => {
-            // डिफ़ॉल्ट राजस्थान (जयपुर कोऑर्डिनेट्स)
             fetchLiveSatelliteWeather(26.9124, 75.7873);
           },
           { timeout: 8000 }
@@ -1146,9 +1172,6 @@
       }
     }
 
-    // ==========================================
-    // रात और दिन का ऑटो-डिटेक्शन तथा लाइव समय व शहर
-    // ==========================================
     function updateDateAndCity() {
       const now = new Date();
       const hours = now.getHours();
@@ -1169,7 +1192,6 @@
       const detailDateEl = document.getElementById('detailDate');
       if (detailDateEl) detailDateEl.innerText = fullDateTimeStr;
 
-      // शहर का नाम
       const savedState = localStorage.getItem('farmer_state');
       const cityName = (savedState && savedState.trim() !== '') ? savedState : 'राजस्थान';
       
@@ -1179,7 +1201,6 @@
       const detailCityEl = document.getElementById('detailCity');
       if (detailCityEl) detailCityEl.innerText = `📍 ${cityName}`;
 
-      // रात और दिन का निर्धारण (शाम 6 से सुबह 6 बजे या लाइव API के अनुसार)
       const isNight = (liveWeatherData.isDay !== null) ? (!liveWeatherData.isDay) : (hours >= 18 || hours < 6);
 
       const weatherCard = document.querySelector('.weather-card');
@@ -1195,7 +1216,6 @@
       const detailWind = document.getElementById('detailWindSpeed');
       const detailHum = document.getElementById('detailHumidity');
 
-      // लाइव तापमान या ऑटो बैकअप
       const currentTemp = (liveWeatherData.temp !== null) ? `${liveWeatherData.temp}°C` : (isNight ? '21°C' : '28°C');
       const currentWind = (liveWeatherData.windSpeed !== null) ? `${liveWeatherData.windSpeed} किमी/घंटा` : '12 किमी/घंटा';
       const currentHum = (liveWeatherData.humidity !== null) ? `${liveWeatherData.humidity}%` : '42%';
@@ -1204,7 +1224,6 @@
       if (detailHum) detailHum.innerText = currentHum;
 
       if (isNight) {
-        // 🌙 रात का मौसम (Night Mode)
         if (weatherIcon) weatherIcon.innerText = '🌙';
         if (weatherTemp) {
           weatherTemp.innerText = currentTemp;
@@ -1232,7 +1251,6 @@
         if (detailAdvice) detailAdvice.innerText = 'रात के समय कीटनाशक स्प्रे न करें। सुबह या शाम के समय ही स्प्रे करना सबसे अधिक असरदार रहता है।';
 
       } else {
-        // ☀️ दिन का मौसम (Day Mode)
         if (weatherIcon) weatherIcon.innerText = '☀️';
         if (weatherTemp) {
           weatherTemp.innerText = currentTemp;
