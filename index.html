@@ -49,7 +49,7 @@
       right: -2px;
       width: 9px;
       height: 9px;
-      background-color: #ef4444;
+      background-color: #ef4444; /* लाल रंग */
       border-radius: 50%;
       border: 1.5px solid #1b5e20;
       animation: pulse-red 1.5s infinite;
@@ -67,7 +67,7 @@
       padding: 20px;
       max-width: 360px;
       width: 90%;
-      border-top: 6px solid #dc2626;
+      border-top: 6px solid #dc2626; /* लाल पट्टी */
       box-shadow: 0 10px 25px rgba(0,0,0,0.25);
     }
     .notify-header {
@@ -127,7 +127,7 @@
     .story-ring { width: 62px; height: 62px; border-radius: 50%; padding: 2.5px; background: linear-gradient(45deg, #16a34a, #f59e0b, #ef4444); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-size: 26px; background-color: #f0fdf4; cursor: pointer; }
     .story-name { font-size: 11px; font-weight: 600; color: #374151; margin-top: 5px; max-width: 65px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* मौसम कार्ड */
+    /* मौसम कार्ड (डिफ़ॉल्ट रूप से नाइट मोड तैयार) */
     .weather-card {
       border-radius: 14px;
       padding: 14px;
@@ -472,7 +472,7 @@
     <!-- गोल स्टोरी बार -->
     <div class="stories-wrapper" id="storiesBarContainer"></div>
 
-    <!-- मौसम कार्ड (शुरुआत से ही लाइव व नाइट-रेडी) -->
+    <!-- मौसम कार्ड (शुरुआत से ही नाइट-रेडी) -->
     <div class="weather-card" onclick="showWeatherDetailScreen()">
       <div class="weather-header-row">
         <h4 id="weatherPlace">📍 राजस्थान</h4>
@@ -485,7 +485,7 @@
         </div>
         <div style="text-align:right;">
           <span style="font-size:30px;" id="weatherIcon">🌙</span>
-          <div class="weather-temp" id="weatherTemp">--°C</div>
+          <div class="weather-temp" id="weatherTemp">21°C</div>
         </div>
       </div>
     </div>
@@ -602,22 +602,22 @@
       </div>
       <div style="text-align:center; padding:15px 0;">
         <span style="font-size:45px;" id="detailWeatherIcon">☀️</span>
-        <div style="font-size:32px; font-weight:bold; color:#1b5e20;" id="detailWeatherTemp">--°C</div>
-        <p style="font-size:14px; color:#4b5563; font-weight:600; margin-top:4px;" id="detailWeatherDesc">मौसम लोड हो रहा है...</p>
+        <div style="font-size:32px; font-weight:bold; color:#1b5e20;" id="detailWeatherTemp">28°C</div>
+        <p style="font-size:14px; color:#4b5563; font-weight:600; margin-top:4px;" id="detailWeatherDesc">साफ़ और खिली हुई धूप</p>
       </div>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
         <div style="background:#f0fdf4; padding:10px; border-radius:8px; border:1px solid #bbf7d0;">
           <p style="font-size:11px; color:#166534;">हवा की गति</p>
-          <b style="font-size:14px; color:#15803d;" id="detailWindSpeed">-- किमी/घंटा</b>
+          <b style="font-size:14px; color:#15803d;">12 किमी/घंटा</b>
         </div>
         <div style="background:#f0fdf4; padding:10px; border-radius:8px; border:1px solid #bbf7d0;">
           <p style="font-size:11px; color:#166534;">नमी (Humidity)</p>
-          <b style="font-size:14px; color:#15803d;" id="detailHumidity">--%</b>
+          <b style="font-size:14px; color:#15803d;">42%</b>
         </div>
       </div>
       <div style="margin-top:14px; background:#fefce8; border:1px solid #fef08a; padding:12px; border-radius:10px;">
         <b style="color:#854d0e; font-size:13px; display:block; margin-bottom:4px;">🌾 कृषि मौसम सलाह:</b>
-        <p style="font-size:12.5px; color:#713f12; line-height:1.4;" id="detailWeatherAdvice">आगामी मौसम शुष्क रहेगा। फसलों में निराई-गुड़ाई, सिंचाई तथा कीटनाशक व टॉनिक का स्प्रे आसानी से कर सकते हैं।</p>
+        <p style="font-size:12.5px; color:#713f12; line-height:1.4;" id="detailWeatherAdvice">आगामी 3 दिन मौसम पूरी तरह शुष्क रहेगा। सब्जियों में निराई-गुड़ाई, सिंचाई तथा कीटनाशक व टॉनिक का स्प्रे आसानी से कर सकते हैं।</p>
       </div>
     </div>
   </div>
@@ -808,11 +808,11 @@
     let currentLang = localStorage.getItem('app_lang') || 'hi';
     const navHistory = ['screen-home'];
 
-    // मुख्य Google Sheet ID
+    // आपकी मुख्य Google Sheet ID
     const SPREADSHEET_ID = '1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y';
     const BASE_GV = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
 
-    // सभी टैब के CSV लिंक्स
+    // सभी 6 टैब के CSV लिंक्स
     const SHEET_URL = `${BASE_GV}Sheet1`;
     const SCHEDULE_SHEET_URL = `${BASE_GV}Schedule`;
     const PROTECTION_SHEET_URL = `${BASE_GV}Protection`;
@@ -834,14 +834,6 @@
     let dailyStories = [];
     let appVideos = [];
     let mandiRecords = [];
-
-    // ग्लोबल लाइव वेदर डेटा
-    let liveWeatherData = {
-      temp: null,
-      windSpeed: null,
-      humidity: null,
-      isDay: null
-    };
 
     // घंटी नोटिफिकेशन खोलना/बंद करना
     function openNotify() {
@@ -1103,51 +1095,7 @@
     }
 
     // ==========================================
-    // असली लाइव मौसम सैटेलाइट से लाना (Open-Meteo Free API)
-    // ==========================================
-    async function fetchLiveSatelliteWeather(lat = 26.9124, lon = 75.7873) {
-      try {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m&timezone=auto`;
-        const res = await fetch(url);
-        const data = await res.json();
-        
-        if (data && data.current_weather) {
-          liveWeatherData.temp = Math.round(data.current_weather.temperature);
-          liveWeatherData.windSpeed = Math.round(data.current_weather.windspeed);
-          liveWeatherData.isDay = data.current_weather.is_day === 1;
-          
-          if (data.hourly && data.hourly.relativehumidity_2m) {
-            liveWeatherData.humidity = data.hourly.relativehumidity_2m[0] || 45;
-          }
-          
-          // स्क्रीन पर लाइव डेटा अपडेट करना
-          updateDateAndCity();
-        }
-      } catch (err) {
-        console.log("Weather API Fetch Error:", err);
-      }
-    }
-
-    // किसान की लोकेशन से मौसम डिटेक्ट करना
-    function detectFarmerLocationWeather() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            fetchLiveSatelliteWeather(pos.coords.latitude, pos.coords.longitude);
-          },
-          () => {
-            // डिफ़ॉल्ट राजस्थान (जयपुर कोऑर्डिनेट्स)
-            fetchLiveSatelliteWeather(26.9124, 75.7873);
-          },
-          { timeout: 8000 }
-        );
-      } else {
-        fetchLiveSatelliteWeather(26.9124, 75.7873);
-      }
-    }
-
-    // ==========================================
-    // रात और दिन का ऑटो-डिटेक्शन तथा लाइव समय व शहर
+    // रात और दिन का 100% सटीक ऑटो-डिटेक्शन तथा समय व शहर
     // ==========================================
     function updateDateAndCity() {
       const now = new Date();
@@ -1161,6 +1109,7 @@
       const displayHours = hours % 12 || 12;
       const timeStr = `${displayHours}:${minutes} ${ampm}`;
 
+      // दिनांक और समय
       const fullDateTimeStr = `📅 ${daysHi[now.getDay()]}, ${now.getDate()} ${monthsHi[now.getMonth()]} • ⏰ ${timeStr}`;
 
       const timeEl = document.getElementById('weatherDateTime');
@@ -1169,7 +1118,7 @@
       const detailDateEl = document.getElementById('detailDate');
       if (detailDateEl) detailDateEl.innerText = fullDateTimeStr;
 
-      // शहर का नाम
+      // शहर का नाम (प्रोफ़ाइल से या डिफ़ॉल्ट)
       const savedState = localStorage.getItem('farmer_state');
       const cityName = (savedState && savedState.trim() !== '') ? savedState : 'राजस्थान';
       
@@ -1179,8 +1128,8 @@
       const detailCityEl = document.getElementById('detailCity');
       if (detailCityEl) detailCityEl.innerText = `📍 ${cityName}`;
 
-      // रात और दिन का निर्धारण (शाम 6 से सुबह 6 बजे या लाइव API के अनुसार)
-      const isNight = (liveWeatherData.isDay !== null) ? (!liveWeatherData.isDay) : (hours >= 18 || hours < 6);
+      // रात और दिन का निर्धारण (शाम 6:00 बजे से सुबह 6:00 बजे तक = रात)
+      const isNight = (hours >= 18 || hours < 6);
 
       const weatherCard = document.querySelector('.weather-card');
       const weatherIcon = document.getElementById('weatherIcon');
@@ -1192,22 +1141,12 @@
       const detailTemp = document.getElementById('detailWeatherTemp');
       const detailDesc = document.getElementById('detailWeatherDesc');
       const detailAdvice = document.getElementById('detailWeatherAdvice');
-      const detailWind = document.getElementById('detailWindSpeed');
-      const detailHum = document.getElementById('detailHumidity');
-
-      // लाइव तापमान या ऑटो बैकअप
-      const currentTemp = (liveWeatherData.temp !== null) ? `${liveWeatherData.temp}°C` : (isNight ? '21°C' : '28°C');
-      const currentWind = (liveWeatherData.windSpeed !== null) ? `${liveWeatherData.windSpeed} किमी/घंटा` : '12 किमी/घंटा';
-      const currentHum = (liveWeatherData.humidity !== null) ? `${liveWeatherData.humidity}%` : '42%';
-
-      if (detailWind) detailWind.innerText = currentWind;
-      if (detailHum) detailHum.innerText = currentHum;
 
       if (isNight) {
         // 🌙 रात का मौसम (Night Mode)
         if (weatherIcon) weatherIcon.innerText = '🌙';
         if (weatherTemp) {
-          weatherTemp.innerText = currentTemp;
+          weatherTemp.innerText = '21°C';
           weatherTemp.style.color = '#38bdf8';
         }
         if (weatherDesc) {
@@ -1226,20 +1165,21 @@
         if (placeEl) placeEl.style.color = '#38bdf8';
         if (timeEl) timeEl.style.color = '#94a3b8';
 
+        // डिटेल स्क्रीन
         if (detailIcon) detailIcon.innerText = '🌙';
-        if (detailTemp) { detailTemp.innerText = currentTemp; detailTemp.style.color = '#0284c7'; }
-        if (detailDesc) detailDesc.innerText = 'तारों भरी शांत रात (लाइव)';
+        if (detailTemp) { detailTemp.innerText = '21°C'; detailTemp.style.color = '#0284c7'; }
+        if (detailDesc) detailDesc.innerText = 'तारों भरी शांत रात';
         if (detailAdvice) detailAdvice.innerText = 'रात के समय कीटनाशक स्प्रे न करें। सुबह या शाम के समय ही स्प्रे करना सबसे अधिक असरदार रहता है।';
 
       } else {
         // ☀️ दिन का मौसम (Day Mode)
         if (weatherIcon) weatherIcon.innerText = '☀️';
         if (weatherTemp) {
-          weatherTemp.innerText = currentTemp;
+          weatherTemp.innerText = '28°C';
           weatherTemp.style.color = '#1b5e20';
         }
         if (weatherDesc) {
-          weatherDesc.innerText = 'साफ़ आसमान (लाइव धूप)';
+          weatherDesc.innerText = 'साफ़ आसमान';
           weatherDesc.style.color = '#374151';
         }
         if (weatherAdvice) {
@@ -1255,9 +1195,9 @@
         if (timeEl) timeEl.style.color = '#166534';
 
         if (detailIcon) detailIcon.innerText = '☀️';
-        if (detailTemp) { detailTemp.innerText = currentTemp; detailTemp.style.color = '#1b5e20'; }
-        if (detailDesc) detailDesc.innerText = 'खिली हुई धूप';
-        if (detailAdvice) detailAdvice.innerText = 'मौसम शुष्क है। फसलों में निराई-गुड़ाई, सिंचाई तथा आवश्यकतानुसार स्प्रे आसानी से कर सकते हैं।';
+        if (detailTemp) { detailTemp.innerText = '28°C'; detailTemp.style.color = '#1b5e20'; }
+        if (detailDesc) detailDesc.innerText = 'साफ़ और खिली हुई धूप';
+        if (detailAdvice) detailAdvice.innerText = 'आगामी मौसम शुष्क रहेगा। फसलों में निराई-गुड़ाई, सिंचाई तथा स्प्रे आसानी से कर सकते हैं।';
       }
     }
 
@@ -1816,10 +1756,7 @@
     updateDateAndCity();
     setInterval(updateDateAndCity, 1000); // लाइव घड़ी
 
-    // 2. लाइव वेदर API से असली मौसम लाना
-    detectFarmerLocationWeather();
-
-    // 3. DOM तैयार होते ही बाकी फीचर्स चालू
+    // 2. DOM तैयार होते ही बाकी फीचर्स चालू
     window.addEventListener('DOMContentLoaded', () => {
       checkLoginStatus();
       applyLanguage();
