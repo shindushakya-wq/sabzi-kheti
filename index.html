@@ -1149,6 +1149,7 @@
       openScreen('screen-chem-categories', currentLang === 'hi' ? 'दवाइयों के प्रकार' : 'Chemical Categories');
     }
 
+    // सुधारा गया filterChemicalsByType फंक्शन ताकि श्रेणियां सही से काम करें
     function filterChemicalsByType(selectedType) {
       let filtered = [];
       let titleName = 'दवाइयाँ';
@@ -1159,12 +1160,9 @@
         titleName = 'सभी कृषि दवाइयाँ';
       } else {
         filtered = sourceList.filter(item => {
-          const t = (item.type || '').toLowerCase();
-          const target = (item.target || '').toLowerCase();
-          const searchKey = selectedType.toLowerCase();
-          return t.includes(searchKey) || 
-                 (searchKey === 'फफूंदनाशक' && (t.includes('फंगस') || t.includes('फंगीसाइड'))) ||
-                 (searchKey === 'खरपतवारनाशक' && (t.includes('खरपतवार') || t.includes('घास')));
+          const t = (item.type || '').trim().toLowerCase();
+          const searchKey = selectedType.trim().toLowerCase();
+          return t === searchKey || t.includes(searchKey);
         });
         titleName = `${selectedType} दवाइयाँ`;
       }
@@ -1215,7 +1213,7 @@
       });
     }
 
-    // अपडेटेड loadOnlineChemicals फंक्शन (कॉलम मिलान व डीबग के साथ)
+    // सुधारा गया loadOnlineChemicals फंक्शन (कॉलम A से F के अनुसार)
     async function loadOnlineChemicals() {
       try {
         const res = await fetch(`${CHEMICALS_SHEET_URL}&t=${Date.now()}`);
@@ -1227,12 +1225,12 @@
           const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
           if (cols[0] && !cols[0].includes('दवा का नाम') && cols[0].toLowerCase() !== 'name') {
             newChem.push({
-              name: cols[0],                              // कॉलम A: दवा का नाम
-              type: cols[1] || 'कीटनाशक',                  // कॉलम B: प्रकार
-              technical: cols[2] || '',                   // कॉलम C: टेक्निकल नाम
-              target: cols[3] || '',                      // कॉलम D: नियंत्रण / काम
-              dose: cols[4] || '',                        // कॉलम E: डोज
-              photo: (cols[5] && cols[5].startsWith('http')) ? cols[5] : '' // कॉलम F: फोटो लिंक
+              name: cols[0],                              // कॉलम A: दवा का नाम[span_4](start_span)[span_4](end_span)
+              type: cols[1] || 'कीटनाशक',                  // कॉलम B: प्रकार[span_5](start_span)[span_5](end_span)
+              technical: cols[2] || '',                   // कॉलम C: टेक्निकल नाम[span_6](start_span)[span_6](end_span)
+              target: cols[3] || '',                      // कॉलम D: नियंत्रण / काम[span_7](start_span)[span_7](end_span)
+              dose: cols[4] || '',                        // कॉलम E: डोज[span_8](start_span)[span_8](end_span)
+              photo: (cols[5] && cols[5].startsWith('http')) ? cols[5] : '' // कॉलम F: फोटो लिंक[span_9](start_span)[span_9](end_span)
             });
           }
         }
