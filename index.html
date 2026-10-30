@@ -87,11 +87,14 @@
     .screen.active { display: block; }
 
     /* गोल स्टोरी बार */
-    .stories-wrapper { display: flex; gap: 12px; overflow-x: auto; padding: 12px 14px; background: #ffffff; border-bottom: 1px solid #e5e7eb; -webkit-overflow-scrolling: touch; margin-bottom: 12px; }
+    .stories-wrapper { display: flex; gap: 14px; overflow-x: auto; padding: 12px 14px; background: #ffffff; border-bottom: 1px solid #e5e7eb; -webkit-overflow-scrolling: touch; margin-bottom: 14px; min-height: 98px; }
     .stories-wrapper::-webkit-scrollbar { display: none; }
-    .story-item { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; text-align: center; }
-    .story-ring { width: 62px; height: 62px; border-radius: 50%; padding: 2.5px; background: linear-gradient(45deg, #16a34a, #f59e0b, #ef4444); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-size: 26px; background-color: #f0fdf4; cursor: pointer; }
-    .story-name { font-size: 11px; font-weight: 600; color: #374151; margin-top: 5px; max-width: 65px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .story-item { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; text-align: center; cursor: pointer; }
+    .story-ring { width: 64px; height: 64px; border-radius: 50%; padding: 2.5px; background: linear-gradient(45deg, #16a34a, #eab308, #ef4444); display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+    .story-ring-inner { width: 100%; height: 100%; border-radius: 50%; background: #f0fdf4; display: flex; align-items: center; justify-content: center; font-size: 28px; overflow: hidden; border: 2px solid #ffffff; }
+    .story-name { font-size: 11.5px; font-weight: 600; color: #374151; margin-top: 6px; max-width: 68px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .search-tag { background: #ffffff; border: 1.5px solid #bbf7d0; color: #166534; font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 18px; white-space: nowrap; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.04); display: inline-flex; align-items: center; gap: 4px; }
+    .search-tag:active { background: #dcfce7; transform: scale(0.95); }
 
     /* मौसम कार्ड */
     .weather-card {
@@ -114,7 +117,7 @@
     .voice-btn.listening { animation: pulse 1s infinite alternate; background: #fee2e2; }
     @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.2); } }
 
-    /* ग्रिड मेन्यू एवं इमेज स्टाइल */
+    /* 7 मुख्य बटन ग्रिड एवं इमेज स्टाइल */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
     .menu-box { padding: 16px 10px; border-radius: 16px; text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.04); display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .menu-box-img { width: 56px; height: 56px; object-fit: contain; margin-bottom: 8px; display: block; border-radius: 10px; }
@@ -260,16 +263,23 @@
       </div>
 
       <div id="loginStep2" style="display:none;">
-        <div style="margin-bottom:16px;">
-          <label style="font-size:13px; font-weight:600; color:#374151; display:block; text-align:center;">4 अंकों का OTP:</label>
-          <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="4" id="loginOtpInput" class="form-control" placeholder="••••" style="text-align:center; font-size:22px; letter-spacing:8px; font-weight:bold;">
-          <p id="otpHintText" style="font-size:14px; color:#15803d; margin-top:8px; text-align:center; font-weight:bold;"></p>
+        <!-- स्क्रीन पर साफ़ और बड़ा OTP कार्ड -->
+        <div style="background:#f0fdf4; border:2px dashed #16a34a; border-radius:14px; padding:14px 10px; text-align:center; margin-bottom:16px;">
+          <span style="font-size:12px; color:#166534; font-weight:bold; display:block;">📲 आपका स्क्रीन OTP कोड:</span>
+          <div id="otpDisplayBig" style="font-size:34px; font-weight:900; color:#15803d; letter-spacing:8px; margin:6px 0;">----</div>
+          <span style="font-size:11.5px; color:#374151; display:block;">(यह कोड नीचे बॉक्स में अपने-आप भर गया है)</span>
         </div>
-        <button class="btn-action btn-wa" style="background:#15803d;" onclick="verifyLoginOTP()">
+
+        <div style="margin-bottom:16px;">
+          <label style="font-size:13px; font-weight:600; color:#374151; display:block; text-align:center; margin-bottom:6px;">दर्ज किया गया OTP:</label>
+          <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="4" id="loginOtpInput" class="form-control" placeholder="••••" style="text-align:center; font-size:24px; letter-spacing:8px; font-weight:bold; background:#ffffff; border:2px solid #86efac; color:#15803d;">
+        </div>
+
+        <button class="btn-action btn-wa" style="background:#15803d; font-size:15px; padding:12px;" onclick="verifyLoginOTP()">
           ✅ OTP सत्यापित करें व ऐप खोलें
         </button>
-        <button style="background:none; border:none; color:#dc2626; font-size:12px; width:100%; margin-top:12px; cursor:pointer;" onclick="backToLoginStep1()">
-          ← नाम या नंबर बदलें
+        <button style="background:none; border:none; color:#dc2626; font-size:13px; width:100%; margin-top:14px; cursor:pointer; font-weight:600;" onclick="backToLoginStep1()">
+          ← नाम या मोबाइल नंबर बदलें
         </button>
       </div>
     </div>
@@ -410,6 +420,20 @@
     </div>
   </div>
 
+  <!-- वॉयस सर्च लिसनिंग मोडल -->
+  <div class="modal-overlay" id="voiceSearchModal">
+    <div style="background:#ffffff; border-radius:20px; padding:24px 20px; max-width:320px; width:88%; text-align:center; box-shadow:0 12px 30px rgba(0,0,0,0.25);">
+      <div style="width:72px; height:72px; border-radius:50%; background:#fee2e2; color:#dc2626; display:flex; align-items:center; justify-content:center; font-size:36px; margin:0 auto 14px; animation:pulse 1s infinite alternate;">
+        🎙️
+      </div>
+      <h3 style="font-size:17px; color:#1b5e20; margin-bottom:6px;">बोलिए, हम सुन रहे हैं...</h3>
+      <p style="font-size:13px; color:#4b5563; margin-bottom:14px;">फसल, बीज या दवा का नाम बोलें<br><b style="color:#15803d;">(जैसे: "टमाटर", "खीरा", "मिर्च", "पेगासस")</b></p>
+      <button class="btn-action" style="background:#f3f4f6; color:#374151; padding:8px 18px; border-radius:20px; font-size:12.5px; border:1px solid #d1d5db; width:auto; margin:0 auto; cursor:pointer;" onclick="stopVoiceSearch()">
+        रद्द करें (Cancel)
+      </button>
+    </div>
+  </div>
+
   <!-- स्टोरी प्लेयर -->
   <div class="story-fullscreen-modal" id="storyPlayerModal">
     <div class="story-top-bar">
@@ -461,13 +485,23 @@
       </div>
     </div>
 
-    <!-- सर्च बार -->
+    <!-- सर्च बार (लिखकर व बोलकर सर्च) -->
     <div class="search-wrapper">
-      <input type="text" id="homeSearch" class="search-box" placeholder="🔍 खीरा, तरबूज या बीज लिखें..." onkeyup="executeSearch(this.value)">
+      <input type="text" id="homeSearch" class="search-box" placeholder="🔍 टमाटर, खीरा, मिर्च या दवा खोजें..." onkeydown="if(event.key==='Enter'){ event.preventDefault(); executeSearch(this.value); }">
       <div class="search-actions">
-        <button class="search-icon-btn" onclick="executeSearch(document.getElementById('homeSearch').value)">🔍</button>
+        <button class="search-icon-btn" onclick="executeSearch(document.getElementById('homeSearch').value)" title="सर्च करें">🔍</button>
         <button class="voice-btn" id="voiceSearchBtn" onclick="startVoiceSearch()" title="बोलकर सर्च करें">🎙️</button>
       </div>
+    </div>
+
+    <!-- 1-टैप त्वरित खोज (Quick Search Tags) -->
+    <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:12px; -webkit-overflow-scrolling:touch;">
+      <span class="search-tag" onclick="quickSearch('टमाटर')">🍅 टमाटर</span>
+      <span class="search-tag" onclick="quickSearch('खीरा')">🥒 खीरा</span>
+      <span class="search-tag" onclick="quickSearch('मिर्च')">🌶️ मिर्च</span>
+      <span class="search-tag" onclick="quickSearch('तरबूज')">🍉 तरबूज</span>
+      <span class="search-tag" onclick="quickSearch('कीटनाशक')">🧪 कीटनाशक</span>
+      <span class="search-tag" onclick="quickSearch('थ्रिप्स')">🛡️ थ्रिप्स</span>
     </div>
 
     <!-- 7 मुख्य बटन ग्रिड (6th पर दवाइयाँ / Chemicals और 7th पर Other सेवाएं) -->
@@ -541,11 +575,72 @@
     </div>
   </div>
 
-  <!-- SCREEN: दवाइयाँ (Chemicals) सूची -->
-  <div id="screen-chemicals" class="screen">
+  <!-- SCREEN: दवाइयों की श्रेणियां (Chemical Categories) -->
+  <div id="screen-chem-categories" class="screen">
+    <div style="background:#fdf2f8; border:1px solid #fbcfe8; border-radius:12px; padding:12px; margin-bottom:14px; text-align:center;">
+      <h3 style="color:#9d174d; font-size:16px;">🧪 कृषि दवाइयों के प्रकार</h3>
+      <p style="font-size:12px; color:#831843; margin-top:2px;">जिस प्रकार की दवा चाहिए, उस पर क्लिक करें:</p>
+    </div>
+
+    <!-- श्रेणियां लिस्ट -->
+    <div class="list-item" style="border-left:5px solid #ef4444;" onclick="filterChemicalsByType('कीटनाशक')">
+      <div class="list-left">
+        <span class="list-icon">🐛</span>
+        <div>
+          <span class="list-title" style="color:#b91c1c; font-weight:bold;">कीटनाशक (Insecticides)</span>
+          <p style="font-size:11.5px; color:#6b7280;">थ्रिप्स, इल्ली, सुंडी, माहू व रस चूसक कीटों की दवा</p>
+        </div>
+      </div>
+      <span class="arrow">&gt;</span>
+    </div>
+
+    <div class="list-item" style="border-left:5px solid #0284c7;" onclick="filterChemicalsByType('फफूंदनाशक')">
+      <div class="list-left">
+        <span class="list-icon">🍄</span>
+        <div>
+          <span class="list-title" style="color:#0369a1; font-weight:bold;">फफूंदनाशक (Fungicides)</span>
+          <p style="font-size:11.5px; color:#6b7280;">जड़ गलन, उकठा, पत्ती धब्बा, पाउडरी मिल्ड्यू की दवा</p>
+        </div>
+      </div>
+      <span class="arrow">&gt;</span>
+    </div>
+
+    <div class="list-item" style="border-left:5px solid #16a34a;" onclick="filterChemicalsByType('खरपतवारनाशक')">
+      <div class="list-left">
+        <span class="list-icon">🌿</span>
+        <div>
+          <span class="list-title" style="color:#15803d; font-weight:bold;">खरपतवारनाशक (Weedicides)</span>
+          <p style="font-size:11.5px; color:#6b7280;">चौड़ी व संकरी पत्ती के खरपतवार नष्ट करने की दवा</p>
+        </div>
+      </div>
+      <span class="arrow">&gt;</span>
+    </div>
+
+    <div class="list-item" style="border-left:5px solid #d97706;" onclick="filterChemicalsByType('टॉनिक')">
+      <div class="list-left">
+        <span class="list-icon">⚡</span>
+        <div>
+          <span class="list-title" style="color:#b45309; font-weight:bold;">टॉनिक व PGR (Growth Promoters)</span>
+          <p style="font-size:11.5px; color:#6b7280;">फूल-फल बढ़ाने, चमक व वानस्पतिक वृद्धि हेतु</p>
+        </div>
+      </div>
+      <span class="arrow">&gt;</span>
+    </div>
+
+    <div class="list-item" style="background:#f9fafb; border:1px dashed #cbd5e1;" onclick="filterChemicalsByType('all')">
+      <div class="list-left">
+        <span class="list-icon">📋</span>
+        <span class="list-title" style="color:#475569; font-weight:bold;">सभी दवाइयाँ एक साथ देखें (All)</span>
+      </div>
+      <span class="arrow">&gt;</span>
+    </div>
+  </div>
+
+  <!-- SCREEN: चयनित श्रेणी की दवाइयाँ सूची -->
+  <div id="screen-chemicals-list" class="screen">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="font-size:16px; color:#1b5e20;">🧪 प्रमुख कृषि दवाइयाँ व डोज</h3>
-      <span style="font-size:11px; background:#fce7f3; color:#9d174d; padding:4px 8px; border-radius:6px; font-weight:bold;">सटीक मात्रा</span>
+      <h3 style="font-size:16px; color:#1b5e20;" id="chemCategoryHeading">🧪 दवाइयाँ व डोज</h3>
+      <span style="font-size:11px; background:#fce7f3; color:#9d174d; padding:4px 8px; border-radius:6px; font-weight:bold;">15L पंप डोज</span>
     </div>
     <div id="chemicalsListContainer"></div>
   </div>
@@ -721,6 +816,15 @@
     <div id="cropsContainer"></div>
   </div>
 
+  <!-- SCREEN: विस्तृत खोज परिणाम स्क्रीन -->
+  <div id="screen-search-results" class="screen">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h3 style="font-size:16px; color:#1b5e20;" id="searchResultHeading">🔍 खोज परिणाम</h3>
+      <span id="searchResultCount" style="font-size:11px; background:#dcfce7; color:#15803d; padding:4px 8px; border-radius:6px; font-weight:bold;"></span>
+    </div>
+    <div id="searchResultsContainer"></div>
+  </div>
+
   <!-- SCREEN 3: किस्में सूची -->
   <div id="screen-seeds" class="screen">
     <div id="varietiesContainer"></div>
@@ -821,19 +925,112 @@
     const MANDI_SHEET_URL = `${BASE_GV}Mandi`;
     const CHEMICALS_SHEET_URL = `${BASE_GV}Chemicals`;
 
+    // यहाँ अपना Apps Script वेब ऐप URL डालें (यदि किसान का डेटा Google Sheet में रिकॉर्ड करना हो)
     const USERS_SCRIPT_URL = '';
 
     let currentImgElement = null;
     let storyTimer = null;
     let generatedOTP = null;
 
-    let sheetRecords = [];
-    let cropSchedules = {};
-    let cropDiseasesDatabase = {};
-    let dailyStories = [];
-    let appVideos = [];
-    let mandiRecords = [];
-    let chemicalsDatabase = [];
+    // ==========================================
+    // इनबिल्ट विस्तृत डेटाबेस (ताकि ऐप कभी खाली न दिखे और ऑफलाइन भी चले)
+    // ==========================================
+    let sheetRecords = [
+      { company: 'सिंजेंटा (Syngenta)', crop: 'टमाटर', variety: 'साहो (TO 3251)', segment: 'गर्मी / बरसात', features: 'ऊँचा तापमान सहने की क्षमता, बहुत सख्त फल, लंबी दूरी के ट्रांसपोर्ट के लिए बेस्ट।', weight: '80-100 ग्राम', maturity: '60-65 दिन', resistance: 'TLCV व बैक्टीरियल विल्ट प्रतिरोधी', photo: '' },
+      { company: 'सिंजेंटा (Syngenta)', crop: 'टमाटर', variety: 'हिमसोना', segment: 'सर्दी / बरसात', features: 'ठंडे और गीले मौसम के लिए, फल बहुत ठोस और गहरे लाल।', weight: '90-100 ग्राम', maturity: '65-70 दिन', resistance: 'झुलसा रोग प्रतिरोधी', photo: '' },
+      { company: 'सेमिनिस (Seminis)', crop: 'टमाटर', variety: 'अभिनव', segment: 'गर्मी / बरसात', features: 'पौधा मजबूत, फल चौकोर-गोल, चमक चमकदार लाल।', weight: '85-95 ग्राम', maturity: '60-65 दिन', resistance: 'पत्ती मरोड़ मध्यम प्रतिरोधी', photo: '' },
+      { company: 'सेमिनिस (Seminis)', crop: 'टमाटर', variety: 'अंसल', segment: 'बरसात / सर्दी', features: 'अधिक फलन, फल एक समान साइज के, वजनदार।', weight: '90-100 ग्राम', maturity: '65 दिन', resistance: 'TLCV प्रतिरोधी', photo: '' },
+      { company: 'नामधारी (Namdhari)', crop: 'टमाटर', variety: 'NS 501', segment: 'वर्ष भर', features: 'शानदार लाल रंग, गूदा मोटा, बाज़ार में ऊँची कीमत।', weight: '80-90 ग्राम', maturity: '65-70 दिन', resistance: 'सहनशील', photo: '' },
+      { company: 'सिंजेंटा (Syngenta)', crop: 'मिर्च', variety: 'HPH 5531', segment: 'तीखी मिर्च', features: 'गहरे हरे फल, अधिक तीखापन, सुखाकर लाल मिर्च बनाने हेतु उत्तम।', weight: '10-12 सेमी लंबी', maturity: '55-60 दिन', resistance: 'थ्रिप्स व वायरस सहनशील', photo: '' },
+      { company: 'एडवांटा (Advanta)', crop: 'मिर्च', variety: 'AK 47', segment: 'हरी मिर्च', features: 'शुरुआती तुड़ाई, गुच्छों में फलन, आकर्षक गहरा हरा रंग।', weight: '9-11 सेमी', maturity: '50-55 दिन', resistance: 'मध्यम', photo: '' },
+      { company: 'नूनहेम्स (Nunhems)', crop: 'खीरा', variety: 'कुणाल (Kunal)', segment: 'पार्थेनोकार्पिक', features: 'पॉलीहाउस व खुले खेत दोनों हेतु, कड़वाहट रहित, एक समान हरे फल।', weight: '18-20 सेमी', maturity: '35-40 दिन', resistance: 'पाउडरी मिल्ड्यू प्रतिरोधी', photo: '' },
+      { company: 'सिंजेंटा (Syngenta)', crop: 'फूलगोभी', variety: 'सीएफएल 1522', segment: 'अगैती', features: 'सफेद गठीला फूल, पीलापन नहीं आता, पत्तों से ढका हुआ।', weight: '800 ग्राम - 1.2 किग्रा', maturity: '55-60 दिन', resistance: 'गर्मी सहनशील', photo: '' },
+      { company: 'सिंजेंटा (Syngenta)', crop: 'पत्तागोभी', variety: 'बीसी 76', segment: 'मध्यम', features: 'गहरा हरा ठोस बंधा, लंबे समय तक खेत में टिकने वाला।', weight: '1 - 1.5 किग्रा', maturity: '60-65 दिन', resistance: 'सहनशील', photo: '' },
+      { company: 'एडवांटा (Advanta)', crop: 'भिंडी', variety: 'राधिका (Radhika)', segment: 'बरसात / गर्मी', features: 'गाढ़े हरे फल, 5 धारियों वाली, छोटे पोरों पर फलन, अधिक तुड़ाई।', weight: '12-14 सेमी', maturity: '45-50 दिन', resistance: 'YVMV (पीला मोज़ेक) प्रतिरोधी', photo: '' },
+      { company: 'महायको (Mahyco)', crop: 'बैंगन', variety: 'नवकिरण', segment: 'गोल बैंगन', features: 'गहरा बैंगनी-चमकदार रंग, कांटे रहित, भरता बनाने हेतु उत्तम।', weight: '250-300 ग्राम', maturity: '60 दिन', resistance: 'तना छेदक सहनशील', photo: '' },
+      { company: 'साकाता (Sakata)', crop: 'तरबूज', variety: 'माधुरी 64', segment: 'आइसबॉक्स', features: 'गहरा काला छिलका, अत्यंत मीठा (TSS 13%), लाल दानेदार गूदा।', weight: '3-5 किग्रा', maturity: '65-70 दिन', resistance: 'फ्यूजेरियम विल्ट सहनशील', photo: '' }
+    ];
+
+    let cropSchedules = {
+      'टमाटर': [
+        { time: '0-7 दिन (रोपाई के समय)', med: 'ह्यूमिक एसिड 98% (500 ग्राम) + साफ फफूंदनाशक (500 ग्राम) प्रति एकड़ ड्रेंचिंग', purpose: 'जड़ों का तेज़ी से विकास व फंगस/उकठा से बचाव' },
+        { time: '15-20 दिन (वानस्पतिक वृद्धि)', med: 'NPK 19:19:19 (75 ग्राम) + प्रोक्लेम (10 ग्राम) प्रति 15L पंप', purpose: 'पौधे का फुटाव, शाखाएं बढ़ाना और शुरुआती सुंडी से सुरक्षा' },
+        { time: '30-35 दिन (फूल आने से पहले)', med: 'NPK 12:61:00 (75 ग्राम) + बोरोन 20% (20 ग्राम) + पेगासस (25 ग्राम)', purpose: 'अधिक फूलों का निर्माण, थ्रिप्स व रस चूसक कीटों की रोकथाम' },
+        { time: '45-50 दिन (फल सेटिंग समय)', med: 'NPK 0:52:34 (80 ग्राम) + फेंटैक प्लस या इसाबियन (35 मिली) + कोराजन (6 मिली)', purpose: 'फल का साइज बढ़ाना, चमक लाना और फल छेदक इल्ली से सुरक्षा' },
+        { time: '60-70 दिन (फल पकने पर)', med: 'NPK 0:0:50 (100 ग्राम) + चीलेटेड कैल्शियम (25 ग्राम) प्रति 15L पंप', purpose: 'फलों में वजन, कड़ापन, गहरा लाल रंग और फटने की समस्या खत्म' }
+      ],
+      'मिर्च': [
+        { time: 'रोपाई के 7-10 दिन बाद', med: '19:19:19 (5 ग्राम/ली) + साफ (2 ग्राम/ली) ड्रिप या स्प्रे', purpose: 'जड़ों को मजबूत करना और तना गलन से बचाव' },
+        { time: '20-25 दिन बाद', med: 'उलाला (6 ग्राम) या रीजेंट (30 मिली) + 19:19:19 (75 ग्राम)', purpose: 'पत्ती मरोड़िया (चुरड़ा-मुरड़ा) रोग व थ्रिप्स की रोकथाम' },
+        { time: '40-45 दिन (फूल अवस्था)', med: '0:52:34 (75 ग्राम) + बोरॉन (20 ग्राम) + डेलीगेट (18 मिली)', purpose: 'फूलों को झड़ने से रोकना, फल सेटिंग बढ़ाना' },
+        { time: '60 दिन बाद (तुड़ाई समय)', med: '0:0:50 (80 ग्राम) + एम्पलीगो (10 मिली) प्रति पंप', purpose: 'मिर्च की लंबाई, चमक और फल छेदक से संपूर्ण सुरक्षा' }
+      ],
+      'खीरा': [
+        { time: '10-15 दिन बाद', med: '19:19:19 (75 ग्राम) + ह्यूमिक एसिड (30 मिली) प्रति पंप', purpose: 'बेल की तेज़ बढ़वार व पत्तियों का हरापन' },
+        { time: '25-30 दिन बाद', med: '0:52:34 (75 ग्राम) + नेटिवो (10 ग्राम) + पेगासस (25 ग्राम)', purpose: 'मादा फूलों की संख्या बढ़ाना और पाउडरी मिल्ड्यू से सुरक्षा' },
+        { time: 'तुड़ाई के दौरान', med: '0:0:50 (80 ग्राम) + बोरॉन (15 ग्राम) प्रति 15L पंप स्प्रे', purpose: 'खीरे का सीधा आकार, कड़वाहट रहित चमक व निरंतर उत्पादन' }
+      ],
+      'भिंडी': [
+        { time: '15-20 दिन बाद', med: '19:19:19 (75 ग्राम) + कॉन्फिडोर (8 मिली) प्रति पंप', purpose: 'रस चूसक कीटों से बचाव और पौधे का मजबूत फुटाव' },
+        { time: '35-40 दिन बाद', med: '0:52:34 (75 ग्राम) + कोराजन (6 मिली) प्रति पंप', purpose: 'फल छेदक इल्ली की रोकथाम और भिंडी का अधिक उत्पादन' }
+      ]
+    };
+
+    let cropDiseasesDatabase = {
+      'टमाटर': [
+        { name: 'पत्ती मरोड़ (Leaf Curl Virus)', icon: '🍃', symptoms: 'पत्तियां ऊपर की तरफ मुड़ जाती हैं, पौधे की बढ़वार रुक जाती है। यह सफेद मक्खी द्वारा फैलता है।', cure: 'पेगासस (25 ग्राम) या उलाला (6 ग्राम) + चिपको प्रति 15L पंप स्प्रे करें। सफेद मक्खी रोकें।' },
+        { name: 'अगेती व पिछेती झुलसा (Blight)', icon: '🍂', symptoms: 'पत्तियों पर काले-भूरे गोल धब्बे बनते हैं और पौधे की पत्तियां सूखने लगती हैं।', cure: 'नेटिवो (10 ग्राम) या कस्टोडिया (25 मिली) या साफ (35 ग्राम) प्रति 15L पंप स्प्रे करें।' },
+        { name: 'फल छेदक इल्ली (Fruit Borer)', icon: '🐛', symptoms: 'फलों में गोल छेद हो जाते हैं और फल अंदर से सड़कर खराब हो जाते हैं।', cure: 'कोराजन (6 मिली) या फेम (5 मिली) या एम्पलीगो (10 मिली) प्रति 15 लीटर पंप छिड़कें।' },
+        { name: 'उकठा व जड़ गलन (Wilting)', icon: '🥀', symptoms: 'भरा-पूरा हरा पौधा अचानक दिन में मुरझा जाता है और 2-3 दिन में सूख जाता है।', cure: 'रोको (थियोफैनेट मिथाइल) 500 ग्राम या कॉपर ऑक्सीक्लोराइड 500 ग्राम प्रति एकड़ ड्रेंचिंग करें।' }
+      ],
+      'मिर्च': [
+        { name: 'चुरड़ा-मुरड़ा / थ्रिप्स (Thrips)', icon: '🍃', symptoms: 'पत्तियां ऊपर नाव की तरह मुड़ जाती हैं और खुरदरी हो जाती हैं।', cure: 'डेलीगेट (18 मिली) या पेगासस (25 ग्राम) या कीफन (30 मिली) प्रति 15 लीटर पंप स्प्रे करें।' },
+        { name: 'डाई-बैक व फल सड़न (Anthracnose)', icon: '🍂', symptoms: 'शाखाएं ऊपर से नीचे की तरफ सूखने लगती हैं और पके फलों पर काले धब्बे पड़ते हैं।', cure: 'कवच (क्लोरोथैलोनिल) 35 ग्राम या नेटिवो 10 ग्राम प्रति 15 लीटर पंप स्प्रे करें।' }
+      ],
+      'खीरा': [
+        { name: 'पाउडरी मिल्ड्यू (सफेद फफूंद)', icon: '⚪', symptoms: 'पत्तियों की ऊपरी सतह पर सफेद आटे जैसा पाउडर जमा दिखाई देता है।', cure: 'घुलनशील सल्फर (35 ग्राम) या नेटिवो (10 ग्राम) प्रति 15 लीटर पंप छिड़कें।' },
+        { name: 'डाउनी मिल्ड्यू (पीले धब्बे)', icon: '🟡', symptoms: 'पत्तियों पर नसों के बीच पीले चौकोर धब्बे और नीचे बैंगनी फफूंद बनती है।', cure: 'रिडोमिल गोल्ड (35 ग्राम) या एलियट (35 ग्राम) प्रति 15 लीटर पंप स्प्रे करें।' }
+      ]
+    };
+
+    let chemicalsDatabase = [
+      { name: 'कोराजन (Coragen)', type: 'कीटनाशक', technical: 'क्लोरेंट्रानिलिप्रोल 18.5% SC', target: 'इल्ली, तना छेदक, फल छेदक, अमेरिकन सुंडी', dose: '6 मिली प्रति 15 लीटर पंप', photo: '' },
+      { name: 'पेगासस (Pegasus)', type: 'कीटनाशक', technical: 'डायफेन्थियुरॉन 50% WP', target: 'थ्रिप्स, सफेद मक्खी, लाल मकड़ी, माइट्स', dose: '25 ग्राम प्रति 15 लीटर पंप', photo: '' },
+      { name: 'उलाला (Ulalala)', type: 'कीटनाशक', technical: 'फ्लोनिकामिड 50% WG', target: 'माहू, तेला, चेपा, सफेद मक्खी, रस चूसक', dose: '6 ग्राम प्रति 15 लीटर पंप', photo: '' },
+      { name: 'डेलीगेट (Delegate)', type: 'कीटनाशक', technical: 'स्पिनटोरम 11.7% SC', target: 'थ्रिप्स, चुरड़ा मुरड़ा, पत्ती मोड़क इल्ली', dose: '18 मिली प्रति 15 लीटर पंप', photo: '' },
+      { name: 'एम्पलीगो (Ampligo)', type: 'कीटनाशक', technical: 'क्लोरेंट्रानिलिप्रोल + लैम्ब्डा साइहलोथ्रिन', target: 'सभी प्रकार की सख्त इल्ली व सुंडी', dose: '10 मिली प्रति 15 लीटर पंप', photo: '' },
+      { name: 'साफ (Saaf)', type: 'फफूंदनाशक', technical: 'कार्बेन्डाजिम 12% + मैंकोजेब 63% WP', target: 'जड़ गलन, उकठा, ब्लाइट, डाई-बैक फंगस', dose: '35 ग्राम प्रति 15 लीटर पंप', photo: '' },
+      { name: 'नेटिवो (Nativo)', type: 'फफूंदनाशक', technical: 'टेबुकोनाजोल 50% + ट्राइफ्लॉक्सीस्ट्रोबिन 25%', target: 'पाउडरी मिल्ड्यू, पत्ती धब्बा, फल सड़न', dose: '10-12 ग्राम प्रति 15 लीटर पंप', photo: '' },
+      { name: 'रिडोमिल गोल्ड (Ridomil Gold)', type: 'फफूंदनाशक', technical: 'मेफेनोक्सम + मैंकोजेब 68% WG', target: 'डाउनी मिल्ड्यू, लेट ब्लाइट, तना सड़न', dose: '35 ग्राम प्रति 15 लीटर पंप', photo: '' },
+      { name: 'कस्टोडिया (Custodia)', type: 'फफूंदनाशक', technical: 'एजोक्सीस्ट्रोबिन 11% + टेबुकोनाजोल 18.3%', target: 'अगेती-पिछेती झुलसा, पाउडरी मिल्ड्यू', dose: '25 मिली प्रति 15 लीटर पंप', photo: '' },
+      { name: 'टारगा सुपर (Targa Super)', type: 'खरपतवारनाशक', technical: 'क्विजालोफॉप इथाइल 5% EC', target: 'चौड़ी पत्ती की फसलों में संकरी पत्ती के खरपतवार/घास', dose: '35-40 मिली प्रति 15L पंप', photo: '' },
+      { name: 'इसापियन (Isabion)', type: 'टॉनिक', technical: 'अमीनो एसिड + पेप्टाइड्स 62.5%', target: 'फूल-फल की संख्या बढ़ाना, तनाव सहनशीलता', dose: '35-40 मिली प्रति 15L पंप', photo: '' },
+      { name: 'फेंटैक प्लस (Fantac Plus)', type: 'टॉनिक', technical: 'अमीनो एसिड + विटामिन्स', target: 'फूल झड़ने से रोकना, फल का साइज व चमक बढ़ाना', dose: '10-12 मिली प्रति 15L पंप', photo: '' }
+    ];
+
+    let dailyStories = [
+      { title: 'आज का स्प्रे', icon: '🌱', type: 'image', url: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb2251e?w=500' },
+      { title: 'मिर्च थ्रिप्स', icon: '🌶️', type: 'link', url: 'https://www.youtube.com/@NMGKISAN' },
+      { title: 'उन्नत खीरा', icon: '🥒', type: 'image', url: 'https://images.unsplash.com/photo-1449339854873-750e6913301b?w=500' },
+      { title: 'मंडी भाव', icon: '📈', type: 'image', url: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=500' },
+      { title: 'खाद व टॉनिक', icon: '💡', type: 'image', url: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=500' }
+    ];
+
+    let appVideos = [
+      { title: 'मिर्च में थ्रिप्स का 100% सटीक इलाज', thumb: 'https://images.unsplash.com/photo-1588252303782-cb80119abd6d?w=300', url: 'https://www.youtube.com/@NMGKISAN', tag: 'Shorts' },
+      { title: 'टमाटर में फल का साइज और चमक कैसे बढ़ाएं', thumb: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb2251e?w=300', url: 'https://www.youtube.com/@NMGKISAN', tag: 'Shorts' },
+      { title: 'खीरे की खेती में पहली खाद और स्प्रे', thumb: 'https://images.unsplash.com/photo-1449339854873-750e6913301b?w=300', url: 'https://www.youtube.com/@NMGKISAN', tag: 'Shorts' }
+    ];
+
+    let mandiRecords = [
+      { crop: 'टमाटर (देसी)', min: '1200', max: '1800', avg: '1500' },
+      { crop: 'टमाटर (हाइब्रिड)', min: '1500', max: '2200', avg: '1850' },
+      { crop: 'हरी मिर्च (तीखी)', min: '2500', max: '3800', avg: '3200' },
+      { crop: 'खीरा (देसी)', min: '1000', max: '1600', avg: '1300' },
+      { crop: 'खीरा (पॉलीहाउस)', min: '1800', max: '2600', avg: '2200' },
+      { crop: 'फूलगोभी', min: '1400', max: '2000', avg: '1700' },
+      { crop: 'भिंडी', min: '2200', max: '3200', avg: '2700' }
+    ];
 
     let liveWeatherData = {
       temp: null,
@@ -879,6 +1076,7 @@
       }
     }
 
+    // 1-क्लिक सीधा प्रवेश (तुरंत ऐप खोलने के लिए)
     function directLoginOrOTP() {
       const nameInput = document.getElementById('loginNameInput');
       const phoneInput = document.getElementById('loginPhoneInput');
@@ -923,9 +1121,12 @@
       if (phone.length < 10) { alert("कृपया 10 अंकों का सही मोबाइल नंबर लिखें!"); return; }
 
       generatedOTP = Math.floor(1000 + Math.random() * 9000);
-      const hint = document.getElementById('otpHintText');
-      if (hint) hint.innerText = `आपका OTP है: ${generatedOTP}`;
       
+      // स्क्रीन पर बड़े अक्षरों में दिखाना
+      const bigOtp = document.getElementById('otpDisplayBig');
+      if (bigOtp) bigOtp.innerText = generatedOTP;
+      
+      // बॉक्स में अपने-आप भरना
       const otpInput = document.getElementById('loginOtpInput');
       if (otpInput) otpInput.value = generatedOTP;
 
@@ -933,6 +1134,9 @@
       const s2 = document.getElementById('loginStep2');
       if (s1) s1.style.display = 'none';
       if (s2) s2.style.display = 'block';
+
+      // स्क्रीन पर तुरंत पॉपअप भी दिखाना
+      alert(`📲 आपका लॉगिन OTP है: ${generatedOTP}\n(यह स्क्रीन पर भी दिख रहा है और नीचे भर दिया गया है)`);
     }
 
     function backToLoginStep1() {
@@ -977,26 +1181,51 @@
       }
     }
 
-    // Chemicals (दवाइयाँ) स्क्रीन दिखाना
+    // 1. जब मुख्य होम पेज से "दवाइयाँ (Chemicals)" पर क्लिक करें -> श्रेणियां स्क्रीन खुलेगी
     function showChemicalsList() {
-      renderChemicalsList(chemicalsDatabase);
-      openScreen('screen-chemicals', currentLang === 'hi' ? 'दवाइयाँ (Chemicals)' : 'Agro Chemicals');
+      openScreen('screen-chem-categories', currentLang === 'hi' ? 'दवाइयों के प्रकार' : 'Chemical Categories');
     }
 
-    function renderChemicalsList(list) {
+    // 2. जब किसी श्रेणी (जैसे कीटनाशक, फफूंदनाशक) पर क्लिक करें -> केवल उसी की दवाइयाँ खुलेंगी
+    function filterChemicalsByType(selectedType) {
+      let filtered = [];
+      let titleName = 'दवाइयाँ';
+
+      let sourceList = chemicalsDatabase;
+
+      if (selectedType === 'all') {
+        filtered = sourceList;
+        titleName = 'सभी कृषि दवाइयाँ';
+      } else {
+        filtered = sourceList.filter(item => {
+          const t = (item.type || '').toLowerCase();
+          const target = (item.target || '').toLowerCase();
+          const searchKey = selectedType.toLowerCase();
+          return t.includes(searchKey) || 
+                 (searchKey === 'फफूंदनाशक' && (t.includes('फंगस') || t.includes('फंगीसाइड'))) ||
+                 (searchKey === 'खरपतवारनाशक' && (t.includes('खरपतवार') || t.includes('घास')));
+        });
+        titleName = `${selectedType} दवाइयाँ`;
+      }
+
+      document.getElementById('chemCategoryHeading').innerText = `🧪 ${titleName}`;
+      renderChemicalsList(filtered, titleName);
+      openScreen('screen-chemicals-list', titleName);
+    }
+
+    function renderChemicalsList(list, titleName) {
       const container = document.getElementById('chemicalsListContainer');
       if (!container) return;
       container.innerHTML = '';
 
       if (!list || list.length === 0) {
-        list = [
-          { name: 'कोराजन (Coragen)', type: 'कीटनाशक', technical: 'क्लोरेंट्रानिलिप्रोल 18.5% SC', target: 'इल्ली, तना छेदक, फल छेदक', dose: '6 मिली प्रति 15 लीटर पंप' },
-          { name: 'पेगासस (Pegasus)', type: 'कीटनाशक', technical: 'डायफेन्थियुरॉन 50% WP', target: 'थ्रिप्स, सफेद मक्खी, लाल मकड़ी', dose: '25 ग्राम प्रति 15 लीटर पंप' },
-          { name: 'साफ (Saaf)', type: 'फफूंदनाशक', technical: 'कार्बेन्डाजिम 12% + मैंकोजेब 63% WP', target: 'जड़ गलन, उकठा, ब्लाइट, फफूंद', dose: '35 ग्राम प्रति 15 लीटर पंप' },
-          { name: 'उलाला (Ulalala)', type: 'कीटनाशक', technical: 'फ्लोनिकामिड 50% WG', target: 'माहू, तेला, रस चूसक कीट', dose: '6 ग्राम प्रति 15 लीटर पंप' },
-          { name: 'एम्पलीगो (Ampligo)', type: 'कीटनाशक', technical: 'क्लोरेंट्रानिलिप्रोल + लैम्ब्डा साइहलोथ्रिन', target: 'सभी प्रकार की सुंडी व इल्ली', dose: '10 मिली प्रति 15 लीटर पंप' },
-          { name: 'नेटिवो (Nativo)', type: 'फफूंदनाशक', technical: 'टेबुकोनाजोल + ट्राइफ्लॉक्सीस्ट्रोबिन', target: 'पाउडरी मिल्ड्यू, पत्ती धब्बा', dose: '10-12 ग्राम प्रति 15 लीटर पंप' }
-        ];
+        container.innerHTML = `
+          <div style="background:#fff; border-radius:12px; padding:24px 16px; text-align:center; border:1px solid #e5e7eb;">
+            <span style="font-size:36px;">📦</span>
+            <p style="font-size:14px; color:#4b5563; margin-top:8px; font-weight:600;">इस श्रेणी में अभी कोई दवा दर्ज नहीं है।</p>
+            <p style="font-size:12px; color:#9ca3af; margin-top:4px;">अपनी Google Sheet के Chemicals टैब में दवा जोड़ें।</p>
+          </div>`;
+        return;
       }
 
       list.forEach(c => {
@@ -1012,36 +1241,37 @@
               <span style="font-size:11px; color:#6b7280; font-weight:bold;">15L पंप डोज</span>
             </div>
             <div class="var-title" style="color:#831843;">🧪 ${c.name}</div>
-            <div class="var-detail"><b>टेक्निकल:</b> ${c.technical || 'मानक फॉर्मूलेशन'}</div>
-            <div class="var-detail"><b>नियंत्रण (Target):</b> ${c.target || 'कीट व रोग नियंत्रण'}</div>
+            <div class="var-detail"><b>टेक्निकल नाम:</b> ${c.technical || 'मानक फॉर्मूलेशन'}</div>
+            <div class="var-detail"><b>नियंत्रण / काम:</b> ${c.target || 'कीट व रोग नियंत्रण'}</div>
             <div style="margin-top:8px; background:#fdf2f8; border:1px solid #fbcfe8; padding:8px 10px; border-radius:8px;">
               <b style="color:#9d174d; font-size:13px;">💊 सही मात्रा (Dose):</b>
               <span style="color:#831843; font-weight:bold; font-size:13.5px;"> ${c.dose}</span>
             </div>
-            <a href="https://wa.me/916378475002?text=${encodeURIComponent('नमस्ते डॉक्टर साहब, मुझे ' + c.name + ' दवा के उपयोग और सही स्प्रे के बारे में जानकारी चाहिए।')}" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">
+            <a href="https://wa.me/916378475002?text=${encodeURIComponent('नमस्ते डॉक्टर साहब, मुझे ' + c.name + ' दवा के सही उपयोग और स्प्रे के बारे में पूछना है।')}" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">
               💬 इस दवा के बारे में डॉक्टर से सलाह लें
             </a>
           </div>`;
       });
     }
 
+    // Google Sheets से Chemicals लोड करना (कैश बस्टर &t=${Date.now()} के साथ)
     async function loadOnlineChemicals() {
       try {
-        const res = await fetch(CHEMICALS_SHEET_URL);
+        const res = await fetch(`${CHEMICALS_SHEET_URL}&t=${Date.now()}`);
         const data = await res.text();
         const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
         let newChem = [];
 
         for (let i = 1; i < rows.length; i++) {
           const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-          if (cols[0] && cols[0].toLowerCase() !== 'name' && cols[0].toLowerCase() !== 'दवा का नाम') {
+          if (cols[0] && !cols[0].includes('दवा का नाम') && cols[0].toLowerCase() !== 'name') {
             newChem.push({
               name: cols[0],
               type: cols[1] || 'कीटनाशक',
               technical: cols[2] || '',
               target: cols[3] || '',
               dose: cols[4] || '',
-              photo: cols[5] || ''
+              photo: (cols[5] && cols[5].startsWith('http')) ? cols[5] : ''
             });
           }
         }
@@ -1061,7 +1291,11 @@
       dailyStories.forEach((st, index) => {
         container.innerHTML += `
           <div class="story-item" onclick="handleStoryClick(${index})">
-            <div class="story-ring">${st.icon || '🌱'}</div>
+            <div class="story-ring">
+              <div class="story-ring-inner">
+                <span style="font-size:26px;">${st.icon || '🌱'}</span>
+              </div>
+            </div>
             <span class="story-name">${st.title}</span>
           </div>`;
       });
@@ -1387,7 +1621,7 @@
 
     function openScreen(screenId, title) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      const target = document.getElementById(screenId);
+      const target = document.getElementById('screenId');
       if (target) {
         target.classList.add('active');
         document.getElementById('headerTitle').innerText = title;
@@ -1619,40 +1853,199 @@
       window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, '_blank');
     }
 
+    function quickSearch(tag) {
+      const input = document.getElementById('homeSearch');
+      if (input) input.value = tag;
+      executeSearch(tag);
+    }
+
     function executeSearch(val) {
-      if (!val || !val.trim()) return;
+      if (!val || !val.trim()) {
+        alert("कृपया सर्च करने के लिए फसल, बीज या दवा का नाम लिखें या बोलें!");
+        return;
+      }
       const q = val.trim().toLowerCase();
-      const filtered = sheetRecords.filter(r => 
+
+      // 1. बीज किस्में सर्च
+      const matchedVarieties = sheetRecords.filter(r => 
         (r.variety && r.variety.toLowerCase().includes(q)) || 
         (r.crop && r.crop.toLowerCase().includes(q)) ||
-        (r.company && r.company.toLowerCase().includes(q))
+        (r.company && r.company.toLowerCase().includes(q)) ||
+        (r.features && r.features.toLowerCase().includes(q))
       );
-      if (filtered.length > 0) {
-        renderVarietiesList(filtered, 'खोज: ' + val);
+
+      // 2. दवाइयाँ सर्च
+      const matchedChemicals = chemicalsDatabase.filter(c => 
+        (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.type && c.type.toLowerCase().includes(q)) ||
+        (c.technical && c.technical.toLowerCase().includes(q)) ||
+        (c.target && c.target.toLowerCase().includes(q))
+      );
+
+      // 3. रोग निदान सर्च
+      let matchedDiseases = [];
+      Object.keys(cropDiseasesDatabase).forEach(crop => {
+        if (crop.toLowerCase().includes(q)) {
+          cropDiseasesDatabase[crop].forEach(d => matchedDiseases.push({ crop: crop, ...d }));
+        } else {
+          cropDiseasesDatabase[crop].forEach(d => {
+            if ((d.name && d.name.toLowerCase().includes(q)) || (d.symptoms && d.symptoms.toLowerCase().includes(q))) {
+              matchedDiseases.push({ crop: crop, ...d });
+            }
+          });
+        }
+      });
+
+      const totalMatches = matchedVarieties.length + matchedChemicals.length + matchedDiseases.length;
+
+      if (totalMatches === 0) {
+        alert(`"${val}" के लिए कोई जानकारी नहीं मिली। आप सलाहकार डॉक्टर से WhatsApp पर पूछ सकते हैं।`);
+        return;
       }
+
+      // अगर सिर्फ किस्में ही मिलीं और बाकी कुछ नहीं, तो सीधे किस्में स्क्रीन दिखाएँ
+      if (matchedVarieties.length > 0 && matchedChemicals.length === 0 && matchedDiseases.length === 0) {
+        renderVarietiesList(matchedVarieties, 'खोज: ' + val.trim());
+        return;
+      }
+
+      // विस्तृत खोज परिणाम स्क्रीन रेंडर करना
+      renderComprehensiveSearchResults(val.trim(), matchedVarieties, matchedChemicals, matchedDiseases);
     }
+
+    function renderComprehensiveSearchResults(keyword, varieties, chemicals, diseases) {
+      const heading = document.getElementById('searchResultHeading');
+      const countBadge = document.getElementById('searchResultCount');
+      const container = document.getElementById('searchResultsContainer');
+      if (!container) return;
+
+      heading.innerText = `🔍 "${keyword}" के खोज परिणाम`;
+      countBadge.innerText = `${varieties.length + chemicals.length + diseases.length} परिणाम`;
+      container.innerHTML = '';
+
+      // बीज किस्में ब्लॉक
+      if (varieties.length > 0) {
+        container.innerHTML += `<h4 style="color:#1b5e20; margin:14px 0 8px; font-size:15px; border-bottom:2px solid #86efac; padding-bottom:4px;">🥬 संबंधित बीज व किस्में (${varieties.length}):</h4>`;
+        varieties.forEach(v => {
+          container.innerHTML += `
+            <div class="variety-card" style="margin-bottom:10px;">
+              <span class="badge-variety">${v.variety}</span>
+              <span class="badge-company">${v.company}</span>
+              <div class="var-title">${v.variety} (${v.crop})</div>
+              <div class="var-detail"><b>विशेषता:</b> ${v.features || 'उत्तम पैदावार'}</div>
+              <div class="var-detail"><b>पकने का समय:</b> ${v.maturity || 'समय अनुसार'}</div>
+              <a href="https://wa.me/916378475002?text=${encodeURIComponent('नमस्ते जी, मुझे ' + v.company + ' की ' + v.variety + ' (' + v.crop + ') के बीज चाहिए।')}" target="_blank" class="btn-action btn-wa" style="margin-top:8px; padding:8px 12px; font-size:13px;">🛒 बीज ऑर्डर करें</a>
+            </div>`;
+        });
+      }
+
+      // दवाइयाँ ब्लॉक
+      if (chemicals.length > 0) {
+        container.innerHTML += `<h4 style="color:#9d174d; margin:16px 0 8px; font-size:15px; border-bottom:2px solid #fbcfe8; padding-bottom:4px;">🧪 संबंधित दवाइयाँ (${chemicals.length}):</h4>`;
+        chemicals.forEach(c => {
+          container.innerHTML += `
+            <div class="variety-card" style="margin-bottom:10px;">
+              <span class="badge-variety" style="background:#fce7f3; color:#9d174d;">${c.type || 'कृषि दवा'}</span>
+              <div class="var-title" style="color:#831843;">🧪 ${c.name}</div>
+              <div class="var-detail"><b>टेक्निकल:</b> ${c.technical || 'मानक फॉर्मूलेशन'}</div>
+              <div class="var-detail"><b>काम / कीट:</b> ${c.target || 'कीट व रोग नियंत्रण'}</div>
+              <div style="background:#fdf2f8; padding:6px 10px; border-radius:6px; margin:6px 0; font-size:13px; color:#831843;"><b>सही मात्रा:</b> ${c.dose}</div>
+              <a href="https://wa.me/916378475002?text=${encodeURIComponent('नमस्ते डॉक्टर साहब, मुझे ' + c.name + ' दवा के उपयोग के बारे में जानकारी चाहिए।')}" target="_blank" class="btn-action btn-wa" style="margin-top:8px; padding:8px 12px; font-size:13px;">💬 डॉक्टर से सलाह लें</a>
+            </div>`;
+        });
+      }
+
+      // रोग व लक्षण ब्लॉक
+      if (diseases.length > 0) {
+        container.innerHTML += `<h4 style="color:#b91c1c; margin:16px 0 8px; font-size:15px; border-bottom:2px solid #fecaca; padding-bottom:4px;">🛡️ संबंधित रोग व उपचार (${diseases.length}):</h4>`;
+        diseases.forEach(d => {
+          container.innerHTML += `
+            <div class="variety-card" style="margin-bottom:10px; border-left:4px solid #ef4444;">
+              <div class="var-title" style="color:#b91c1c;">${d.icon || '🍃'} ${d.name} (${d.crop})</div>
+              <div class="var-detail"><b>लक्षण:</b> ${d.symptoms}</div>
+              <div style="background:#f0fdf4; padding:6px 10px; border-radius:6px; margin:6px 0; font-size:13px; color:#166534;"><b>इलाज:</b> ${d.cure}</div>
+              <a href="https://wa.me/916378475002?text=${encodeURIComponent('नमस्ते डॉक्टर साहब, मेरी ' + d.crop + ' की फसल में ' + d.name + ' रोग लगा है, उपाय बताएं।')}" target="_blank" class="btn-action btn-wa" style="margin-top:8px; padding:8px 12px; font-size:13px;">💬 डॉक्टर से सलाह लें</a>
+            </div>`;
+        });
+      }
+
+      openScreen('screen-search-results', 'खोज परिणाम');
+    }
+
+    let activeRecognition = null;
 
     function startVoiceSearch() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) { alert("ब्राउज़र में वॉइस सर्च सपोर्ट नहीं करता।"); return; }
-      const recognition = new SpeechRecognition();
-      recognition.lang = currentLang === 'hi' ? 'hi-IN' : 'en-US';
-      const voiceBtn = document.getElementById('voiceSearchBtn');
-      const searchInput = document.getElementById('homeSearch');
+      
+      if (!SpeechRecognition) {
+        alert("माफ़ करें! आपके ब्राउज़र में बोलकर सर्च करने की सुविधा नहीं मिल रही है। कृपया Google Chrome ब्राउज़र का उपयोग करें।");
+        return;
+      }
 
-      voiceBtn.classList.add('listening');
-      searchInput.placeholder = "🎙️ बोलिए...";
+      const modal = document.getElementById('voiceSearchModal');
+      if (modal) modal.classList.add('active');
 
-      recognition.onresult = function(e) {
-        const tr = e.results[0][0].transcript.replace(/[।.,]/g, '').trim();
-        searchInput.value = tr;
-        executeSearch(tr);
-      };
-      recognition.onerror = recognition.onend = function() {
-        voiceBtn.classList.remove('listening');
-        searchInput.placeholder = i18n[currentLang].searchPlaceholder;
-      };
-      recognition.start();
+      try {
+        if (activeRecognition) {
+          try { activeRecognition.stop(); } catch(e){}
+        }
+
+        const recognition = new SpeechRecognition();
+        activeRecognition = recognition;
+        
+        recognition.lang = 'hi-IN';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = function() {
+          console.log("वॉयस लिसनिंग शुरू हुई...");
+        };
+
+        recognition.onresult = function(event) {
+          stopVoiceSearch();
+          if (event.results && event.results[0] && event.results[0][0]) {
+            let spokenText = event.results[0][0].transcript;
+            spokenText = spokenText.replace(/[।.,?!]/g, '').trim();
+
+            const input = document.getElementById('homeSearch');
+            if (input) input.value = spokenText;
+
+            // तुरंत सर्च शुरू करें
+            executeSearch(spokenText);
+          }
+        };
+
+        recognition.onerror = function(event) {
+          console.log("Voice search error:", event.error);
+          stopVoiceSearch();
+          if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            alert("⚠️ माइक्रोफ़ोन की अनुमति बंद है!\nकृपया ब्राउज़र में ऊपर ताले (🔒) पर क्लिक करके माइक की अनुमति 'Allow' करें।");
+          } else if (event.error === 'no-speech') {
+            alert("कोई आवाज़ सुनाई नहीं दी। कृपया माइक बटन दबाकर दोबारा साफ़ बोलें।");
+          }
+        };
+
+        recognition.onend = function() {
+          stopVoiceSearch();
+        };
+
+        recognition.start();
+
+      } catch (err) {
+        console.log("Speech recognition start failed:", err);
+        stopVoiceSearch();
+        alert("माइक चालू करने में समस्या आई। कृपया दोबारा प्रयास करें।");
+      }
+    }
+
+    function stopVoiceSearch() {
+      const modal = document.getElementById('voiceSearchModal');
+      if (modal) modal.classList.remove('active');
+      if (activeRecognition) {
+        try { activeRecognition.stop(); } catch(e){}
+        activeRecognition = null;
+      }
     }
 
     function openSolutionModal() { document.getElementById('solutionModal').classList.add('active'); }
@@ -1749,7 +2142,7 @@
     // 1. बीज व किस्में (Sheet1)
     async function loadOnlineSheet() {
       try {
-        const res = await fetch(SHEET_URL);
+        const res = await fetch(`${SHEET_URL}&t=${Date.now()}`);
         const data = await res.text();
         const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
         let newRec = [];
@@ -1778,7 +2171,7 @@
     // 2. स्प्रे शेड्यूल (Schedule)
     async function loadOnlineSchedule() {
       try {
-        const res = await fetch(SCHEDULE_SHEET_URL);
+        const res = await fetch(`${SCHEDULE_SHEET_URL}&t=${Date.now()}`);
         const data = await res.text();
         const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
         let newSchedules = {};
@@ -1812,7 +2205,7 @@
     // 3. फसल सुरक्षा / रोग निदान (Protection)
     async function loadOnlineProtection() {
       try {
-        const res = await fetch(PROTECTION_SHEET_URL);
+        const res = await fetch(`${PROTECTION_SHEET_URL}&t=${Date.now()}`);
         const data = await res.text();
         const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
         let newDiseases = {};
@@ -1848,7 +2241,7 @@
     // 4. दैनिक स्टोरी (Stories)
     async function loadOnlineStories() {
       try {
-        const res = await fetch(STORIES_SHEET_URL);
+        const res = await fetch(`${STORIES_SHEET_URL}&t=${Date.now()}`);
         const data = await res.text();
         const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
         let newStories = [];
@@ -1876,7 +2269,7 @@
     // 5. वीडियो स्लाइडर (Videos)
     async function loadOnlineVideos() {
       try {
-        const res = await fetch(VIDEOS_SHEET_URL);
+        const res = await fetch(`${VIDEOS_SHEET_URL}&t=${Date.now()}`);
         const data = await res.text();
         const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
         let newVideos = [];
@@ -1904,7 +2297,7 @@
     // 6. मंडी भाव (Mandi)
     async function loadOnlineMandi() {
       try {
-        const res = await fetch(MANDI_SHEET_URL);
+        const res = await fetch(`${MANDI_SHEET_URL}&t=${Date.now()}`);
         const data = await res.text();
         const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
         let newMandi = [];
@@ -1940,6 +2333,11 @@
       checkLoginStatus();
       applyLanguage();
       updateDateAndCity();
+
+      // तुरंत स्क्रीन पर 5 स्टोरीज़, वीडियो और भाव दिखाना
+      renderStoriesBar();
+      renderVideosSlider();
+      renderMandiTable();
 
       try { loadOnlineSheet(); } catch(e){}
       try { loadOnlineSchedule(); } catch(e){}
