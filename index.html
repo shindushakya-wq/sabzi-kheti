@@ -70,7 +70,6 @@
     .drawer-header h3 { font-size: 16px; }
     .drawer-close { font-size: 22px; cursor: pointer; background: none; border: none; color: white; }
     
-    /* प्रोफाइल प्रोग्रेस कार्ड */
     .profile-card-widget { background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; margin: 14px 16px; padding: 12px; cursor: pointer; }
     .profile-card-widget h4 { font-size: 13px; color: #166534; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
     .progress-bar-bg { background: #e5e7eb; border-radius: 10px; height: 7px; overflow: hidden; margin-bottom: 6px; }
@@ -82,11 +81,9 @@
     .drawer-item:active { background: #f9fafb; color: #1b5e20; }
     .drawer-item span:first-child { font-size: 18px; }
 
-    /* स्क्रीन लेआउट */
     .screen { display: none; padding: 14px; max-width: 480px; margin: auto; }
     .screen.active { display: block; }
 
-    /* गोल स्टोरी बार */
     .stories-wrapper { display: flex; gap: 14px; overflow-x: auto; padding: 12px 14px; background: #ffffff; border-bottom: 1px solid #e5e7eb; -webkit-overflow-scrolling: touch; margin-bottom: 14px; min-height: 98px; }
     .stories-wrapper::-webkit-scrollbar { display: none; }
     .story-item { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; text-align: center; cursor: pointer; }
@@ -96,7 +93,6 @@
     .search-tag { background: #ffffff; border: 1.5px solid #bbf7d0; color: #166534; font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 18px; white-space: nowrap; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.04); display: inline-flex; align-items: center; gap: 4px; }
     .search-tag:active { background: #dcfce7; transform: scale(0.95); }
 
-    /* मौसम कार्ड */
     .weather-card {
       border-radius: 14px; padding: 14px; margin-bottom: 15px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1.5px solid #334155; cursor: pointer;
@@ -109,7 +105,6 @@
     .weather-body-row { display: flex; justify-content: space-between; align-items: center; }
     .weather-temp { font-size: 26px; font-weight: bold; color: #38bdf8; }
 
-    /* सर्च बार */
     .search-wrapper { position: relative; margin-bottom: 15px; display: flex; align-items: center; }
     .search-box { width: 100%; padding: 13px 80px 13px 14px; border-radius: 12px; border: 1.5px solid #d1d5db; outline: none; font-size: 15px; background: white; }
     .search-actions { position: absolute; right: 8px; display: flex; align-items: center; gap: 4px; }
@@ -117,7 +112,6 @@
     .voice-btn.listening { animation: pulse 1s infinite alternate; background: #fee2e2; }
     @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.2); } }
 
-    /* 7 मुख्य बटन ग्रिड एवं इमेज स्टाइल */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
     .menu-box { padding: 16px 10px; border-radius: 16px; text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.04); display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .menu-box-img { width: 56px; height: 56px; object-fit: contain; margin-bottom: 8px; display: block; border-radius: 10px; }
@@ -139,7 +133,6 @@
     .card-other { background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-color: #e2e8f0; }
     .card-other h3 { color: #334155; }
 
-    /* वीडियो स्लाइडर */
     .video-section { margin-bottom: 18px; }
     .video-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .video-header h4 { font-size: 14px; color: #1b5e20; font-weight: 700; }
@@ -152,14 +145,12 @@
     .video-tag { position: absolute; top: 6px; left: 6px; background: rgba(22, 163, 74, 0.9); color: white; font-size: 9px; padding: 2px 5px; border-radius: 4px; font-weight: bold; }
     .video-title { font-size: 11px; font-weight: 600; color: #1f2937; padding: 6px 8px; line-height: 1.3; }
 
-    /* सोशल मीडिया कार्ड */
     .social-box { background: white; border-radius: 14px; padding: 14px; margin-top: 15px; text-align: center; border: 1px solid #e5e7eb; }
     .social-btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
     .social-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: bold; }
     .link-yt { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
     .link-fb { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
 
-    /* फ़्लोटिंग बटन व मोडल */
     .fab-solution { position: fixed; right: 16px; bottom: 80px; background: #16a34a; color: white; border: none; border-radius: 30px; padding: 12px 18px; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.45); z-index: 1001; }
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
@@ -175,19 +166,16 @@
     .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; margin-bottom: 10px; display: none; }
     .doc-result-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-top: 12px; display: none; }
 
-    /* फॉर्म इनपुट्स */
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 4px; }
     .form-control { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #d1d5db; outline: none; font-size: 14px; }
 
-    /* लिस्ट व कार्ड */
     .list-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.03); }
     .list-left { display: flex; align-items: center; gap: 12px; }
     .list-icon { font-size: 24px; }
     .list-title { font-size: 15px; font-weight: 600; }
     .arrow { color: #9ca3af; font-weight: bold; }
 
-    /* वैरायटी कार्ड */
     .variety-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 14px; border: 1px solid #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.04); }
     .var-photo { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; background-color: #f3f4f6; display: block; }
     .badge-variety { background: #e8f5e9; color: #1b5e20; font-size: 12px; padding: 3px 8px; border-radius: 6px; font-weight: 700; display: inline-block; margin-bottom: 6px; }
@@ -203,13 +191,11 @@
     .btn-action { display: block; width: 100%; padding: 11px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 14px; font-weight: bold; border: none; cursor: pointer; }
     .btn-wa { background: #25d366; color: white; }
 
-    /* बॉटम नेविगेशन */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
     .nav-tab { text-align: center; font-size: 10px; color: #6b7280; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
     .nav-tab.active { color: #1b5e20; font-weight: bold; }
     .nav-tab span:first-child { font-size: 18px; }
 
-    /* स्टोरी प्लेयर */
     .story-fullscreen-modal {
       display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: #000000; z-index: 5000; flex-direction: column; align-items: center; justify-content: center;
@@ -227,7 +213,6 @@
     }
     .story-media-view { width: 100%; height: 100%; object-fit: contain; max-height: 90vh; }
 
-    /* मंडी टेबल */
     .mandi-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13.5px; }
     .mandi-table th { background: #e8f5e9; color: #1b5e20; padding: 10px 8px; text-align: left; border: 1px solid #d1fae5; }
     .mandi-table td { padding: 10px 8px; border: 1px solid #e5e7eb; color: #374151; }
@@ -1230,7 +1215,7 @@
       });
     }
 
-    // सुधारा गया loadOnlineChemicals फंक्शन (कॉलम A से F के अनुसार)
+    // अपडेटेड loadOnlineChemicals फंक्शन (कॉलम मिलान व डीबग के साथ)
     async function loadOnlineChemicals() {
       try {
         const res = await fetch(`${CHEMICALS_SHEET_URL}&t=${Date.now()}`);
@@ -1253,6 +1238,7 @@
         }
         if (newChem.length > 0) {
           chemicalsDatabase = newChem;
+          console.log("Chemicals loaded successfully from sheet:", chemicalsDatabase.length);
         }
       } catch (e) {
         console.log("Chemicals load error:", e);
