@@ -263,7 +263,6 @@
       </div>
 
       <div id="loginStep2" style="display:none;">
-        <!-- स्क्रीन पर साफ़ और बड़ा OTP कार्ड -->
         <div style="background:#f0fdf4; border:2px dashed #16a34a; border-radius:14px; padding:14px 10px; text-align:center; margin-bottom:16px;">
           <span style="font-size:12px; color:#166534; font-weight:bold; display:block;">📲 आपका स्क्रीन OTP कोड:</span>
           <div id="otpDisplayBig" style="font-size:34px; font-weight:900; color:#15803d; letter-spacing:8px; margin:6px 0;">----</div>
@@ -294,7 +293,6 @@
     <div class="header-actions">
       <button class="lang-toggle-btn" id="langBtn" onclick="toggleLanguage()">🌐 English</button>
       
-      <!-- घंटी नोटिफिकेशन (लाल बिंदु के साथ) -->
       <div class="bell-container" onclick="openNotify()" title="किसान ज़रूरी सूचना">
         <span class="bell-icon">🔔</span>
         <span class="bell-badge" id="bellBadge"></span>
@@ -304,7 +302,7 @@
     </div>
   </div>
 
-  <!-- किसान सूचना मोडल (लाल रंग में) -->
+  <!-- किसान सूचना मोडल -->
   <div class="modal-overlay" id="notifyModal">
     <div class="notify-modal-box">
       <div class="notify-header">
@@ -485,7 +483,7 @@
       </div>
     </div>
 
-    <!-- सर्च बार (लिखकर व बोलकर सर्च) -->
+    <!-- सर्च बार -->
     <div class="search-wrapper">
       <input type="text" id="homeSearch" class="search-box" placeholder="🔍 टमाटर, खीरा, मिर्च या दवा खोजें..." onkeydown="if(event.key==='Enter'){ event.preventDefault(); executeSearch(this.value); }">
       <div class="search-actions">
@@ -494,7 +492,7 @@
       </div>
     </div>
 
-    <!-- 1-टैप त्वरित खोज (Quick Search Tags) -->
+    <!-- त्वरित खोज टैग -->
     <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:12px; -webkit-overflow-scrolling:touch;">
       <span class="search-tag" onclick="quickSearch('टमाटर')">🍅 टमाटर</span>
       <span class="search-tag" onclick="quickSearch('खीरा')">🥒 खीरा</span>
@@ -504,45 +502,38 @@
       <span class="search-tag" onclick="quickSearch('थ्रिप्स')">🛡️ थ्रिप्स</span>
     </div>
 
-    <!-- 7 मुख्य बटन ग्रिड (6th पर दवाइयाँ / Chemicals और 7th पर Other सेवाएं) -->
+    <!-- 7 मुख्य बटन ग्रिड -->
     <div class="grid-menu">
-      <!-- 1 -->
       <div class="menu-box card-crops" onclick="showAllCropsScreen()">
         <img src="beej.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'beej.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/beej.jpg.jpg', '🥬')">
         <div class="menu-box-icon">🥬</div>
         <h3 id="btnCrops">सब्जी फसल किस्म</h3>
       </div>
-      <!-- 2 -->
       <div class="menu-box card-protection" onclick="showProtectionCropsList()">
         <img src="rog.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'rog.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/rog.jpg.jpg', '🛡️')">
         <div class="menu-box-icon">🛡️</div>
         <h3 id="btnProt">फसल सुरक्षा</h3>
       </div>
-      <!-- 3 -->
       <div class="menu-box card-schedule" onclick="showScheduleCropsList()">
         <img src="Spray Schedule.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'spray-schedule.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/Spray%20Schedule.jpg', '🗓️')">
         <div class="menu-box-icon">🗓️</div>
         <h3 id="btnSched">स्प्रे शेड्यूल</h3>
       </div>
-      <!-- 4 -->
       <div class="menu-box card-advisor" onclick="contactAdvisor()">
         <img src="advisor.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'advisor.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/advisor.jpg.jpg', '📞')">
         <div class="menu-box-icon">📞</div>
         <h3 id="btnAdv">सलाहकार</h3>
       </div>
-      <!-- 5 -->
       <div class="menu-box card-companies" onclick="showCompaniesList()">
         <img src="brands.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'brands.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/brands.jpg.jpg', '🏢')">
         <div class="menu-box-icon">🏢</div>
         <h3 id="btnComp">All कंपनी बीज</h3>
       </div>
-      <!-- 6 (दवाइयाँ / Chemicals 6 नंबर पर) -->
       <div class="menu-box card-chemicals" onclick="showChemicalsList()">
         <img src="chemicals.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'chemicals.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/chemicals.jpg.jpg', '🧪')">
         <div class="menu-box-icon" style="display:block;">🧪</div>
         <h3 id="btnChem">दवाइयाँ (Chemicals)</h3>
       </div>
-      <!-- 7 (Other सेवाएं अब 7 नंबर पर, फुल-विड्थ डिज़ाइन) -->
       <div class="menu-box card-other" style="grid-column: span 2;" onclick="showOtherServicesScreen()">
         <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
           <img src="services.jpg.jpg" alt="" class="menu-box-img" style="width:36px; height:36px; margin-bottom:0;" onerror="handleCardImgError(this, 'services.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/services.jpg.jpg', '⚙️')">
@@ -552,7 +543,7 @@
       </div>
     </div>
 
-    <!-- वीडियो स्लाइडर (Google Sheets से लोड) -->
+    <!-- वीडियो स्लाइडर -->
     <div class="video-section">
       <div class="video-header">
         <h4 id="txtVidTitle">🎥 आपके लिए वीडियो (Shorts)</h4>
@@ -575,14 +566,13 @@
     </div>
   </div>
 
-  <!-- SCREEN: दवाइयों की श्रेणियां (Chemical Categories) -->
+  <!-- SCREEN: दवाइयों की श्रेणियां -->
   <div id="screen-chem-categories" class="screen">
     <div style="background:#fdf2f8; border:1px solid #fbcfe8; border-radius:12px; padding:12px; margin-bottom:14px; text-align:center;">
       <h3 style="color:#9d174d; font-size:16px;">🧪 कृषि दवाइयों के प्रकार</h3>
       <p style="font-size:12px; color:#831843; margin-top:2px;">जिस प्रकार की दवा चाहिए, उस पर क्लिक करें:</p>
     </div>
 
-    <!-- श्रेणियां लिस्ट -->
     <div class="list-item" style="border-left:5px solid #ef4444;" onclick="filterChemicalsByType('कीटनाशक')">
       <div class="list-left">
         <span class="list-icon">🐛</span>
@@ -645,7 +635,7 @@
     <div id="chemicalsListContainer"></div>
   </div>
 
-  <!-- SCREEN 11: OTHERS स्क्रीन (7 नंबर) -->
+  <!-- SCREEN: OTHERS स्क्रीन -->
   <div id="screen-other-services" class="screen">
     <div class="list-item" onclick="showWeatherDetailScreen()">
       <div class="list-left">
@@ -717,7 +707,7 @@
     </div>
   </div>
 
-  <!-- SCREEN: मंडी भाव (Google Sheets से लोड) -->
+  <!-- SCREEN: मंडी भाव -->
   <div id="screen-mandi-bhav" class="screen">
     <div class="variety-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -762,7 +752,7 @@
     </div>
   </div>
 
-  <!-- SCREEN: कीट अलर्ट (Pest Alert) -->
+  <!-- SCREEN: कीट अलर्ट -->
   <div id="screen-pest-alert" class="screen">
     <div class="variety-card" style="border-left:5px solid #dc2626;">
       <h3 style="color:#dc2626; font-size:16px; margin-bottom:10px;">🚨 ताज़ा कीट व रोग चेतावनी (अलर्ट)</h3>
@@ -810,13 +800,13 @@
     </div>
   </div>
 
-  <!-- SCREEN 2: सब्जी फसल सूची -->
+  <!-- SCREEN: सब्जी फसल सूची -->
   <div id="screen-crops" class="screen">
     <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="txtSelectCrop">सब्जी फसल चुनें:</h3>
     <div id="cropsContainer"></div>
   </div>
 
-  <!-- SCREEN: विस्तृत खोज परिणाम स्क्रीन -->
+  <!-- SCREEN: खोज परिणाम -->
   <div id="screen-search-results" class="screen">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
       <h3 style="font-size:16px; color:#1b5e20;" id="searchResultHeading">🔍 खोज परिणाम</h3>
@@ -825,18 +815,18 @@
     <div id="searchResultsContainer"></div>
   </div>
 
-  <!-- SCREEN 3: किस्में सूची -->
+  <!-- SCREEN: किस्में सूची -->
   <div id="screen-seeds" class="screen">
     <div id="varietiesContainer"></div>
   </div>
 
-  <!-- SCREEN 4: स्प्रे शेड्यूल - फसलें -->
+  <!-- SCREEN: स्प्रे शेड्यूल फसलें -->
   <div id="screen-schedule-crops" class="screen">
     <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="txtSelectSchedCrop">स्प्रे शेड्यूल हेतु सब्जी चुनें:</h3>
     <div id="scheduleCropsContainer"></div>
   </div>
 
-  <!-- SCREEN 5: चयनित सब्जी का स्प्रे शेड्यूल -->
+  <!-- SCREEN: स्प्रे शेड्यूल विवरण -->
   <div id="screen-crop-schedule" class="screen">
     <div class="variety-card">
       <h3 style="color:#15803d; font-size:17px; margin-bottom:10px;" id="scheduleCropTitle">स्प्रे शेड्यूल</h3>
@@ -847,19 +837,19 @@
     </div>
   </div>
 
-  <!-- SCREEN 8A: फसल सुरक्षा - फसल सूची -->
+  <!-- SCREEN: फसल सुरक्षा फसल सूची -->
   <div id="screen-protection-crops" class="screen">
     <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="txtSelectProtCrop">रोग निदान हेतु फसल चुनें:</h3>
     <div id="protectionCropsContainer"></div>
   </div>
 
-  <!-- SCREEN 8B: फसल के रोग -->
+  <!-- SCREEN: फसल के रोग -->
   <div id="screen-crop-diseases" class="screen">
     <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="cropDiseaseHeading">फसल के रोग व कीट:</h3>
     <div id="cropDiseasesContainer"></div>
   </div>
 
-  <!-- SCREEN 10: रोग लक्षण व उपचार -->
+  <!-- SCREEN: रोग उपचार -->
   <div id="screen-cure" class="screen">
     <div class="variety-card">
       <h3 style="color:#b91c1c; font-size:17px; margin-bottom:10px;" id="cureName">रोग समाधान</h3>
@@ -877,13 +867,13 @@
     </div>
   </div>
 
-  <!-- SCREEN 6: All कंपनी सूची -->
+  <!-- SCREEN: All कंपनी सूची -->
   <div id="screen-companies" class="screen">
     <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="txtSelectCompany">सीड कंपनी चुनें:</h3>
     <div id="companiesContainer"></div>
   </div>
 
-  <!-- SCREEN 7: कंपनी की फसलें -->
+  <!-- SCREEN: कंपनी की फसलें -->
   <div id="screen-company-crops" class="screen">
     <h3 style="font-size:15px; margin-bottom:12px; color:#1b5e20;" id="compCropHeading">कंपनी की फसलें:</h3>
     <div id="companyCropsContainer"></div>
@@ -912,11 +902,9 @@
     let currentLang = localStorage.getItem('app_lang') || 'hi';
     const navHistory = ['screen-home'];
 
-    // मुख्य Google Sheet ID
     const SPREADSHEET_ID = '1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y';
     const BASE_GV = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
 
-    // सभी टैब के CSV लिंक्स
     const SHEET_URL = `${BASE_GV}Sheet1`;
     const SCHEDULE_SHEET_URL = `${BASE_GV}Schedule`;
     const PROTECTION_SHEET_URL = `${BASE_GV}Protection`;
@@ -931,9 +919,6 @@
     let storyTimer = null;
     let generatedOTP = null;
 
-    // ==========================================
-    // इनबिल्ट विस्तृत डेटाबेस
-    // ==========================================
     let sheetRecords = [
       { company: 'सिंजेंटा (Syngenta)', crop: 'टमाटर', variety: 'साहो (TO 3251)', segment: 'गर्मी / बरसात', features: 'ऊँचा तापमान सहने की क्षमता, बहुत सख्त फल, लंबी दूरी के ट्रांसपोर्ट के लिए बेस्ट।', weight: '80-100 ग्राम', maturity: '60-65 दिन', resistance: 'TLCV व बैक्टीरियल विल्ट प्रतिरोधी', photo: '' },
       { company: 'सिंजेंटा (Syngenta)', crop: 'टमाटर', variety: 'हिमसोना', segment: 'सर्दी / बरसात', features: 'ठंडे और गीले मौसम के लिए, फल बहुत ठोस और गहरे लाल।', weight: '90-100 ग्राम', maturity: '65-70 दिन', resistance: 'झुलसा रोग प्रतिरोधी', photo: '' },
@@ -1182,7 +1167,6 @@
     function filterChemicalsByType(selectedType) {
       let filtered = [];
       let titleName = 'दवाइयाँ';
-
       let sourceList = chemicalsDatabase;
 
       if (selectedType === 'all') {
@@ -1191,6 +1175,7 @@
       } else {
         filtered = sourceList.filter(item => {
           const t = (item.type || '').toLowerCase();
+          const target = (item.target || '').toLowerCase();
           const searchKey = selectedType.toLowerCase();
           return t.includes(searchKey) || 
                  (searchKey === 'फफूंदनाशक' && (t.includes('फंगस') || t.includes('फंगीसाइड'))) ||
@@ -1245,6 +1230,7 @@
       });
     }
 
+    // सुधारा गया loadOnlineChemicals फंक्शन (कॉलम A से F के अनुसार)
     async function loadOnlineChemicals() {
       try {
         const res = await fetch(`${CHEMICALS_SHEET_URL}&t=${Date.now()}`);
@@ -1256,12 +1242,12 @@
           const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
           if (cols[0] && !cols[0].includes('दवा का नाम') && cols[0].toLowerCase() !== 'name') {
             newChem.push({
-              name: cols[0],
-              type: cols[1] || 'कीटनाशक',
-              technical: cols[2] || '',
-              target: cols[3] || '',
-              dose: cols[4] || '',
-              photo: (cols[5] && cols[5].startsWith('http')) ? cols[5] : ''
+              name: cols[0],                              // कॉलम A: दवा का नाम
+              type: cols[1] || 'कीटनाशक',                  // कॉलम B: प्रकार
+              technical: cols[2] || '',                   // कॉलम C: टेक्निकल नाम
+              target: cols[3] || '',                      // कॉलम D: नियंत्रण / काम
+              dose: cols[4] || '',                        // कॉलम E: डोज
+              photo: (cols[5] && cols[5].startsWith('http')) ? cols[5] : '' // कॉलम F: फोटो लिंक
             });
           }
         }
@@ -1850,7 +1836,6 @@
       }
       const q = val.trim().toLowerCase();
 
-      // 1. बीज किस्में सर्च
       const matchedVarieties = sheetRecords.filter(r => 
         (r.variety && r.variety.toLowerCase().includes(q)) || 
         (r.crop && r.crop.toLowerCase().includes(q)) ||
@@ -1858,7 +1843,6 @@
         (r.features && r.features.toLowerCase().includes(q))
       );
 
-      // 2. दवाइयाँ सर्च
       const matchedChemicals = chemicalsDatabase.filter(c => 
         (c.name && c.name.toLowerCase().includes(q)) ||
         (c.type && c.type.toLowerCase().includes(q)) ||
@@ -1866,7 +1850,6 @@
         (c.target && c.target.toLowerCase().includes(q))
       );
 
-      // 3. रोग निदान सर्च
       let matchedDiseases = [];
       Object.keys(cropDiseasesDatabase).forEach(crop => {
         if (crop.toLowerCase().includes(q)) {
@@ -1977,10 +1960,6 @@
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
 
-        recognition.onstart = function() {
-          console.log("वॉयस लिसनिंग शुरू हुई...");
-        };
-
         recognition.onresult = function(event) {
           stopVoiceSearch();
           if (event.results && event.results[0] && event.results[0][0]) {
@@ -1995,7 +1974,6 @@
         };
 
         recognition.onerror = function(event) {
-          console.log("Voice search error:", event.error);
           stopVoiceSearch();
           if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
             alert("⚠️ माइक्रोफ़ोन की अनुमति बंद है!\nकृपया ब्राउज़र में ऊपर ताले (🔒) पर क्लिक करके माइक की अनुमति 'Allow' करें।");
@@ -2011,7 +1989,6 @@
         recognition.start();
 
       } catch (err) {
-        console.log("Speech recognition start failed:", err);
         stopVoiceSearch();
         alert("माइक चालू करने में समस्या आई। कृपया दोबारा प्रयास करें।");
       }
@@ -2112,10 +2089,6 @@
     function openDrawer() { document.getElementById('drawerOverlay').classList.add('active'); document.getElementById('drawerContent').classList.add('active'); }
     function closeDrawer() { document.getElementById('drawerOverlay').classList.remove('active'); document.getElementById('drawerContent').classList.remove('active'); }
     function contactAdvisor() { window.open('https://wa.me/916378475002?text=नमस्ते%20जी,%20मुझे%20फसल%20सलाह%20चाहिए।', '_blank'); }
-
-    // ==========================================
-    // सभी Google Sheets को ऑनलाइन लोड करना
-    // ==========================================
 
     async function loadOnlineSheet() {
       try {
@@ -2294,9 +2267,6 @@
       }
     }
 
-    // ==========================================
-    // तुरंत और बिना रुके एक्जीक्यूशन
-    // ==========================================
     updateDateAndCity();
     setInterval(updateDateAndCity, 1000);
     detectFarmerLocationWeather();
