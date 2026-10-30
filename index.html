@@ -1,45 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <script>
-    const SPREADSHEET_ID = "1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y";
-    
-    async function fetchGoogleSheetData(sheetName) {
-        try {
-            const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
-            const response = await fetch(url);
-            const text = await response.text();
-            const json = JSON.parse(text.substring(47, text.length - 2));
-            
-            const rows = json.table.rows;
-            const cols = json.table.cols.map(col => col ? col.label : '');
-            
-            return rows.map(row => {
-                let obj = {};
-                row.c.forEach((cell, index) => {
-                    let key = cols[index] || `col_${index}`;
-                    obj[key] = cell ? cell.v : '';
-                });
-                return obj;
-            });
-        } catch (error) {
-            console.error("Error fetching " + sheetName, error);
-            return [];
-        }
-    }
-
-    async function loadAaru2LiveSheetData() {
-        window.protectionData = await fetchGoogleSheetData('Protection');
-        window.chemicalsData = await fetchGoogleSheetData('Chemicals');
-        window.alertsData = await fetchGoogleSheetData('Alerts');
-        window.tipsData = await fetchGoogleSheetData('Tips');
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        loadAaru2LiveSheetData();
-    });
-  </script>
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>सब्जी खेती बाड़ी की बातें | Sabzi Kheti</title>
