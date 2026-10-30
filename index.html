@@ -925,7 +925,6 @@
     const MANDI_SHEET_URL = `${BASE_GV}Mandi`;
     const CHEMICALS_SHEET_URL = `${BASE_GV}Chemicals`;
 
-    // यहाँ अपना Apps Script वेब ऐप URL डालें (यदि किसान का डेटा Google Sheet में रिकॉर्ड करना हो)
     const USERS_SCRIPT_URL = '';
 
     let currentImgElement = null;
@@ -933,7 +932,7 @@
     let generatedOTP = null;
 
     // ==========================================
-    // इनबिल्ट विस्तृत डेटाबेस (ताकि ऐप कभी खाली न दिखे और ऑफलाइन भी चले)
+    // इनबिल्ट विस्तृत डेटाबेस
     // ==========================================
     let sheetRecords = [
       { company: 'सिंजेंटा (Syngenta)', crop: 'टमाटर', variety: 'साहो (TO 3251)', segment: 'गर्मी / बरसात', features: 'ऊँचा तापमान सहने की क्षमता, बहुत सख्त फल, लंबी दूरी के ट्रांसपोर्ट के लिए बेस्ट।', weight: '80-100 ग्राम', maturity: '60-65 दिन', resistance: 'TLCV व बैक्टीरियल विल्ट प्रतिरोधी', photo: '' },
@@ -1039,7 +1038,6 @@
       isDay: null
     };
 
-    // स्मार्ट इमेज एरर हैंडलर
     function handleCardImgError(img, fallbackLocal, rawGitUrl, fallbackIcon) {
       if (!img.dataset.step) {
         img.dataset.step = "1";
@@ -1076,7 +1074,6 @@
       }
     }
 
-    // 1-क्लिक सीधा प्रवेश (तुरंत ऐप खोलने के लिए)
     function directLoginOrOTP() {
       const nameInput = document.getElementById('loginNameInput');
       const phoneInput = document.getElementById('loginPhoneInput');
@@ -1122,11 +1119,9 @@
 
       generatedOTP = Math.floor(1000 + Math.random() * 9000);
       
-      // स्क्रीन पर बड़े अक्षरों में दिखाना
       const bigOtp = document.getElementById('otpDisplayBig');
       if (bigOtp) bigOtp.innerText = generatedOTP;
       
-      // बॉक्स में अपने-आप भरना
       const otpInput = document.getElementById('loginOtpInput');
       if (otpInput) otpInput.value = generatedOTP;
 
@@ -1135,7 +1130,6 @@
       if (s1) s1.style.display = 'none';
       if (s2) s2.style.display = 'block';
 
-      // स्क्रीन पर तुरंत पॉपअप भी दिखाना
       alert(`📲 आपका लॉगिन OTP है: ${generatedOTP}\n(यह स्क्रीन पर भी दिख रहा है और नीचे भर दिया गया है)`);
     }
 
@@ -1181,12 +1175,10 @@
       }
     }
 
-    // 1. जब मुख्य होम पेज से "दवाइयाँ (Chemicals)" पर क्लिक करें -> श्रेणियां स्क्रीन खुलेगी
     function showChemicalsList() {
       openScreen('screen-chem-categories', currentLang === 'hi' ? 'दवाइयों के प्रकार' : 'Chemical Categories');
     }
 
-    // 2. जब किसी श्रेणी (जैसे कीटनाशक, फफूंदनाशक) पर क्लिक करें -> केवल उसी की दवाइयाँ खुलेंगी
     function filterChemicalsByType(selectedType) {
       let filtered = [];
       let titleName = 'दवाइयाँ';
@@ -1199,7 +1191,6 @@
       } else {
         filtered = sourceList.filter(item => {
           const t = (item.type || '').toLowerCase();
-          const target = (item.target || '').toLowerCase();
           const searchKey = selectedType.toLowerCase();
           return t.includes(searchKey) || 
                  (searchKey === 'फफूंदनाशक' && (t.includes('फंगस') || t.includes('फंगीसाइड'))) ||
@@ -1254,7 +1245,6 @@
       });
     }
 
-    // Google Sheets से Chemicals लोड करना (कैश बस्टर &t=${Date.now()} के साथ)
     async function loadOnlineChemicals() {
       try {
         const res = await fetch(`${CHEMICALS_SHEET_URL}&t=${Date.now()}`);
@@ -1283,7 +1273,6 @@
       }
     }
 
-    // स्टोरी प्लेयर
     function renderStoriesBar() {
       const container = document.getElementById('storiesBarContainer');
       if (!container) return;
@@ -1621,7 +1610,7 @@
 
     function openScreen(screenId, title) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      const target = document.getElementById('screenId');
+      const target = document.getElementById(screenId);
       if (target) {
         target.classList.add('active');
         document.getElementById('headerTitle').innerText = title;
@@ -1647,7 +1636,6 @@
       window.scrollTo(0, 0);
     }
 
-    // 1. सब्जी फसल किस्म
     function showAllCropsScreen() {
       const crops = [...new Set(sheetRecords.map(r => r.crop).filter(c => c && c.trim() !== ''))];
       const container = document.getElementById('cropsContainer');
@@ -1697,7 +1685,6 @@
       openScreen('screen-seeds', title);
     }
 
-    // 2. स्प्रे शेड्यूल
     function showScheduleCropsList() {
       renderScheduleCrops();
       openScreen('screen-schedule-crops', i18n[currentLang].btnSched);
@@ -1739,7 +1726,6 @@
       openScreen('screen-crop-schedule', cropName);
     }
 
-    // 3. फसल सुरक्षा (रोग निदान)
     function showProtectionCropsList() {
       renderProtectionCrops();
       openScreen('screen-protection-crops', i18n[currentLang].btnProt);
@@ -1791,7 +1777,6 @@
       openScreen('screen-cure', name);
     }
 
-    // 4. All कंपनी बीज
     function showCompaniesList() {
       const companies = [...new Set(sheetRecords.map(r => r.company).filter(c => c && c.trim() !== ''))];
       const container = document.getElementById('companiesContainer');
@@ -1840,7 +1825,6 @@
       renderVarietiesList(list, `${compName} - ${cropName}`);
     }
 
-    // 5. OTHERS (अन्य सेवाएं)
     function showOtherServicesScreen() { openScreen('screen-other-services', 'अन्य सेवाएं (Services)'); }
     function showWeatherDetailScreen() { updateDateAndCity(); openScreen('screen-weather-detail', 'मौसम पूर्वानुमान व सलाह'); }
     function showMandiBhavScreen() { openScreen('screen-mandi-bhav', 'ताज़ा मंडी भाव'); }
@@ -1903,13 +1887,11 @@
         return;
       }
 
-      // अगर सिर्फ किस्में ही मिलीं और बाकी कुछ नहीं, तो सीधे किस्में स्क्रीन दिखाएँ
       if (matchedVarieties.length > 0 && matchedChemicals.length === 0 && matchedDiseases.length === 0) {
         renderVarietiesList(matchedVarieties, 'खोज: ' + val.trim());
         return;
       }
 
-      // विस्तृत खोज परिणाम स्क्रीन रेंडर करना
       renderComprehensiveSearchResults(val.trim(), matchedVarieties, matchedChemicals, matchedDiseases);
     }
 
@@ -1923,7 +1905,6 @@
       countBadge.innerText = `${varieties.length + chemicals.length + diseases.length} परिणाम`;
       container.innerHTML = '';
 
-      // बीज किस्में ब्लॉक
       if (varieties.length > 0) {
         container.innerHTML += `<h4 style="color:#1b5e20; margin:14px 0 8px; font-size:15px; border-bottom:2px solid #86efac; padding-bottom:4px;">🥬 संबंधित बीज व किस्में (${varieties.length}):</h4>`;
         varieties.forEach(v => {
@@ -1939,7 +1920,6 @@
         });
       }
 
-      // दवाइयाँ ब्लॉक
       if (chemicals.length > 0) {
         container.innerHTML += `<h4 style="color:#9d174d; margin:16px 0 8px; font-size:15px; border-bottom:2px solid #fbcfe8; padding-bottom:4px;">🧪 संबंधित दवाइयाँ (${chemicals.length}):</h4>`;
         chemicals.forEach(c => {
@@ -1955,7 +1935,6 @@
         });
       }
 
-      // रोग व लक्षण ब्लॉक
       if (diseases.length > 0) {
         container.innerHTML += `<h4 style="color:#b91c1c; margin:16px 0 8px; font-size:15px; border-bottom:2px solid #fecaca; padding-bottom:4px;">🛡️ संबंधित रोग व उपचार (${diseases.length}):</h4>`;
         diseases.forEach(d => {
@@ -2011,7 +1990,6 @@
             const input = document.getElementById('homeSearch');
             if (input) input.value = spokenText;
 
-            // तुरंत सर्च शुरू करें
             executeSearch(spokenText);
           }
         };
@@ -2139,7 +2117,6 @@
     // सभी Google Sheets को ऑनलाइन लोड करना
     // ==========================================
 
-    // 1. बीज व किस्में (Sheet1)
     async function loadOnlineSheet() {
       try {
         const res = await fetch(`${SHEET_URL}&t=${Date.now()}`);
@@ -2168,7 +2145,6 @@
       }
     }
 
-    // 2. स्प्रे शेड्यूल (Schedule)
     async function loadOnlineSchedule() {
       try {
         const res = await fetch(`${SCHEDULE_SHEET_URL}&t=${Date.now()}`);
@@ -2202,7 +2178,6 @@
       }
     }
 
-    // 3. फसल सुरक्षा / रोग निदान (Protection)
     async function loadOnlineProtection() {
       try {
         const res = await fetch(`${PROTECTION_SHEET_URL}&t=${Date.now()}`);
@@ -2238,7 +2213,6 @@
       }
     }
 
-    // 4. दैनिक स्टोरी (Stories)
     async function loadOnlineStories() {
       try {
         const res = await fetch(`${STORIES_SHEET_URL}&t=${Date.now()}`);
@@ -2266,7 +2240,6 @@
       }
     }
 
-    // 5. वीडियो स्लाइडर (Videos)
     async function loadOnlineVideos() {
       try {
         const res = await fetch(`${VIDEOS_SHEET_URL}&t=${Date.now()}`);
@@ -2294,7 +2267,6 @@
       }
     }
 
-    // 6. मंडी भाव (Mandi)
     async function loadOnlineMandi() {
       try {
         const res = await fetch(`${MANDI_SHEET_URL}&t=${Date.now()}`);
@@ -2334,7 +2306,6 @@
       applyLanguage();
       updateDateAndCity();
 
-      // तुरंत स्क्रीन पर 5 स्टोरीज़, वीडियो और भाव दिखाना
       renderStoriesBar();
       renderVideosSlider();
       renderMandiTable();
