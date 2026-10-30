@@ -114,7 +114,7 @@
     .voice-btn.listening { animation: pulse 1s infinite alternate; background: #fee2e2; }
     @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.2); } }
 
-    /* 6 मुख्य बटन ग्रिड एवं इमेज स्टाइल */
+    /* ग्रिड मेन्यू एवं इमेज स्टाइल */
     .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
     .menu-box { padding: 16px 10px; border-radius: 16px; text-align: center; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.04); display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .menu-box-img { width: 56px; height: 56px; object-fit: contain; margin-bottom: 8px; display: block; border-radius: 10px; }
@@ -131,6 +131,8 @@
     .card-advisor h3 { color: #6b21a8; }
     .card-companies { background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 100%); border-color: #fed7aa; }
     .card-companies h3 { color: #c2410c; }
+    .card-chemicals { background: linear-gradient(145deg, #fdf2f8 0%, #fce7f3 100%); border-color: #fbcfe8; }
+    .card-chemicals h3 { color: #9d174d; }
     .card-other { background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%); border-color: #e2e8f0; }
     .card-other h3 { color: #334155; }
 
@@ -344,6 +346,9 @@
       <li class="drawer-item" onclick="closeDrawer(); showProtectionCropsList();">
         <span>🛡️</span><span id="txtMenuProtection">फसल सुरक्षा (रोग निदान)</span>
       </li>
+      <li class="drawer-item" onclick="closeDrawer(); showChemicalsList();">
+        <span>🧪</span><span>दवाइयाँ (Chemicals डोज)</span>
+      </li>
       <li class="drawer-item" onclick="closeDrawer(); showOtherServicesScreen();">
         <span>⚙️</span><span>अन्य सेवाएं (मौसम, मंडी, अलर्ट)</span>
       </li>
@@ -465,37 +470,51 @@
       </div>
     </div>
 
-    <!-- 6 मुख्य बटन ग्रिड (आपकी अपलोड की हुई फ़ोटो + स्मार्ट लोडर) -->
+    <!-- 7 मुख्य बटन ग्रिड (6th पर दवाइयाँ / Chemicals और 7th पर Other सेवाएं) -->
     <div class="grid-menu">
+      <!-- 1 -->
       <div class="menu-box card-crops" onclick="showAllCropsScreen()">
         <img src="beej.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'beej.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/beej.jpg.jpg', '🥬')">
         <div class="menu-box-icon">🥬</div>
         <h3 id="btnCrops">सब्जी फसल किस्म</h3>
       </div>
+      <!-- 2 -->
       <div class="menu-box card-protection" onclick="showProtectionCropsList()">
         <img src="rog.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'rog.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/rog.jpg.jpg', '🛡️')">
         <div class="menu-box-icon">🛡️</div>
         <h3 id="btnProt">फसल सुरक्षा</h3>
       </div>
+      <!-- 3 -->
       <div class="menu-box card-schedule" onclick="showScheduleCropsList()">
         <img src="Spray Schedule.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'spray-schedule.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/Spray%20Schedule.jpg', '🗓️')">
         <div class="menu-box-icon">🗓️</div>
         <h3 id="btnSched">स्प्रे शेड्यूल</h3>
       </div>
+      <!-- 4 -->
       <div class="menu-box card-advisor" onclick="contactAdvisor()">
         <img src="advisor.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'advisor.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/advisor.jpg.jpg', '📞')">
         <div class="menu-box-icon">📞</div>
         <h3 id="btnAdv">सलाहकार</h3>
       </div>
+      <!-- 5 -->
       <div class="menu-box card-companies" onclick="showCompaniesList()">
         <img src="brands.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'brands.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/brands.jpg.jpg', '🏢')">
         <div class="menu-box-icon">🏢</div>
         <h3 id="btnComp">All कंपनी बीज</h3>
       </div>
-      <div class="menu-box card-other" onclick="showOtherServicesScreen()">
-        <img src="services.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'services.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/services.jpg.jpg', '⚙️')">
-        <div class="menu-box-icon">⚙️</div>
-        <h3 id="btnOther">Other (अन्य सेवाएं)</h3>
+      <!-- 6 (दवाइयाँ / Chemicals 6 नंबर पर) -->
+      <div class="menu-box card-chemicals" onclick="showChemicalsList()">
+        <img src="chemicals.jpg.jpg" alt="" class="menu-box-img" onerror="handleCardImgError(this, 'chemicals.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/chemicals.jpg.jpg', '🧪')">
+        <div class="menu-box-icon" style="display:block;">🧪</div>
+        <h3 id="btnChem">दवाइयाँ (Chemicals)</h3>
+      </div>
+      <!-- 7 (Other सेवाएं अब 7 नंबर पर, फुल-विड्थ डिज़ाइन) -->
+      <div class="menu-box card-other" style="grid-column: span 2;" onclick="showOtherServicesScreen()">
+        <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
+          <img src="services.jpg.jpg" alt="" class="menu-box-img" style="width:36px; height:36px; margin-bottom:0;" onerror="handleCardImgError(this, 'services.jpg', 'https://raw.githubusercontent.com/shindushakya-wq/sabzi-kheti/main/services.jpg.jpg', '⚙️')">
+          <span class="menu-box-icon" style="font-size:24px; margin-bottom:0;">⚙️</span>
+          <h3 id="btnOther" style="font-size:14.5px;">Other सेवाएं (मौसम, मंडी, अलर्ट)</h3>
+        </div>
       </div>
     </div>
 
@@ -522,7 +541,16 @@
     </div>
   </div>
 
-  <!-- SCREEN 11: OTHERS स्क्रीन -->
+  <!-- SCREEN: दवाइयाँ (Chemicals) सूची -->
+  <div id="screen-chemicals" class="screen">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="font-size:16px; color:#1b5e20;">🧪 प्रमुख कृषि दवाइयाँ व डोज</h3>
+      <span style="font-size:11px; background:#fce7f3; color:#9d174d; padding:4px 8px; border-radius:6px; font-weight:bold;">सटीक मात्रा</span>
+    </div>
+    <div id="chemicalsListContainer"></div>
+  </div>
+
+  <!-- SCREEN 11: OTHERS स्क्रीन (7 नंबर) -->
   <div id="screen-other-services" class="screen">
     <div class="list-item" onclick="showWeatherDetailScreen()">
       <div class="list-left">
@@ -791,8 +819,8 @@
     const STORIES_SHEET_URL = `${BASE_GV}Stories`;
     const VIDEOS_SHEET_URL = `${BASE_GV}Videos`;
     const MANDI_SHEET_URL = `${BASE_GV}Mandi`;
+    const CHEMICALS_SHEET_URL = `${BASE_GV}Chemicals`;
 
-    // यहाँ अपना Apps Script वेब ऐप URL डालें (यदि किसान का डेटा Google Sheet में रिकॉर्ड करना हो)
     const USERS_SCRIPT_URL = '';
 
     let currentImgElement = null;
@@ -805,6 +833,7 @@
     let dailyStories = [];
     let appVideos = [];
     let mandiRecords = [];
+    let chemicalsDatabase = [];
 
     let liveWeatherData = {
       temp: null,
@@ -850,7 +879,6 @@
       }
     }
 
-    // 1-क्लिक सीधा प्रवेश (तुरंत ऐप खोलने के लिए)
     function directLoginOrOTP() {
       const nameInput = document.getElementById('loginNameInput');
       const phoneInput = document.getElementById('loginPhoneInput');
@@ -865,7 +893,6 @@
       localStorage.setItem('farmer_name', name);
       localStorage.setItem('farmer_phone', phone);
 
-      // Google Sheet Users टैब में डेटा भेजना
       if (USERS_SCRIPT_URL && USERS_SCRIPT_URL.trim() !== '') {
         try {
           fetch(USERS_SCRIPT_URL, {
@@ -947,6 +974,82 @@
         alert(`स्वागत है ${name} जी! आपकी ऐप खुल गई है।`);
       } else {
         alert("गलत OTP! कृपया सही OTP डालें या 1234 दर्ज करें।");
+      }
+    }
+
+    // Chemicals (दवाइयाँ) स्क्रीन दिखाना
+    function showChemicalsList() {
+      renderChemicalsList(chemicalsDatabase);
+      openScreen('screen-chemicals', currentLang === 'hi' ? 'दवाइयाँ (Chemicals)' : 'Agro Chemicals');
+    }
+
+    function renderChemicalsList(list) {
+      const container = document.getElementById('chemicalsListContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!list || list.length === 0) {
+        list = [
+          { name: 'कोराजन (Coragen)', type: 'कीटनाशक', technical: 'क्लोरेंट्रानिलिप्रोल 18.5% SC', target: 'इल्ली, तना छेदक, फल छेदक', dose: '6 मिली प्रति 15 लीटर पंप' },
+          { name: 'पेगासस (Pegasus)', type: 'कीटनाशक', technical: 'डायफेन्थियुरॉन 50% WP', target: 'थ्रिप्स, सफेद मक्खी, लाल मकड़ी', dose: '25 ग्राम प्रति 15 लीटर पंप' },
+          { name: 'साफ (Saaf)', type: 'फफूंदनाशक', technical: 'कार्बेन्डाजिम 12% + मैंकोजेब 63% WP', target: 'जड़ गलन, उकठा, ब्लाइट, फफूंद', dose: '35 ग्राम प्रति 15 लीटर पंप' },
+          { name: 'उलाला (Ulalala)', type: 'कीटनाशक', technical: 'फ्लोनिकामिड 50% WG', target: 'माहू, तेला, रस चूसक कीट', dose: '6 ग्राम प्रति 15 लीटर पंप' },
+          { name: 'एम्पलीगो (Ampligo)', type: 'कीटनाशक', technical: 'क्लोरेंट्रानिलिप्रोल + लैम्ब्डा साइहलोथ्रिन', target: 'सभी प्रकार की सुंडी व इल्ली', dose: '10 मिली प्रति 15 लीटर पंप' },
+          { name: 'नेटिवो (Nativo)', type: 'फफूंदनाशक', technical: 'टेबुकोनाजोल + ट्राइफ्लॉक्सीस्ट्रोबिन', target: 'पाउडरी मिल्ड्यू, पत्ती धब्बा', dose: '10-12 ग्राम प्रति 15 लीटर पंप' }
+        ];
+      }
+
+      list.forEach(c => {
+        const photoHtml = (c.photo && c.photo.trim().startsWith('http')) 
+          ? `<img src="${c.photo.trim()}" class="var-photo" alt="${c.name}" onerror="this.style.display='none'">` 
+          : '';
+
+        container.innerHTML += `
+          <div class="variety-card">
+            ${photoHtml}
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span class="badge-variety" style="background:#fce7f3; color:#9d174d;">${c.type || 'कृषि दवा'}</span>
+              <span style="font-size:11px; color:#6b7280; font-weight:bold;">15L पंप डोज</span>
+            </div>
+            <div class="var-title" style="color:#831843;">🧪 ${c.name}</div>
+            <div class="var-detail"><b>टेक्निकल:</b> ${c.technical || 'मानक फॉर्मूलेशन'}</div>
+            <div class="var-detail"><b>नियंत्रण (Target):</b> ${c.target || 'कीट व रोग नियंत्रण'}</div>
+            <div style="margin-top:8px; background:#fdf2f8; border:1px solid #fbcfe8; padding:8px 10px; border-radius:8px;">
+              <b style="color:#9d174d; font-size:13px;">💊 सही मात्रा (Dose):</b>
+              <span style="color:#831843; font-weight:bold; font-size:13.5px;"> ${c.dose}</span>
+            </div>
+            <a href="https://wa.me/916378475002?text=${encodeURIComponent('नमस्ते डॉक्टर साहब, मुझे ' + c.name + ' दवा के उपयोग और सही स्प्रे के बारे में जानकारी चाहिए।')}" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">
+              💬 इस दवा के बारे में डॉक्टर से सलाह लें
+            </a>
+          </div>`;
+      });
+    }
+
+    async function loadOnlineChemicals() {
+      try {
+        const res = await fetch(CHEMICALS_SHEET_URL);
+        const data = await res.text();
+        const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
+        let newChem = [];
+
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0] && cols[0].toLowerCase() !== 'name' && cols[0].toLowerCase() !== 'दवा का नाम') {
+            newChem.push({
+              name: cols[0],
+              type: cols[1] || 'कीटनाशक',
+              technical: cols[2] || '',
+              target: cols[3] || '',
+              dose: cols[4] || '',
+              photo: cols[5] || ''
+            });
+          }
+        }
+        if (newChem.length > 0) {
+          chemicalsDatabase = newChem;
+        }
+      } catch (e) {
+        console.log("Chemicals load error:", e);
       }
     }
 
@@ -1056,7 +1159,8 @@
         btnSched: "स्प्रे शेड्यूल",
         btnAdv: "सलाहकार",
         btnComp: "All कंपनी बीज",
-        btnOther: "Other (अन्य सेवाएं)",
+        btnChem: "दवाइयाँ (Chemicals)",
+        btnOther: "Other सेवाएं (मौसम, मंडी, अलर्ट)",
         txtVidTitle: "🎥 आपके लिए वीडियो (Shorts)",
         txtSeeMore: "और देखें >",
         txtSocialJoin: "हमारे साथ सोशल मीडिया पर जुड़ें",
@@ -1082,7 +1186,8 @@
         btnSched: "Spray Schedule",
         btnAdv: "Advisor",
         btnComp: "All Seed Brands",
-        btnOther: "Other Services",
+        btnChem: "Chemicals",
+        btnOther: "Other Services (Weather, Mandi)",
         txtVidTitle: "🎥 Recommended Videos",
         txtSeeMore: "View All >",
         txtSocialJoin: "Join Us On Social Media",
@@ -1115,6 +1220,7 @@
       document.getElementById('btnSched').innerText = t.btnSched;
       document.getElementById('btnAdv').innerText = t.btnAdv;
       document.getElementById('btnComp').innerText = t.btnComp;
+      document.getElementById('btnChem').innerText = t.btnChem;
       document.getElementById('btnOther').innerText = t.btnOther;
       document.getElementById('txtVidTitle').innerText = t.txtVidTitle;
       document.getElementById('txtSeeMore').innerText = t.txtSeeMore;
@@ -1513,7 +1619,6 @@
       window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, '_blank');
     }
 
-    // सर्च
     function executeSearch(val) {
       if (!val || !val.trim()) return;
       const q = val.trim().toLowerCase();
@@ -1527,7 +1632,6 @@
       }
     }
 
-    // वॉइस सर्च
     function startVoiceSearch() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) { alert("ब्राउज़र में वॉइस सर्च सपोर्ट नहीं करता।"); return; }
@@ -1551,7 +1655,6 @@
       recognition.start();
     }
 
-    // AI रोग जांच
     function openSolutionModal() { document.getElementById('solutionModal').classList.add('active'); }
     function closeSolutionModal() {
       document.getElementById('solutionModal').classList.remove('active');
@@ -1594,7 +1697,6 @@
       }, 1000);
     }
 
-    // प्रोफाइल
     function openProfileScreen() {
       closeDrawer();
       document.getElementById('profNameInput').value = localStorage.getItem('farmer_name') || 'Shailender Kumar';
@@ -1830,26 +1932,22 @@
     // ==========================================
     // तुरंत और बिना रुके एक्जीक्यूशन
     // ==========================================
-    // 1. पेज खुलते ही बिना 1 सेकंड की देरी के समय और मौसम सेट
     updateDateAndCity();
-    setInterval(updateDateAndCity, 1000); // लाइव घड़ी
-
-    // 2. लाइव वेदर API से असली मौसम लाना
+    setInterval(updateDateAndCity, 1000);
     detectFarmerLocationWeather();
 
-    // 3. DOM तैयार होते ही बाकी फीचर्स चालू
     window.addEventListener('DOMContentLoaded', () => {
       checkLoginStatus();
       applyLanguage();
       updateDateAndCity();
 
-      // Google Sheets लोड
       try { loadOnlineSheet(); } catch(e){}
       try { loadOnlineSchedule(); } catch(e){}
       try { loadOnlineProtection(); } catch(e){}
       try { loadOnlineStories(); } catch(e){}
       try { loadOnlineVideos(); } catch(e){}
       try { loadOnlineMandi(); } catch(e){}
+      try { loadOnlineChemicals(); } catch(e){}
     });
   </script>
 </body>
