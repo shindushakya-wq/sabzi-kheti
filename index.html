@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>कृषि सहायक ऐप | सब्जी खेती बाड़ी की बातें</title>
+  <title>सब्जी खेती बाड़ी की बातें | Sabzi kheti</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1b5e20">
 
@@ -226,7 +226,7 @@
     <div style="text-align:center; margin-bottom:24px;">
       <span style="font-size:54px;">🌾</span>
       <h2 style="color:#1b5e20; font-size:22px; margin-top:8px;">सब्जी खेती बाड़ी की बातें</h2>
-      <p style="font-size:13px; color:#6b7280; margin-top:4px;">किसान सहायता व उन्नत तकनीक ऐप</p>
+      <p style="font-size:13px; color:#6b7280; margin-top:4px;">Sabzi kheti • किसान सहायता ऐप</p>
     </div>
 
     <div style="width:100%; max-width:340px;">
@@ -345,16 +345,23 @@
       <li class="drawer-item" onclick="closeDrawer(); showOtherServicesScreen();">
         <span>⚙️</span><span>अन्य सेवाएं (मौसम, मंडी, अलर्ट)</span>
       </li>
+      <li class="drawer-item" onclick="closeDrawer(); showDisclaimerScreen();">
+        <span>📜</span><span>नियम व शर्तें (Disclaimer & Policy)</span>
+      </li>
       <li class="drawer-item" onclick="closeDrawer(); shareAppWithFriends();">
         <span>📲</span><span>किसान साथियों को ऐप शेयर करें</span>
       </li>
       <li class="drawer-item" onclick="closeDrawer(); contactAdvisor();">
         <span>💬</span><span id="txtMenuSupport">व्हाट्सएप हेल्पलाइन</span>
       </li>
+      <!-- लॉग आउट विकल्प -->
+      <li class="drawer-item" style="color:#dc2626;" onclick="closeDrawer(); logoutFarmerUser();">
+        <span>🚪</span><span>लॉग आउट (Logout)</span>
+      </li>
     </ul>
 
     <div style="margin-top:auto; padding:16px; text-align:center; font-size:11px; color:#9ca3af; border-top:1px solid #f3f4f6;">
-      No 1 किसान • v2.6
+      सब्जी खेती बाड़ी की बातें (Sabzi kheti) • v2.7
     </div>
   </div>
 
@@ -539,7 +546,7 @@
 
     <!-- सोशल मीडिया कार्ड -->
     <div class="social-box">
-      <p style="font-size:13px; font-weight:bold; color:#374151;" id="txtSocialJoin">हमारे साथ सोशल मीडिया पर जुड़ें</p>
+      <p style="font-size:13px; font-weight:bold; color:#374151;" id="txtSocialJoin">सब्जी खेती बाड़ी की बातें - सोशल मीडिया</p>
       <div class="social-btn-group">
         <a href="https://www.youtube.com/@NMGKISAN" target="_blank" class="social-link link-yt">
           <span>▶️</span> YouTube
@@ -548,6 +555,55 @@
           <span>🌐</span> Facebook
         </a>
       </div>
+    </div>
+  </div>
+
+  <!-- SCREEN: नियम व शर्तें एवं कानूनी डिस्क्लेमर -->
+  <div id="screen-disclaimer" class="screen">
+    <div class="variety-card" style="padding:16px;">
+      <h3 style="color:#1b5e20; font-size:16px; margin-bottom:12px;">📜 नियम व शर्तें एवं अस्वीकरण (Disclaimer)</h3>
+      
+      <div style="background:#fef2f2; border:1px solid #fee2e2; border-radius:10px; padding:12px; margin-bottom:12px; font-size:13px; color:#450a0a; line-height:1.5;">
+        <b>⚠️ महत्वपूर्ण अस्वीकरण (Disclaimer):</b><br>
+        1. यह मोबाइल ऐप <b>"सब्जी खेती बाड़ी की बातें"</b> (Sabzi kheti) केवल किसानों के मार्गदर्शन, जागरूकता और खेती-किसानी की सामान्य जानकारी साझा करने के उद्देश्य से बनाया गया है।<br><br>
+        2. ऐप पर दी जाने वाली फसल की किस्में, स्प्रे शेड्यूल, दवाइयों की मात्रा (डोज) और रोग निदान की जानकारी केवल सुझाव के रूप में हैं।<br><br>
+        3. किसी भी रासायनिक कीटनाशक, फफूंदनाशक या उर्वरक का उपयोग करने से पहले दवा के डिब्बे पर छपे निर्देशों को अच्छी तरह पढ़ लें या अपने नजदीकी कृषि विशेषज्ञों/अधिकृत दुकानदारों की सलाह अवश्य लें।<br><br>
+        4. मौसम, मिट्टी और स्थानीय परिस्थितियों के भिन्न होने के कारण फसल के परिणाम अलग हो सकते हैं। इस ऐप पर दी गई जानकारी के उपयोग से होने वाले किसी भी फसल या आर्थिक नुकसान के लिए ऐप डेवलपर या चैनल एडमिनिस्ट्रेटर सीधे तौर पर जिम्मेदार नहीं होंगे।
+      </div>
+
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px; font-size:13px; color:#14532d; line-height:1.5;">
+        <b>🔒 गोपनीयता नीति (Privacy Policy):</b><br>
+        आपके द्वारा ऐप में दर्ज किया जाने वाला नाम या मोबाइल नंबर पूरी तरह सुरक्षित रखा जाता है। इस डेटा का उपयोग केवल आपको कृषि संबंधी जानकारी और सेवाएं प्रदान करने के लिए किया जाता है। इसे किसी भी तीसरे पक्ष (Third Party) के साथ साझा नहीं किया जाता है।
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN: कृषि एक्सपर्ट सुझाव व सलाह (अब Google Sheet से कनेक्टेड) -->
+  <div id="screen-expert-advice" class="screen">
+    <div class="variety-card">
+      <h3 style="color:#1b5e20; font-size:16px; margin-bottom:10px;">💡 कृषि एक्सपर्ट सुझाव व सलाह</h3>
+      <div id="adviceContainer">
+        <div class="schedule-step">
+          <b>डेटा लोड हो रहा है...</b>
+          <p>कृपया प्रतीक्षा करें, Google Sheet से सुझाव लोड किए जा रहे हैं।</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN: कीट व रोग अलर्ट (अब Google Sheet से कनेक्टेड) -->
+  <div id="screen-pest-alert" class="screen">
+    <div class="variety-card" style="border-left:5px solid #dc2626;">
+      <h3 style="color:#dc2626; font-size:16px; margin-bottom:10px;">🚨 ताज़ा कीट व रोग चेतावनी (अलर्ट)</h3>
+      <div id="alertsContainer">
+        <div style="background:#fef2f2; border:1px solid #fee2e2; border-radius:10px; padding:12px; margin-bottom:12px;">
+          <b>डेटा लोड हो रहा है...</b>
+          <p>कृपया प्रतीक्षा करें, Google Sheet से अलर्ट लोड किए जा रहे हैं।</p>
+        </div>
+      </div>
+      <a href="https://wa.me/916378475002?text=नमस्ते%20डॉक्टर%20साहब,%20मेरे%20खेत%20में%20कीट%20का%20प्रकोप%20हो%20गया%20है,%20मदद%20करें।" target="_blank" class="btn-action btn-wa" style="margin-top:10px;">
+        💬 डॉक्टर से तुरंत सलाह लें
+      </a>
     </div>
   </div>
 
@@ -718,46 +774,6 @@
     </div>
   </div>
 
-  <!-- SCREEN: एक्सपर्ट सुझाव -->
-  <div id="screen-expert-advice" class="screen">
-    <div class="variety-card">
-      <h3 style="color:#1b5e20; font-size:16px; margin-bottom:10px;">💡 कृषि वैज्ञानिकों के ताज़ा सुझाव</h3>
-      <div class="schedule-step">
-        <b>1. फूल व फल बढ़ाने का समय</b>
-        <p>टमाटर, मिर्च और खीरे में जब फूल आना शुरू हों, तब नाइट्रोजन (यूरिया) कम दें और NPK 0:52:34 (75 ग्राम) + बोरॉन 20% (20 ग्राम) प्रति पंप का छिड़काव करें।</p>
-      </div>
-      <div class="schedule-step">
-        <b>2. सिंचाई प्रबंधन</b>
-        <p>दोपहर की तेज़ धूप में फसलों को पानी न दें। शाम के समय ड्रिप से हल्की सिंचाई करें ताकि मिट्टी में ठंडक बनी रहे और पौधे मुरझाएं नहीं।</p>
-      </div>
-      <div class="schedule-step">
-        <b>3. रस चूसक कीटों की प्राकृतिक रोकथाम</b>
-        <p>रासायनिक दवा से पहले खेत में प्रति एकड़ 20 पीले व 10 नीले चिपचिपे कार्ड (Sticky Traps) लगाएं, इससे 60% कीट बिना दवा के नष्ट हो जाते हैं।</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCREEN: कीट अलर्ट -->
-  <div id="screen-pest-alert" class="screen">
-    <div class="variety-card" style="border-left:5px solid #dc2626;">
-      <h3 style="color:#dc2626; font-size:16px; margin-bottom:10px;">🚨 ताज़ा कीट व रोग चेतावनी (अलर्ट)</h3>
-      
-      <div style="background:#fef2f2; border:1px solid #fee2e2; border-radius:10px; padding:12px; margin-bottom:12px;">
-        <b style="color:#991b1b; font-size:14px; display:block; margin-bottom:4px;">⚠️ मिर्च व टमाटर में थ्रिप्स का प्रकोप:</b>
-        <p style="font-size:13px; color:#450a0a; line-height:1.45;">मौसम बदलने के कारण मिर्च की पत्तियां ऊपर की तरफ मुड़ रही हैं। तुरंत <b>डेलीगेट 18 मिली या पेगासस 25 ग्राम</b> प्रति 15 लीटर पंप स्प्रे करें।</p>
-      </div>
-
-      <div style="background:#fff7ed; border:1px solid #ffedd5; border-radius:10px; padding:12px; margin-bottom:12px;">
-        <b style="color:#9a3412; font-size:14px; display:block; margin-bottom:4px;">⚠️ खीरा व तोरई में पाउडरी मिल्ड्यू:</b>
-        <p style="font-size:13px; color:#7c2d12; line-height:1.45;">सुबह ओस गिरने से पत्तियों पर सफेद पाउडर जैसा जमाव दिख सकता है। रोकथाम हेतु <b>घुलनशील सल्फर 35 ग्राम या नेटिवो 10 ग्राम</b> प्रति पंप छिड़कें।</p>
-      </div>
-      
-      <a href="https://wa.me/916378475002?text=नमस्ते%20डॉक्टर%20साहब,%20मेरे%20खेत%20में%20कीट%20का%20प्रकोप%20हो%20गया%20है,%20मदद%20करें।" target="_blank" class="btn-action btn-wa">
-        💬 डॉक्टर से तुरंत सलाह लें
-      </a>
-    </div>
-  </div>
-
   <!-- SCREEN: प्रोफाइल स्क्रीन -->
   <div id="screen-profile" class="screen">
     <div class="variety-card" style="padding:16px;">
@@ -897,6 +913,8 @@
     const VIDEOS_SHEET_URL = `${BASE_GV}Videos`;
     const MANDI_SHEET_URL = `${BASE_GV}Mandi`;
     const CHEMICALS_SHEET_URL = `${BASE_GV}Chemicals`;
+    const ADVICE_SHEET_URL = `${BASE_GV}Advice`;
+    const ALERTS_SHEET_URL = `${BASE_GV}Alerts`;
 
     const USERS_SCRIPT_URL = '';
 
@@ -918,6 +936,17 @@
       { company: 'एडवांटा (Advanta)', crop: 'भिंडी', variety: 'राधिका (Radhika)', segment: 'बरसात / गर्मी', features: 'गाढ़े हरे फल, 5 धारियों वाली, छोटे पोरों पर फलन, अधिक तुड़ाई।', weight: '12-14 सेमी', maturity: '45-50 दिन', resistance: 'YVMV (पीला मोज़ेक) प्रतिरोधी', photo: '' },
       { company: 'महायको (Mahyco)', crop: 'बैंगन', variety: 'नवकिरण', segment: 'गोल बैंगन', features: 'गहरा बैंगनी-चमकदार रंग, कांटे रहित, भरता बनाने हेतु उत्तम।', weight: '250-300 ग्राम', maturity: '60 दिन', resistance: 'तना छेदक सहनशील', photo: '' },
       { company: 'साकाता (Sakata)', crop: 'तरबूज', variety: 'माधुरी 64', segment: 'आइसबॉक्स', features: 'गहरा काला छिलका, अत्यंत मीठा (TSS 13%), लाल दानेदार गूदा।', weight: '3-5 किग्रा', maturity: '65-70 दिन', resistance: 'फ्यूजेरियम विल्ट सहनशील', photo: '' }
+    ];
+
+    let expertAdviceDatabase = [
+      { title: '1. फूल व फल बढ़ाने का समय', desc: 'टमाटर, मिर्च और खीरे में जब फूल आना शुरू हों, तब नाइट्रोजन (यूरिया) कम दें और NPK 0:52:34 (75 ग्राम) + बोरॉन 20% (20 ग्राम) प्रति पंप का छिड़काव करें।' },
+      { title: '2. सिंचाई प्रबंधन', desc: 'दोपहर की तेज़ धूप में फसलों को पानी न दें। शाम के समय ड्रिप से हल्की सिंचाई करें ताकि मिट्टी में ठंडक बनी रहे और पौधे मुरझाएं नहीं।' },
+      { title: '3. रस चूसक कीटों की प्राकृतिक रोकथाम', desc: 'रासायनिक दवा से पहले खेत में प्रति एकड़ 20 पीले व 10 नीले चिपचिपे कार्ड (Sticky Traps) लगाएं, इससे 60% कीट बिना दवा के नष्ट हो जाते हैं।' }
+    ];
+
+    let pestAlertsDatabase = [
+      { title: 'मिर्च व टमाटर में थ्रिप्स का प्रकोप', desc: 'मौसम बदलने के कारण मिर्च की पत्तियां ऊपर की तरफ मुड़ रही हैं। तुरंत डेलीगेट 18 मिली या पेगासस 25 ग्राम प्रति 15 लीटर पंप स्प्रे करें।' },
+      { title: 'खीरा व तोरई में पाउडरी मिल्ड्यू', desc: 'सुबह ओस गिरने से पत्तियों पर सफेद पाउडर जैसा जमाव दिख सकता है। रोकथाम हेतु घुलनशील सल्फर 35 ग्राम या नेटिवो 10 ग्राम प्रति पंप छिड़कें।' }
     ];
 
     let cropSchedules = {
@@ -1149,6 +1178,23 @@
       openScreen('screen-chem-categories', currentLang === 'hi' ? 'दवाइयों के प्रकार' : 'Chemical Categories');
     }
 
+    function showDisclaimerScreen() {
+      openScreen('screen-disclaimer', 'नियम व शर्तें (Disclaimer)');
+    }
+
+    function logoutFarmerUser() {
+      if (confirm("क्या आप वाकई ऐप से लॉग आउट करना चाहते हैं?")) {
+        localStorage.removeItem('is_logged_in');
+        localStorage.removeItem('farmer_name');
+        localStorage.removeItem('farmer_phone');
+        
+        const loginScreen = document.getElementById('screen-login');
+        if (loginScreen) loginScreen.style.display = 'flex';
+        
+        alert("आप सफलतापूर्वक लॉग आउट हो गए हैं।");
+      }
+    }
+
     function filterChemicalsByType(selectedType) {
       let filtered = [];
       let titleName = 'दवाइयाँ';
@@ -1232,13 +1278,82 @@
             });
           }
         }
-        if (newChem.length > 0) {
-          chemicalsDatabase = newChem;
-          console.log("Chemicals loaded successfully from sheet:", chemicalsDatabase.length);
-        }
+        if (newChem.length > 0) chemicalsDatabase = newChem;
       } catch (e) {
         console.log("Chemicals load error:", e);
       }
+    }
+
+    async function loadOnlineAdvice() {
+      try {
+        const res = await fetch(`${ADVICE_SHEET_URL}&t=${Date.now()}`);
+        const data = await res.text();
+        const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
+        let newAdvice = [];
+
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0] && !cols[0].includes('शीर्षक') && cols[0].toLowerCase() !== 'title') {
+            newAdvice.push({
+              title: cols[0],
+              desc: cols[1] || ''
+            });
+          }
+        }
+        if (newAdvice.length > 0) expertAdviceDatabase = newAdvice;
+        renderExpertAdvice();
+      } catch (e) {
+        console.log("Advice load error:", e);
+      }
+    }
+
+    function renderExpertAdvice() {
+      const container = document.getElementById('adviceContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      expertAdviceDatabase.forEach(item => {
+        container.innerHTML += `
+          <div class="schedule-step">
+            <b>${item.title}</b>
+            <p>${item.desc}</p>
+          </div>`;
+      });
+    }
+
+    async function loadOnlineAlerts() {
+      try {
+        const res = await fetch(`${ALERTS_SHEET_URL}&t=${Date.now()}`);
+        const data = await res.text();
+        const rows = data.split(/\r?\n/).filter(r => r.trim() !== '');
+        let newAlerts = [];
+
+        for (let i = 1; i < rows.length; i++) {
+          const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0] && !cols[0].includes('शीर्षक') && cols[0].toLowerCase() !== 'title') {
+            newAlerts.push({
+              title: cols[0],
+              desc: cols[1] || ''
+            });
+          }
+        }
+        if (newAlerts.length > 0) pestAlertsDatabase = newAlerts;
+        renderPestAlerts();
+      } catch (e) {
+        console.log("Alerts load error:", e);
+      }
+    }
+
+    function renderPestAlerts() {
+      const container = document.getElementById('alertsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      pestAlertsDatabase.forEach(item => {
+        container.innerHTML += `
+          <div style="background:#fef2f2; border:1px solid #fee2e2; border-radius:10px; padding:12px; margin-bottom:12px;">
+            <b style="color:#991b1b; font-size:14px; display:block; margin-bottom:4px;">⚠️ ${item.title}</b>
+            <p style="font-size:13px; color:#450a0a; line-height:1.45;">${item.desc}</p>
+          </div>`;
+      });
     }
 
     function renderStoriesBar() {
@@ -1354,7 +1469,7 @@
         btnOther: "Other सेवाएं (मौसम, मंडी, अलर्ट)",
         txtVidTitle: "🎥 आपके लिए वीडियो (Shorts)",
         txtSeeMore: "और देखें >",
-        txtSocialJoin: "हमारे साथ सोशल मीडिया पर जुड़ें",
+        txtSocialJoin: "सब्जी खेती बाड़ी की बातें - सोशल मीडिया",
         txtFab: "तुरंत समाधान",
         txtModalTitle: "⚡ तुरंत समाधान (AI रोग जांच)",
         txtCamBtn: "कैमरा से फोटो लें",
@@ -1381,7 +1496,7 @@
         btnOther: "Other Services (Weather, Mandi)",
         txtVidTitle: "🎥 Recommended Videos",
         txtSeeMore: "View All >",
-        txtSocialJoin: "Join Us On Social Media",
+        txtSocialJoin: "Sabzi kheti - Social Media",
         txtFab: "Instant Cure",
         txtModalTitle: "⚡ Instant Cure (AI Diagnosis)",
         txtCamBtn: "Camera Photo",
@@ -1796,12 +1911,18 @@
     function showOtherServicesScreen() { openScreen('screen-other-services', 'अन्य सेवाएं (Services)'); }
     function showWeatherDetailScreen() { updateDateAndCity(); openScreen('screen-weather-detail', 'मौसम पूर्वानुमान व सलाह'); }
     function showMandiBhavScreen() { openScreen('screen-mandi-bhav', 'ताज़ा मंडी भाव'); }
-    function showExpertAdviceScreen() { openScreen('screen-expert-advice', 'कृषि एक्सपर्ट सुझाव'); }
-    function showPestAlertScreen() { openScreen('screen-pest-alert', 'कीट व रोग चेतावनी'); }
+    function showExpertAdviceScreen() { 
+      renderExpertAdvice();
+      openScreen('screen-expert-advice', 'कृषि एक्सपर्ट सुझाव'); 
+    }
+    function showPestAlertScreen() { 
+      renderPestAlerts();
+      openScreen('screen-pest-alert', 'कीट व रोग चेतावनी'); 
+    }
 
     function shareAppWithFriends() {
       const appUrl = window.location.href;
-      const shareMsg = `राम-राम किसान भाइयों! 🌾\nसब्जी खेती, हाइब्रिड बीज किस्में, वैज्ञानिक स्प्रे शेड्यूल, मंडी भाव और फसल रोग पहचान के लिए यह बेहतरीन ऐप देखें:\n${appUrl}`;
+      const shareMsg = `राम-राम किसान भाइयों! 🌾\nसब्जी खेती बाड़ी की बातें (Sabzi kheti) - हाइब्रिड बीज किस्में, वैज्ञानिक स्प्रे शेड्यूल, मंडी भाव और फसल रोग पहचान के लिए यह बेहतरीन ऐप देखें:\n${appUrl}`;
       window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, '_blank');
     }
 
@@ -2269,6 +2390,8 @@
       try { loadOnlineVideos(); } catch(e){}
       try { loadOnlineMandi(); } catch(e){}
       try { loadOnlineChemicals(); } catch(e){}
+      try { loadOnlineAdvice(); } catch(e){}
+      try { loadOnlineAlerts(); } catch(e){}
     });
   </script>
 </body>
