@@ -312,7 +312,7 @@
       <div id="notificationListContent">
         <div class="schedule-step" style="border-left:4px solid #16a34a;">
           <b>🌾 नया डेटा अपडेट उपलब्ध है!</b>
-          <p>गूगल शीट में नई फसलें, वैरायटी और स्प्रे शेड्यूल जोड़ दिए गए हैं। ऐप को रिफ्रेश करके ताज़ा जानकारी प्राप्त करें।</p>
+          <p>गूगल शीट में नई फसलें, वैरायटी और स्प्रे शेड्यूल जोड़ दिए गए हैं।</p>
           <span style="font-size:11px; color:#166534;">आज, अभी अपडेट किया गया</span>
         </div>
       </div>
@@ -756,7 +756,7 @@
     const navHistory = ['screen-home'];
     const BASE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1F6RufBWk0pIaRutCf_Na7fqsc8y7bNgNyQjOkl3Gc7Y/gviz/tq?tqx=out:csv&sheet=';
     
-    // आपकी Google AI Studio API Key (हेडर ऑथेंटिकेशन के साथ)
+    // आपकी Google AI Studio API Key (x-goog-api-key हेडर के माध्यम से प्रमाणित)
     const GEMINI_API_KEY = "AQ.Ab8RN6LjVGvpVTfFFlkPdb7fL29kYTHkZmrIPsDNru7dcmDYRA";
 
     let sheetRecords = [];
@@ -1589,10 +1589,10 @@
       }
     }
 
-    // Gemini API कॉल (हेडर बेस्ड ऑथेंटिकेशन)
+    // Gemini API लाइव स्कैन फंक्शन
     async function runSmartDiagnosis() {
       if (!base64ImageRaw) {
-        alert("कृपया पहले पौधे की फोटो चुनें!");
+        alert("कृपया पहले पौधे की फोटो लें या गैलरी से चुनें!");
         return;
       }
 
@@ -1601,25 +1601,17 @@
       btn.disabled = true;
 
       try {
-        const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
-        
-        const promptText = `आप एक अनुभवी कृषि डॉक्टर हैं। इस पौधे/सब्जी/फल की फोटो को बहुत ध्यान से देखें।
-1. पहचानें कि यह कौन सी फसल या फल है और इसमें क्या बीमारी, कीट, फंगस या विकार लगा हुआ है?
-2. इसके मुख्य लक्षण क्या दिख रहे हैं?
-3. इसके सटीक नियंत्रण के लिए कौन सी दवा (कीटनाशक/फंगिसाइड) और 15 लीटर पंप की सही मात्रा (डोज़) क्या होनी चाहिए?
-
-कृपया केवल शुद्ध हिंदी में नीचे दिए गए प्रारूप में 3 पंक्तियों में ही उत्तर दें:
-रोग: [फसल और रोग का नाम]
-लक्षण: [संक्षिप्त लक्षण]
-दवा: [सटीक दवा और 15 लीटर पंप की मात्रा]`;
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
         const payload = {
           contents: [{
             parts: [
-              { text: promptText },
+              {
+                text: "आप एक अनुभवी कृषि डॉक्टर हैं। इस पौधे/सब्जी/फल की फोटो को देखकर बताएं: 1. रोग/कीट और फसल का नाम, 2. मुख्य लक्षण, 3. 15 लीटर पंप के लिए सटीक दवा और मात्रा। केवल 3 पंक्तियों में उत्तर दें: \nरोग: \nलक्षण: \nदवा:"
+              },
               {
                 inline_data: {
-                  mime_type: imageMimeType,
+                  mime_type: imageMimeType || "image/jpeg",
                   data: base64ImageRaw
                 }
               }
@@ -1630,8 +1622,7 @@
         const response = await fetch(endpoint, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            "x-goog-api-key": GEMINI_API_KEY
+            "Content-Type": "application/json"
           },
           body: JSON.stringify(payload)
         });
@@ -1639,42 +1630,42 @@
         const data = await response.json();
 
         if (data.error) {
-          throw new Error(data.error.message || "API Error");
+          alert("Google API एरर: " + data.error.message);
+          return;
         }
-        
-        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
-          const aiResponse = data.candidates[0].content.parts[0].text;
-          
-          let disease = "पहचाना गया रोग";
-          let symptoms = "पौधे में विकार देखा गया है।";
-          let cure = "कृषि विशेषज्ञ से सलाह लें।";
 
-          const lines = aiResponse.split('\n');
+        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
+          const resultText = data.candidates[0].content.parts[0].text;
+
+          let disease = "रोग की पहचान";
+          let symptoms = "लक्षण पाए गए";
+          let cure = "दवा की जानकारी";
+
+          const lines = resultText.split('\n');
           lines.forEach(line => {
-            if (line.includes("रोग:")) disease = line.replace(/.*रोग:\s*/i, '').replace(/\*/g, '');
-            if (line.includes("लक्षण:")) symptoms = line.replace(/.*लक्षण:\s*/i, '').replace(/\*/g, '');
-            if (line.includes("दवा:")) cure = line.replace(/.*दवा:\s*/i, '').replace(/\*/g, '');
+            if (line.includes("रोग:")) disease = line.replace(/.*रोग:\s*/i, '').replace(/\*/g, '').trim();
+            if (line.includes("लक्षण:")) symptoms = line.replace(/.*लक्षण:\s*/i, '').replace(/\*/g, '').trim();
+            if (line.includes("दवा:")) cure = line.replace(/.*दवा:\s*/i, '').replace(/\*/g, '').trim();
           });
 
-          if (disease === "पहचाना गया रोग" && lines.length > 0) {
+          if (disease === "रोग की पहचान" && lines.length > 0) {
             disease = lines[0].replace(/\*/g, '');
-            cure = aiResponse.replace(/\*/g, '');
+            cure = resultText.replace(/\*/g, '');
           }
 
           document.getElementById('smartDiseaseName').innerText = `🔍 ${disease}`;
           document.getElementById('smartSymptoms').innerHTML = `<b>लक्षण:</b> ${symptoms}`;
           document.getElementById('smartMedicine').innerHTML = `<b>सटीक स्प्रे:</b> ${cure}`;
-          
+
           const waMsg = `नमस्ते डॉक्टर साहब, मेरी फसल की फोटो AI से जांची गई है:\nरोग: ${disease}\nलक्षण: ${symptoms}\nसुझाई गई दवा: ${cure}\nकृपया मार्गदर्शन करें।`;
           document.getElementById('btnDocWhatsapp').href = `https://wa.me/916378475002?text=${encodeURIComponent(waMsg)}`;
-          
+
           document.getElementById('docResultCard').style.display = 'block';
         } else {
-          throw new Error("AI से कोई परिणाम नहीं मिला");
+          alert("AI से कोई परिणाम नहीं मिला, कृपया साफ़ फोटो अपलोड करें।");
         }
       } catch (err) {
-        console.error("AI Error:", err);
-        alert("AI जांच में त्रुटि: " + err.message);
+        alert("जांच में समस्या आई: " + err.message);
       } finally {
         btn.innerText = "🔍 रोग पहचानें व उपचार पाएं";
         btn.disabled = false;
