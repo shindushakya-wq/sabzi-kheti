@@ -1533,7 +1533,7 @@
 
         recognition.onresult = function(event) {
           let spokenText = event.results[0][0].transcript;
-          let cleanText = spokenText.replace(/[।.,?!]/g, '').trim();
+          let cleanText = spokenTest.replace(/[।.,?!]/g, '').trim();
           
           searchInput.value = cleanText;
           voiceBtn.classList.remove('listening');
@@ -1631,7 +1631,7 @@
       }
     }
 
-    // असली Gemini API के साथ AI जांच करने का फंक्शन
+    // असली Gemini API के साथ AI जांच करने का सुरक्षित फंक्शन
     async function runSmartDiagnosis() {
       const btn = document.getElementById('btnDiagnose');
       const imgElement = document.getElementById('solutionPreviewImg');
@@ -1648,11 +1648,10 @@
       let base64Image = imgElement.src.split(',')[1];
       let mimeType = imgElement.src.substring(imgElement.src.indexOf(":") + 1, imgElement.src.indexOf(";"));
 
-      // आपकी वेरीफाइड Gemini API Key
       const apiKey = "AQ.Ab8RN6KghkT0nnj4TwuaNJxA5SR_YE3syJ5k7zcHVxC1I6BUVQ";
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
-      const promptText = "आप एक कृषि विशेषज्ञ हैं। इस सब्जी के पौधे की फोटो देखकर हिंदी में साफ-सुथरे शब्दों में बताएं: 1. कौन सा रोग या कीट लगा है? 2. इसके लक्षण क्या हैं? 3. 15 लीटर पंप के हिसाब से कौन सी सटीक दवा और डोज़ डालनी चाहिए?";
+      const promptText = "आप एक कृषि विशेषज्ञ हैं। इस सब्जी के पौधे की फोटो देखकर हिंदी में साफ-सुथरे शब्दों में बताएं: 1. कौन सा रोग या कीट लगा है? मॉडल का नाम या तकनीकी जानकारी के बजाय सीधे उपाय बताएं। 2. इसके लक्षण क्या हैं? 3. 15 लीटर पंप के हिसाब से कौन सी सटीक दवा और डोज़ डालनी चाहिए?";
 
       const requestBody = {
         contents: [
@@ -1679,7 +1678,10 @@
 
         const data = await response.json();
         
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
+        if (data && data.candidates && data.candidates.length > 0 && 
+            data.candidates[0].content && data.candidates[0].content.parts && 
+            data.candidates[0].content.parts.length > 0) {
+          
           let aiResponseText = data.candidates[0].content.parts[0].text;
 
           // रिजल्ट को स्क्रीन पर दिखाना
@@ -1692,11 +1694,12 @@
           
           document.getElementById('docResultCard').style.display = 'block';
         } else {
+          console.error("API Response structure error:", data);
           alert("फोटो की पहचान ठीक से नहीं हो पाई, कृपया साफ फोटो दोबारा अपलोड करें।");
         }
       } catch (error) {
-        console.error("AI Error:", error);
-        alert("इंटरनेट कनेक्शन या API Key में कोई समस्या है। कृपया दोबारा कोशिश करें।");
+        console.error("AI Network Error:", error);
+        alert("इंटरनेट कनेक्शन या एपीआई में तकनीकी दिक्कत है। कृपया दोबारा कोशिश करें।");
       } finally {
         btn.innerText = "🔍 रोग पहचानें व उपचार पाएं";
         btn.disabled = false;
@@ -1706,7 +1709,7 @@
     function openProfileScreen() {
       closeDrawer();
       document.getElementById('profNameInput').value = localStorage.getItem('farmer_name') || 'Shailender Kumar';
-      document.getElementById('profPhoneInput').value = localStorage.getItem('farmer_phone') || '';
+      document.getElementById('profPhoneInput').value = localStorage.getItem('farmer_phone'] || '';
       document.getElementById('profStateInput').value = localStorage.getItem('farmer_state') || '';
       document.getElementById('profCropsInput').value = localStorage.getItem('farmer_crops') || 'टमाटर, मिर्च, खीरा';
       openScreen('screen-profile', 'किसान प्रोफाइल');
@@ -1716,7 +1719,7 @@
       const name = document.getElementById('profNameInput').value.trim();
       const phone = document.getElementById('profPhoneInput').value.trim();
       const state = document.getElementById('profStateInput').value.trim();
-      const crops = document.getElementById('profCropsInput').value.trim();
+      const crops = document.getElementById('profCropsInput5').value ? document.getElementById('profCropsInput5').value.trim() : 'टमाटर, मिर्च, खीरा';
       if (!name) { alert("कृपया अपना नाम लिखें!"); return; }
 
       localStorage.setItem('farmer_name', name);
