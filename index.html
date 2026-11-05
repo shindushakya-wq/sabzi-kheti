@@ -871,18 +871,36 @@
       document.getElementById('btnSkipText').innerText = d.btnSkip;
     }
 
+    /* === फसल के नाम को साफ़ करके केवल मुख्य नाम निकालने का टूल === */
+    function getCleanCropName(raw) {
+      if (!raw) return '';
+      // ब्रैकेट (...), डैश (-), और स्लैश (/) के बाद का हिस्सा हटाना
+      let clean = raw.split('(')[0];
+      clean = clean.split('-')[0];
+      clean = clean.split('/')[0];
+      return clean.trim();
+    }
+
     function getCropEmoji(cropName) {
       if (!cropName) return '🌱';
       let c = cropName.trim().toLowerCase();
       if (c.includes('टमाटर') || c.includes('tomato')) return '🍅';
-      if (c.includes('मिर्च') || c.includes('chilli') || c.includes('chili')) return '🌶️';
+      if (c.includes('मिर्च') || c.includes('chilli') || c.includes('pepper')) return '🌶️';
       if (c.includes('खीरा') || c.includes('cucumber')) return '🥒';
       if (c.includes('तरबूज') || c.includes('watermelon')) return '🍉';
+      if (c.includes('खरबूजा') || c.includes('melon')) return '🍈';
       if (c.includes('फूलगोभी') || c.includes('cauliflower')) return '🥦';
+      if (c.includes('पत्तागोभी') || c.includes('cabbage')) return '🥬';
       if (c.includes('भिंडी') || c.includes('okra')) return '🥒';
       if (c.includes('लौकी') || c.includes('bottle gourd')) return '🥒';
+      if (c.includes('तोरई') || c.includes('ridge gourd') || c.includes('sponge gourd')) return '🥒';
       if (c.includes('करेला') || c.includes('bitter gourd')) return '🥒';
-      if (c.includes('बैंगन') || c.includes('brinjal')) return '🍆';
+      if (c.includes('बैंगन') || c.includes('egg plant') || c.includes('brinjal')) return '🍆';
+      if (c.includes('गाजर') || c.includes('carrot')) return '🥕';
+      if (c.includes('मूली') || c.includes('radish')) return '🌱';
+      if (c.includes('मक्का') || c.includes('स्वीट कॉर्न') || c.includes('corn')) return '🌽';
+      if (c.includes('प्याज') || c.includes('onion')) return '🧅';
+      if (c.includes('कद्दू') || c.includes('pumpkin')) return '🎃';
       return '🌱';
     }
 
@@ -923,8 +941,9 @@
         schedRows.forEach(cols => {
           const crop = cols[0] ? cols[0].trim() : '';
           if(crop && !crop.toLowerCase().includes('crop')) {
-            if(!scheduleRecords[crop]) scheduleRecords[crop] = [];
-            scheduleRecords[crop].push({ 
+            const cleanC = getCleanCropName(crop);
+            if(!scheduleRecords[cleanC]) scheduleRecords[cleanC] = [];
+            scheduleRecords[cleanC].push({ 
               time: cols[1] ? cols[1].trim() : '', 
               med: cols[2] ? cols[2].trim() : '', 
               purpose: cols[3] ? cols[3].trim() : '' 
@@ -939,12 +958,13 @@
         protRows.forEach(cols => {
           const crop = cols[0] ? cols[0].trim() : '';
           if(crop && !crop.toLowerCase().includes('crop')) {
-            if(!protectionRecords[crop]) protectionRecords[crop] = [];
-            protectionRecords[crop].push({ 
+            const cleanC = getCleanCropName(crop);
+            if(!protectionRecords[cleanC]) protectionRecords[cleanC] = [];
+            protectionRecords[cleanC].push({ 
               name: cols[1] ? cols[1].trim() : '', 
               symptoms: cols[2] ? cols[2].trim() : '', 
               cure: cols[3] ? cols[3].trim() : '', 
-              icon: getCropEmoji(crop) 
+              icon: getCropEmoji(cleanC) 
             });
           }
         });
@@ -1232,21 +1252,22 @@
       window.scrollTo(0, 0);
     }
 
-    /* === यूनिक फसलों की सूची दिखाने का सही फंक्शन (बिना डुप्लीकेट) === */
+    /* === बिना किसी रिपीटेशन के यूनिक फसलों की सूची दिखाने का फंक्शन === */
     function showAllCropsScreen() {
-      const rawCrops = sheetRecords
-        .map(r => (r.crop ? r.crop.trim() : ''))
-        .filter(c => c !== '' && !c.toLowerCase().includes('crop'));
+      const uniqueMap = new Map();
 
-      const uniqueCropsMap = new Map();
-      rawCrops.forEach(crop => {
-        const key = crop.toLowerCase();
-        if (!uniqueCropsMap.has(key)) {
-          uniqueCropsMap.set(key, crop);
+      sheetRecords.forEach(r => {
+        const raw = r.crop ? r.crop.trim() : '';
+        if (raw && !raw.toLowerCase().includes('crop')) {
+          const cleanName = getCleanCropName(raw);
+          const key = cleanName.toLowerCase();
+          if (cleanName && !uniqueMap.has(key)) {
+            uniqueMap.set(key, cleanName);
+          }
         }
       });
 
-      const crops = Array.from(uniqueCropsMap.values());
+      const crops = Array.from(uniqueMap.values());
       const container = document.getElementById('cropsContainer');
       container.innerHTML = '';
 
@@ -1258,9 +1279,9 @@
 
       crops.forEach(crop => {
         let emoji = getCropEmoji(crop);
-        const safeCropName = crop.replace(/'/g, "\\'");
+        const safeCrop = crop.replace(/'/g, "\\'");
         container.innerHTML += `
-          <div class="list-item" onclick="filterByCrop('${safeCropName}')">
+          <div class="list-item" onclick="filterByCrop('${safeCrop}')">
             <div class="list-left">
               <span class="list-icon">${emoji}</span>
               <span class="list-title">${crop}</span>
@@ -1271,13 +1292,17 @@
       openScreen('screen-crops', "सब्जी फसल किस्म");
     }
 
-    /* === फसल पर ओके करने पर उसकी सभी वैरायटी दिखाने का सही फंक्शन === */
+    /* === मुख्य फसल पर क्लिक करने पर उसकी सभी वैरायटी (बिना मिस हुए) दिखाने का फंक्शन === */
     function filterByCrop(cropName) {
-      const target = cropName.trim().toLowerCase();
+      const targetKey = getCleanCropName(cropName).toLowerCase();
+
       const list = sheetRecords.filter(r => {
-        return r.crop && r.crop.trim().toLowerCase() === target;
+        if (!r.crop) return false;
+        const cleanInSheet = getCleanCropName(r.crop).toLowerCase();
+        return cleanInSheet === targetKey;
       });
-      renderVarietiesList(list, `${cropName} की किस्में`);
+
+      renderVarietiesList(list, `${cropName} की सभी किस्में`);
     }
 
     function renderVarietiesList(list, title) {
@@ -1434,14 +1459,16 @@
     function selectCompany(compName) {
       const compRecords = sheetRecords.filter(r => r.company && r.company.trim().toLowerCase() === compName.trim().toLowerCase());
       
-      const rawCropsInComp = compRecords
-        .map(r => (r.crop ? r.crop.trim() : ''))
-        .filter(c => c !== '' && !c.toLowerCase().includes('crop'));
-
       const uniqueCropsMap = new Map();
-      rawCropsInComp.forEach(c => {
-        const key = c.toLowerCase();
-        if (!uniqueCropsMap.has(key)) uniqueCropsMap.set(key, c);
+      compRecords.forEach(r => {
+        const raw = r.crop ? r.crop.trim() : '';
+        if (raw && !raw.toLowerCase().includes('crop')) {
+          const cleanName = getCleanCropName(raw);
+          const key = cleanName.toLowerCase();
+          if (cleanName && !uniqueCropsMap.has(key)) {
+            uniqueCropsMap.set(key, cleanName);
+          }
+        }
       });
 
       const cropsInComp = Array.from(uniqueCropsMap.values());
@@ -1467,11 +1494,12 @@
 
     function filterByCompanyAndCrop(compName, cropName) {
       const targetComp = compName.trim().toLowerCase();
-      const targetCrop = cropName.trim().toLowerCase();
+      const targetCrop = getCleanCropName(cropName).toLowerCase();
+      
       const list = sheetRecords.filter(r => {
         return r.company && r.crop && 
                r.company.trim().toLowerCase() === targetComp && 
-               r.crop.trim().toLowerCase() === targetCrop;
+               getCleanCropName(r.crop).toLowerCase() === targetCrop;
       });
       renderVarietiesList(list, `${compName} - ${cropName}`);
     }
